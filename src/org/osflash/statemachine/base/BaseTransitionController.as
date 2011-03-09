@@ -82,7 +82,7 @@ public class BaseTransitionController implements ITransitionController, ILoggabl
         setIsTransitioning( true );
         onTransition( target, payload );
         setIsTransitioning( false );
-        if ( isCanceled )cancelTransition();
+        if ( isCanceled )cancelStateTransition();
         else dispatchGeneralStateChanged();
         reset();
     }
@@ -90,7 +90,7 @@ public class BaseTransitionController implements ITransitionController, ILoggabl
     /**
      * @private
      */
-    protected final function cancelTransition():void
+    protected final function cancelStateTransition():void
     {
         _canceled = false;
         log( "Transtition has been cancelled" );
@@ -158,14 +158,14 @@ public class BaseTransitionController implements ITransitionController, ILoggabl
 
     /**
      * Starts a new transition
-     * @param action the name of the action
+     * @param transitionName the name of the action
      * @param payload the data payload from the action notification.
      * @return whether the action has been called successfully
      */
-    protected function handleAction( action:String, payload:Object ):Boolean
+    protected function handleStateTransition( transitionName:String, payload:Object ):Boolean
     {
         if ( _actionCallback == null ) return false;
-        _actionCallback( action, payload );
+        _actionCallback( transitionName, payload );
         return true;
     }
 
@@ -174,7 +174,7 @@ public class BaseTransitionController implements ITransitionController, ILoggabl
      * @param reason the reason for cancellation.
      * @param payload the data payload from the cancel notification.
      */
-    protected function handleCancel( reason:String = null, payload:Object = null ):void
+    protected function handleCancelStateTransition( reason:String = null, payload:Object = null ):void
     {
         _canceled = true;
         _cancellationReason = reason;

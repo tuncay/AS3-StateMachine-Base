@@ -100,15 +100,6 @@ public class BaseTransitionController implements ITransitionController, IStateLo
         reset();
     }
 
-    /**
-     * @private
-     */
-    protected final function cancelStateTransition():void {
-        _canceled = false;
-        log("the current transition has been cancelled");
-        dispatchTransitionCancelled();
-    }
-
 
     /**
      * @inheritDoc
@@ -128,10 +119,20 @@ public class BaseTransitionController implements ITransitionController, IStateLo
             _logger.log(msg);
     }
 
-    public function logPhase( phase:ITransitionPhase, state:IState  ):void {
+    public function logPhase(phase:ITransitionPhase, state:IState):void {
         if (_logger != null)
             _logger.logPhase(phase, state);
     }
+
+    /**
+     * @private
+     */
+    protected final function cancelStateTransition():void {
+        _canceled = false;
+        log("the current transition has been cancelled");
+        dispatchTransitionCancelled();
+    }
+
 
     protected function setReferringTransition():void {
         if (currentState == null)return;
@@ -182,7 +183,7 @@ public class BaseTransitionController implements ITransitionController, IStateLo
      */
     protected function setIsTransitioning(value:Boolean):void {
         _isTransitioning = value;
-        _controller.setIsTransition( value );
+        _controller.setIsTransition(value);
     }
 
 

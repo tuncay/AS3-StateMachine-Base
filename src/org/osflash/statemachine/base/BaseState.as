@@ -99,6 +99,7 @@ public class BaseState implements IState {
      */
     public function destroy():void {
         _transitions = null;
+        _numberOfTransitions = 0;
     }
 }
 }

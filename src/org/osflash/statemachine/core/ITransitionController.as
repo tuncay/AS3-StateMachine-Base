@@ -15,6 +15,8 @@ public interface ITransitionController {
      */
     function get isTransitioning():Boolean;
 
+    function get fsmController():IFSMController;
+
     /**
      * The callback function called by the StateMachine to start a new transition.
      * Unless you are adapting or extending the StateMachine, you won't need

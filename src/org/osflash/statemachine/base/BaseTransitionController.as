@@ -1,4 +1,5 @@
 package org.osflash.statemachine.base {
+import org.osflash.statemachine.core.IFSMController;
 import org.osflash.statemachine.core.IFSMControllerOwner;
 import org.osflash.statemachine.core.IState;
 import org.osflash.statemachine.core.IStateLogger;
@@ -38,12 +39,27 @@ public class BaseTransitionController implements ITransitionController, IStateLo
      * @private
      */
     private var _transitionCallback:Function;
+
+    /**
+     * @private
+     */
     private var _logger:IStateLogger;
-    private var _controller:IFSMControllerOwner;
+
+    /**
+     * @private
+     */
+    private var _fsmController:IFSMControllerOwner;
 
     public function BaseTransitionController(controller:IFSMControllerOwner, logger:IStateLogger = null) {
-        _controller = controller;
+        _fsmController = controller;
         _logger = logger;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function get fsmController():IFSMController {
+        return IFSMController( _fsmController );
     }
 
     /**
@@ -108,7 +124,7 @@ public class BaseTransitionController implements ITransitionController, IStateLo
         reset();
         _currentState = null;
         _transitionCallback = null;
-        _controller.destroy();
+        _fsmController.destroy();
     }
 
     /**
@@ -153,7 +169,7 @@ public class BaseTransitionController implements ITransitionController, IStateLo
      */
     protected function setCurrentState(state:IState):void {
         _currentState = state;
-        _controller.setCurrentState(state);
+        _fsmController.setCurrentState(state);
     }
 
     /**
@@ -163,7 +179,7 @@ public class BaseTransitionController implements ITransitionController, IStateLo
      */
     protected function setIsTransitioning(value:Boolean):void {
         _isTransitioning = value;
-        _controller.setIsTransition(value);
+        _fsmController.setIsTransition(value);
     }
 
     /**
@@ -178,11 +194,11 @@ public class BaseTransitionController implements ITransitionController, IStateLo
 
     protected function setReferringTransition():void {
         if (currentState == null)return;
-        _controller.setReferringTransition(currentState.referringTransitionName);
+        _fsmController.setReferringTransition(currentState.referringTransitionName);
     }
 
     protected function setTransitionPhase(phase:ITransitionPhase, state:IState):void {
-        _controller.setTransitionPhase(phase);
+        _fsmController.setTransitionPhase(phase);
         logPhase(phase, state);
     }
 

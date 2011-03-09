@@ -13,6 +13,6 @@ public interface ITransitionPhase {
 
     function get index():int;
 
-    function equals( value:Object );
+    function equals( value:Object ):Boolean;
 }
 }

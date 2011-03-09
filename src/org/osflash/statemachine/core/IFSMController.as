@@ -23,14 +23,14 @@ package org.osflash.statemachine.core {
 		 * The current phase of the transition cycle
 		 * @see TransitionPhases
 		 */
-		function get transitionPhase():String;
+		function get transitionPhase():ITransitionPhase;
 
 		/**
 		 * Sends an action to the StateMachine, precipitating a state transition.
 		 * @param transitionName the name of the action.
 		 * @param payload the data to be sent with the action.
 		 */
-		function changeState( transitionName:String, payload:Object = null ):void;
+		function transition( transitionName:String, payload:Object = null ):void;
 
 		/**
 		 * Cancels the current transition.
@@ -42,6 +42,18 @@ package org.osflash.statemachine.core {
 		 */
 		function cancelStateTransition( reason:String, payload:Object = null ):void;
 
+        /**
+		 * Adds a listener to the general <strong>changed</strong> phase of the transition.
+		 * @param listener the method to handle the phase
+		 * @return the listener Function passed as the parameter
+		 */
+		function listenForStateChange( listener:Function ):Function;
 
+		/**
+		 * Removes the listener from the general <strong>changed</strong> phase of the transition.
+		 * @param listener the method to remove
+		 * @return the listener Function passed as the parameter
+		 */
+		function stopListeningForStateChange( listener:Function ):Function;
 	}
 }

@@ -29,7 +29,7 @@ public class BaseStateTest {
     }
 
     [Test]
-    public function constructor_nameIsPassedAsConstructorArgument_shouldBePassedAsNameProperty():void {
+    public function name_valueIsPassedAsConstructorArgument_shouldBeAsPassedInConstructor():void {
         Assert.assertEquals(STATE_NAME, state.name);
     }
 
@@ -63,13 +63,13 @@ public class BaseStateTest {
     }
 
     [Test]
-    public function getTarget_defineTransitionThenRetrieveTarget_shouldReturnTheTargetPassed():void {
+    public function getTarget_defineTransitionThenRetrieveTarget_shouldReturnTheTargetDefined():void {
         state.defineTrans(TRANSITION_NAME, TARGET_NAME);
         Assert.assertEquals(TARGET_NAME, state.getTarget(TRANSITION_NAME));
     }
 
     [Test]
-    public function getTarget_retrieveTargetFromUndefinedTransition_shouldReturnFalse():void {
+    public function getTarget_retrieveTargetFromUndefinedTransition_shouldReturnNull():void {
         Assert.assertNull( state.getTarget(TRANSITION_NAME));
     }
 
@@ -89,16 +89,31 @@ public class BaseStateTest {
         Assert.assertEquals(0, state.length);
     }
 
-     [Test]
+    [Test]
     public function length_defineTransitionThenTestLength_lengthShouldBeOne():void {
         state.defineTrans(TRANSITION_NAME, TARGET_NAME);
         Assert.assertEquals(1, state.length);
     }
 
     [Test]
+    public function length_defineThreeTransitionThenTestLength_lengthShouldBeThree():void {
+        state.defineTrans(TRANSITION_NAME + "1", TARGET_NAME);
+         state.defineTrans(TRANSITION_NAME + "2", TARGET_NAME);
+         state.defineTrans(TRANSITION_NAME + "3", TARGET_NAME);
+        Assert.assertEquals(3, state.length);
+    }
+
+    [Test]
     public function length_defineThenRemoveTransitionThenTestLength_shouldReturnZero():void {
         state.defineTrans(TRANSITION_NAME, TARGET_NAME);
         state.removeTrans(TRANSITION_NAME);
+        Assert.assertEquals(0, state.length);
+    }
+
+     [Test]
+    public function length_defineTransitionThenDestroy_shouldReturnZero():void {
+        state.defineTrans(TRANSITION_NAME, TARGET_NAME);
+        state.destroy();
         Assert.assertEquals(0, state.length);
     }
 
@@ -112,6 +127,13 @@ public class BaseStateTest {
         state.defineTrans(TRANSITION_NAME, TARGET_NAME);
         state.getTarget(TRANSITION_NAME);
         Assert.assertEquals( TRANSITION_NAME, state.referringTransitionName);
+    }
+
+    [Test]
+    public function destroy_defineTransitionThenDestroyAndTest_shouldReturnFalse():void {
+        state.defineTrans(TRANSITION_NAME, TARGET_NAME);
+        state.destroy();
+        Assert.assertFalse(  state.hasTrans(TRANSITION_NAME));
     }
 }
 }

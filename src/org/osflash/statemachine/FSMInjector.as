@@ -1,4 +1,4 @@
-/*
+ /*
  ADAPTED FOR A STAND ALONE UTILITY FROM:
  PureMVC AS3 Utility - StateMachine
  Copyright (c) 2008 Neil Manuell, Cliff Hall

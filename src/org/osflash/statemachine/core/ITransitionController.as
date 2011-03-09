@@ -21,7 +21,7 @@ public interface ITransitionController {
      * must have the signature:
      * <code>sendStateActionHandler(action:String, payload:Object ):void</code>
      */
-    function set actionCallback( value:Function ):void;
+    function set transitionCallback( value:Function ):void;
 
     /**
      * Called by the StateMachine to start the transition process.

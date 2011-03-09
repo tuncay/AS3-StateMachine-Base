@@ -24,7 +24,7 @@ public class TraceStateLogger implements IStateLogger {
         this.flags = flags;
     }
 
-    public function log( msg:String ):void {
+    public function log( msg:String):void {
         if( active )
             trace( prefix + msg );
     }

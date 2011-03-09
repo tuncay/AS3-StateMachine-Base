@@ -17,6 +17,7 @@ To keep the utility:
 These are the base classes only, concrete implementations are listed below
 
 h3. Bins
+
 * "Version 1.2.000":http://statemachine.org/swcs/AS3-StateMachine-Base-V1-2-000.zip
 * "Version 1.1.001":http://statemachine.org/swcs/AS3-StateMachine-Base-V1-1-001.zip
 * "Version 1.1.000":http://statemachine.org/swcs/AS3-StateMachine-Base-V1-1-000.zip

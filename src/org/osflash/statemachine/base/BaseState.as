@@ -27,37 +27,41 @@ public class BaseState implements IState {
      */
     private var _numberOfTransitions:int;
 
-	private var _referringAction:String;
+    private var _referringAction:String;
 
 
     /**
      * This class is ment to be extended.
      * @param name the name of the state.
      */
-    public function BaseState( name:String ):void
-    {
-        _name = name;
+    public function BaseState(name:String):void {
+        _name = name.toString();
     }
 
     /**
      * @inheritDoc
      */
-    public function get name():String { return _name; }
+    public function get name():String {
+        return _name;
+    }
 
-	 public function get referringAction():String { return _referringAction; }
+    public function get referringTransitionName():String {
+        return _referringAction;
+    }
 
     /**
      * @inheritDoc
      */
-    public function get length():int { return _numberOfTransitions; }
+    public function get length():int {
+        return _numberOfTransitions;
+    }
 
     /**
      * @inheritDoc
      */
-    public function defineTrans( action:String, target:String ):Boolean
-    {
-        if ( hasTrans( action ) ) return false;
-        _transitions[ action ] = target;
+    public function defineTrans(transitionName:String, target:String):Boolean {
+        if ( hasTrans(transitionName) ) return false;
+        _transitions[ transitionName ] = target;
         _numberOfTransitions++;
         return true;
     }
@@ -65,19 +69,17 @@ public class BaseState implements IState {
     /**
      * @inheritDoc
      */
-    public function hasTrans( action:String ):Boolean
-    {
-        if ( _transitions == null ) return false;
-        return ( _transitions[ action ] != null );
+    public function hasTrans(transitionName:String):Boolean {
+        if (_transitions == null) return false;
+        return ( _transitions[ transitionName ] != null );
     }
 
     /**
      * @inheritDoc
      */
-    public function removeTrans( action:String ):Boolean
-    {
-        if ( getTarget( action ) == null ) return false;
-        delete _transitions[ action ];
+    public function removeTrans(transitionName:String):Boolean {
+        if (getTarget(transitionName) == null) return false;
+        delete _transitions[ transitionName ];
         _numberOfTransitions--;
         return true;
     }
@@ -85,19 +87,17 @@ public class BaseState implements IState {
     /**
      * @inheritDoc
      */
-    public function getTarget( action:String ):String
-    {
-	    if( _transitions[ action ] != null )
-            _referringAction = action;
+    public function getTarget(transitionName:String):String {
+        if (_transitions[ transitionName ] != null)
+            _referringAction = transitionName;
 
-        return _transitions[ action ];
+        return _transitions[ transitionName ];
     }
 
     /**
      * @inheritDoc
      */
-    public function destroy():void
-    {
+    public function destroy():void {
         _transitions = null;
     }
 }

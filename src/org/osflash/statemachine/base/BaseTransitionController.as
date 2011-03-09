@@ -135,7 +135,7 @@ public class BaseTransitionController implements ITransitionController, IStateLo
 
     protected function setReferringTransition():void {
         if (currentState == null)return;
-        _controller.setReferringTransition(currentState.referringAction);
+        _controller.setReferringTransition(currentState.referringTransitionName);
     }
 
     private function setTransitionPhase(phase:ITransitionPhase, state:IState):void {

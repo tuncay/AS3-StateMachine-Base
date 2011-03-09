@@ -6,7 +6,7 @@
  */
 package org.osflash.statemachine {
 import org.osflash.statemachine.core.IState;
-import org.osflash.statemachine.core.ILoggable;
+import org.osflash.statemachine.core.IStateLogger;
 import org.osflash.statemachine.core.IStateMachine;
 import org.osflash.statemachine.core.ITransitionController;
 import org.osflash.statemachine.core.ITransitionPhase;
@@ -24,7 +24,7 @@ import org.osflash.statemachine.errors.StateTransitionError;
  * @ see ITransitionController
  * @ see BaseTransitionController
  */
-public class StateMachine implements IStateMachine, ILoggable {
+public class StateMachine implements IStateMachine, IStateLogger {
 
     /**
      * Map of States objects by name.
@@ -44,14 +44,14 @@ public class StateMachine implements IStateMachine, ILoggable {
     /**
      * The logger instance;
      */
-    private var _logger:ILoggable;
+    private var _logger:IStateLogger;
 
     /**
      * Constructor
      * @param controller the ITransitionController instance
      * @param logger the logger instance
      */
-    public function StateMachine(controller:ITransitionController, logger:ILoggable = null):void {
+    public function StateMachine(controller:ITransitionController, logger:IStateLogger = null):void {
         _transitionController = controller;
         _logger = logger;
         initiate()
@@ -61,7 +61,7 @@ public class StateMachine implements IStateMachine, ILoggable {
      * @private
      */
     private function initiate():void {
-        _transitionController.actionCallback = doAction;
+        _transitionController.invokeTransitionCallback = invokeTransition;
     }
 
     /**
@@ -123,27 +123,27 @@ public class StateMachine implements IStateMachine, ILoggable {
             _logger.log(msg);
     }
 
-    public function logPhase( phase:ITransitionPhase, stateName:String = ""  ):void {
+    public function logPhase( phase:ITransitionPhase, state:IState):void {
         if (_logger != null)
-            _logger.logPhase(phase, stateName);
+            _logger.logPhase(phase, state);
     }
 
     /**
      * Initiates the transition process.
      * This method is set as the ITransitionController's actionCallback property
      * @see #initiate()
-     * @param action
+     * @param transitionName
      * @param payload
      * @returns Whether a transition has been successfully triggered or not
      */
-    protected function doAction(action:String, payload:Object):Boolean {
+    protected function invokeTransition(transitionName:String, payload:Object):Boolean {
         if (_transitionController.currentState == null)return false;
-        var newStateTarget:String = _transitionController.currentState.getTarget(action);
+        var newStateTarget:String = _transitionController.currentState.getTarget(transitionName);
         var newState:IState = IState(_states[ newStateTarget ]);
         if (newState != null) return transitionTo(newState, payload);
         if (newStateTarget != null)
             throw new StateTransitionError(StateTransitionError.TARGET_DECLARATION_MISMATCH + newStateTarget);
-        log("ACTION: " + action + "is not defined in STATE: " + currentStateName);
+        log("Transition: " + transitionName + " is not defined in state: " + currentStateName);
         return false;
     }
 

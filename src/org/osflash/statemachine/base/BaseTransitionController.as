@@ -56,7 +56,7 @@ public class BaseTransitionController implements ITransitionController, IStateLo
     /**
      * @inheritDoc
      */
-    public function set transitionCallback(value:Function):void {
+    public function set invokeTransitionCallback(value:Function):void {
         _transitionCallback = value;
     }
 

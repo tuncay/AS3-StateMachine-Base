@@ -46,8 +46,6 @@ public class BaseStateMachine implements IFSMController, IStateLogger {
      */
     private var _canceled:Boolean;
 
-
-
     /**
      * @private
      */
@@ -96,7 +94,6 @@ public class BaseStateMachine implements IFSMController, IStateLogger {
             listenForStateChangeOnce(invokeTransitionLater);
         }
         else invokeTransition(transitionName, payload);
-
     }
 
      public final function cancelStateTransition(reason:String, payload:Object = null):void {
@@ -116,7 +113,6 @@ public class BaseStateMachine implements IFSMController, IStateLogger {
         if (_model.initialState)
             transitionToState(_model.initialState, null);
     }
-
 
     /**
      * @private
@@ -193,11 +189,11 @@ public class BaseStateMachine implements IFSMController, IStateLogger {
     }
 
 
-    protected function isTransitionLegal():Boolean {
+    protected function get isTransitionLegal():Boolean {
         return false;
     }
 
-    protected function isCancellationLegal():Boolean {
+    protected function get isCancellationLegal():Boolean {
         return false;
     }
 

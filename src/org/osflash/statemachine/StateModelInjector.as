@@ -6,10 +6,10 @@
  */
 package org.osflash.statemachine {
 
-import org.osflash.statemachine.core.IFSMInjector;
+import org.osflash.statemachine.core.IStateModelInjector;
 import org.osflash.statemachine.core.IState;
 import org.osflash.statemachine.core.IStateDecoder;
-import org.osflash.statemachine.core.IStateMachine;
+import org.osflash.statemachine.core.IStateModel;
 
 /**
  * Creates and registers a StateMachine described from a
@@ -29,7 +29,7 @@ import org.osflash.statemachine.core.IStateMachine;
  * @ see IState
  * @ see IStateMachine
  */
-public class FSMInjector implements IFSMInjector {
+public class StateModelInjector implements IStateModelInjector {
 
     /**
      * The instance of the IStateDecoder
@@ -40,7 +40,7 @@ public class FSMInjector implements IFSMInjector {
      * Creates an instance of the FSMInjector.
      * @param stateDecoder the decoder to be used in this instance.
      */
-    public function FSMInjector( stateDecoder:IStateDecoder )
+    public function StateModelInjector( stateDecoder:IStateDecoder )
     {
         _stateDecoder = stateDecoder;
     }
@@ -48,12 +48,11 @@ public class FSMInjector implements IFSMInjector {
     /**
      * @inheritDoc
      */
-    public function inject( statemachine:IStateMachine ):void
+    public function inject( stateModel:IStateModel ):void
     {
         var states:Array = _stateDecoder.getStateList();
         for each ( var state:IState in states )
-            statemachine.registerState( state, isInitial( state.name ) );
-        statemachine.onRegister();
+            stateModel.registerState( state, isInitial( state.name ) );
     }
 
     /**

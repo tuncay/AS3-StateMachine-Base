@@ -1,10 +1,10 @@
 package org.osflash.statemachine.core {
-public interface IFSMInjector {
+public interface IStateModelInjector {
     /**
      * Registers all the decoded states with the IStateMachine, then calls the onRegister method.
-     * @param statemachine the IStateMachine to inject
+     * @param stateModel the IStateMachine to inject
      */
-    function inject( statemachine:IStateMachine ):void
+    function inject( stateModel:IStateModel ):void
 
     /**
      * The destroy method for GC

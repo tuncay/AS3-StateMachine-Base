@@ -1,10 +1,8 @@
 package org.osflash.statemachine.base {
-import org.hamcrest.object.nullValue;
 import org.osflash.statemachine.core.IFSMController;
 import org.osflash.statemachine.core.IState;
 import org.osflash.statemachine.core.IStateLogger;
 import org.osflash.statemachine.core.IStateModel;
-import org.osflash.statemachine.core.ITransitionController;
 import org.osflash.statemachine.core.ITransitionPhase;
 import org.osflash.statemachine.errors.StateTransitionError;
 

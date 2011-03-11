@@ -2,13 +2,9 @@ package org.osflash.statemachine.core {
 /**
  * Contract with FSMInjector and framework for managing States
  */
-public interface IStateMachine {
-    /**
-     * The name of the current state.
-     * @return
-     */
-    function get currentStateName():String;
+public interface IStateModel {
 
+    function get initialState():IState;
     /**
      * Registers a IState with the FSM.
      * @param state the IState to be registered.
@@ -31,10 +27,7 @@ public interface IStateMachine {
      */
     function hasState( stateName:String ):Boolean;
 
-    /**
-     * Called when all IStates have been registered
-     */
-    function onRegister():void;
+    function getTargetState(transitionName:String, state:IState):IState
 
     /**
      * The destroy method for GC.

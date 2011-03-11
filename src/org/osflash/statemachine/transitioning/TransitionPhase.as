@@ -1,17 +1,17 @@
-package org.osflash.statemachine.base {
+package org.osflash.statemachine.transitioning {
 import org.osflash.statemachine.core.ITransitionPhase;
 
 /**
  * A Base Class for the enumeration of TransitionPhases
  */
-public class BaseTransitionPhase implements ITransitionPhase {
+public class TransitionPhase implements ITransitionPhase {
 
     /**
      * Creates a new instance
      * @param name  the name of the transition phase
      * @param index  a unique binary-placeholder
      */
-    public function BaseTransitionPhase(name:String, index:int) {
+    public function TransitionPhase(name:String, index:int) {
         _name = name;
         _index = index;
     }

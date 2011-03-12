@@ -8,18 +8,20 @@
 package org.osflash.statemachine.supporting {
 import org.osflash.statemachine.base.BaseStateMachine;
 import org.osflash.statemachine.core.IState;
-import org.osflash.statemachine.core.IStateLogger;
 import org.osflash.statemachine.core.IStateModel;
 
-public class MockStateMachineForTesting_isTransitionValue_duringCancelledTransition extends BaseStateMachine {
+public class StateMachine_forTesting_isTransitionValue_duringCancelledTransition extends BaseStateMachine {
 
     public const REASON:String = "forTestingPurposes";
 
     private var _isTransitioningValue_during_onTransition_Method:Boolean;
     private var _isTransitioningValue_during_dispatchGeneralStateCancelled_Method:Boolean;
 
-    public function MockStateMachineForTesting_isTransitionValue_duringCancelledTransition(model:IStateModel, logger:IStateLogger = null) {
-        super(model, logger);
+    private var _was_onTransition_called:Boolean;
+    private var _was_dispatchTransitionCancelled_called:Boolean;
+
+    public function StateMachine_forTesting_isTransitionValue_duringCancelledTransition( model:IStateModel ) {
+        super( model );
     }
 
     public function transitionToStateForTesting(target:IState):void {
@@ -28,15 +30,19 @@ public class MockStateMachineForTesting_isTransitionValue_duringCancelledTransit
 
     public function expectedResultsFor_isTransitioning_duringTransition(during_onTransition:Boolean, during_dispatchGeneralStateCancelled:Boolean):Boolean {
         return  ( during_onTransition == _isTransitioningValue_during_onTransition_Method) &&
-                ( during_dispatchGeneralStateCancelled == _isTransitioningValue_during_dispatchGeneralStateCancelled_Method)
+                ( during_dispatchGeneralStateCancelled == _isTransitioningValue_during_dispatchGeneralStateCancelled_Method)   &&
+                _was_dispatchTransitionCancelled_called &&
+                _was_onTransition_called;
     }
 
     override protected function onTransition(target:IState, payload:Object):void {
+        _was_onTransition_called = true;
         _isTransitioningValue_during_onTransition_Method = isTransitioning;
         cancelStateTransition( REASON );
     }
 
     override protected function dispatchTransitionCancelled():void {
+        _was_dispatchTransitionCancelled_called = true;
         _isTransitioningValue_during_dispatchGeneralStateCancelled_Method = isTransitioning;
     }
 

@@ -12,19 +12,16 @@ import org.osflash.statemachine.core.IStateLogger;
 import org.osflash.statemachine.core.IStateModel;
 import org.osflash.statemachine.core.ITransitionPhase;
 
-public class MockStateMachineForSimplePropertyTests extends BaseStateMachine {
+public class StateMachine_forTesting_illegalTransitions extends BaseStateMachine {
 
-    public function MockStateMachineForSimplePropertyTests(model:IStateModel, logger:IStateLogger = null) {
-        super(model, logger);
-    }
 
-    public function setCurrentStateForTesting(state:IState):void {
-        currentState = state;
+    public function StateMachine_forTesting_illegalTransitions( model:IStateModel ) {
+        super( model );
     }
 
 
-    public function setTransitionPhaseForTesting(phase:ITransitionPhase):void {
-        currentTransitionPhase = phase;
+    override protected function get isTransitionLegal():Boolean {
+        return false;
     }
 
 

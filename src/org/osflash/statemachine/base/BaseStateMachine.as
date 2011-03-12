@@ -29,7 +29,7 @@ public class BaseStateMachine implements IFSMController, IStateLogger {
     /**
      * @private
      */
-    private const ILLEGAL_CANCEL_ERROR:String = "A transition can only be cancelled from an enteringGuard or exitingGuard phase";
+    private const ILLEGAL_CANCEL_ERROR:String = "A transition can not be cancelled from this phase: ";
 
     /**
      * @private
@@ -87,7 +87,7 @@ public class BaseStateMachine implements IFSMController, IStateLogger {
 
     public final function transition(transitionName:String, payload:Object = null):void {
         if (!isTransitionLegal)
-           throw new StateTransitionError(ILLEGAL_TRANSITION_ERROR + transitionPhase.name);
+           throw new StateTransitionError(ILLEGAL_TRANSITION_ERROR + ( transitionPhase == null ) ? "[undefined]" : transitionPhase.name);
         else if (isTransitioning) {
             _cachedInfo = transitionName;
             _cachedPayload = payload;
@@ -102,7 +102,7 @@ public class BaseStateMachine implements IFSMController, IStateLogger {
             _cachedInfo = reason;
             _cachedPayload = payload;
         } else
-            throw new StateTransitionError(ILLEGAL_CANCEL_ERROR);
+            throw new StateTransitionError(ILLEGAL_CANCEL_ERROR  + ( transitionPhase == null ) ? "[undefined]" : transitionPhase.name);
 
     }
 
@@ -154,17 +154,21 @@ public class BaseStateMachine implements IFSMController, IStateLogger {
     }
 
 
-    protected final function transitionToState(target:IState, payload:Object = null):void {
+    protected function transitionToState(target:IState, payload:Object = null):void {
         _isTransitioning = true;
         onTransition(target, payload);
         _isTransitioning = false;
-        if (isCanceled) {
-            _canceled = false;
+        if (isCanceled)
+            handleCancelledTransition();
+        else
+            dispatchGeneralStateChanged();
+        reset();
+    }
+
+    private function handleCancelledTransition():void{
+          _canceled = false;
             log("the current transition has been cancelled");
             dispatchTransitionCancelled();
-        }
-        else dispatchGeneralStateChanged();
-        reset();
     }
 
     /**
@@ -186,6 +190,14 @@ public class BaseStateMachine implements IFSMController, IStateLogger {
     public function destroy():void {
         reset();
         currentState = null;
+    }
+
+    /**
+     * Do not call this in sub-classes for testing purposes only
+     * @param value
+     */
+    protected final function setIsTransitioning( value:Boolean):void{
+        _isTransitioning = value;
     }
 
 

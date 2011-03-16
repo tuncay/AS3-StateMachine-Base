@@ -10,6 +10,7 @@ import org.osflash.statemachine.core.IStateModelInjector;
 import org.osflash.statemachine.core.IState;
 import org.osflash.statemachine.core.IStateDecoder;
 import org.osflash.statemachine.core.IStateModel;
+import org.osflash.statemachine.errors.StateDecodingError;
 
 /**
  * Creates and registers a StateMachine described from a
@@ -51,8 +52,10 @@ public class StateModelInjector implements IStateModelInjector {
     public function inject( stateModel:IStateModel ):void
     {
         var states:Array = _stateDecoder.getStateList();
-        for each ( var state:IState in states )
-            stateModel.registerState( state, isInitial( state.name ) );
+        for each ( var state:IState in states ){
+            if( !stateModel.registerState( state, isInitial( state.name ) ))
+                throw new StateDecodingError( StateDecodingError.STATE_WITH_SAME_NAME_ALREADY_REGISTERD );
+        }
     }
 
     /**

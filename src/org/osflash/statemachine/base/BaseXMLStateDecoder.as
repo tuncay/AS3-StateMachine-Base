@@ -1,6 +1,7 @@
 package org.osflash.statemachine.base {
 import org.osflash.statemachine.core.IState;
 import org.osflash.statemachine.core.IStateDecoder;
+import org.osflash.statemachine.errors.StateDecodingError;
 
 /**
  * Provides an abstract class for creating states defined in XML .
@@ -61,6 +62,20 @@ public class BaseXMLStateDecoder implements IStateDecoder {
     {
         var initial:String = _fsm.@initial.toString();
         return (stateName == initial);
+    }
+
+     /**
+     * Decodes the State's transitions from the state declaration
+     * @param state the state into which to inject the transitions
+     * @param stateDef the state's declaration
+     */
+    protected function decodeTransitions(state:IState, stateDef:Object):void {
+        var transitions:XMLList = stateDef..transition as XMLList;
+        for (var i:int; i < transitions.length(); i++) {
+            var transDef:XML = transitions[i];
+            if(! state.defineTrans(String(transDef.@action), String(transDef.@target)) )
+                throw  new StateDecodingError( StateDecodingError.TRANSITION_WITH_SAME_NAME_ALREADY_REGISTERED );
+        }
     }
 
     /**

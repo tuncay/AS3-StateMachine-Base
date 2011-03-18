@@ -41,6 +41,7 @@ public class BaseXMLStateDecoder implements IStateDecoder {
         for ( var i:int; i < stateDefs.length(); i++ ) {
             var stateDef:XML = stateDefs[i];
             var state:IState = decodeState( stateDef );
+            decodeTransitions( state, stateDef );
             stateList.push( state );
         }
         return stateList;

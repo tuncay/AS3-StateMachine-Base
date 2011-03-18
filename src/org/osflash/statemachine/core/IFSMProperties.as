@@ -3,7 +3,7 @@ package org.osflash.statemachine.core {
 	/**
 	 * The outward-facing contract between the StateMachine and the framework actors.
 	 */
-	public interface IFSMController {
+	public interface IFSMProperties {
 		/**
 		 * The name of the current state.
 		 */

@@ -8,6 +8,7 @@ package org.osflash.statemachine.base {
 import org.osflash.statemachine.core.IState;
 import org.osflash.statemachine.core.IStateModel;
 import org.osflash.statemachine.core.IStateModelOwner;
+import org.osflash.statemachine.errors.StateDecodingError;
 import org.osflash.statemachine.errors.StateTransitionError;
 
 /**
@@ -23,6 +24,8 @@ import org.osflash.statemachine.errors.StateTransitionError;
  * @ see BaseTransitionController
  */
 public class StateModel implements IStateModel, IStateModelOwner {
+
+    private static const TARGET_DECLARATION_MISMATCH:String = "Target state does not exist: ";
 
     /**
      * Map of States objects by name.
@@ -82,7 +85,7 @@ public class StateModel implements IStateModel, IStateModelOwner {
         var targetStateName:String = state.getTarget(transitionName);
         var targetState:IState = IState(_states[ targetStateName ]);
         if( targetState == null && targetStateName != null)
-                throw new StateTransitionError(StateTransitionError.TARGET_DECLARATION_MISMATCH + targetStateName);
+                throw new StateDecodingError(TARGET_DECLARATION_MISMATCH + targetStateName);
         return targetState;
     }
 

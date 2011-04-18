@@ -8,10 +8,10 @@ import org.osflash.statemachine.errors.StateDecodingError;
  */
 public class BaseXMLStateDecoder implements IStateDecoder {
 
+    private static const TRANSITION_WITH_SAME_NAME_ALREADY_REGISTERED:String = "A transition with that name has already been registered: ";
     private static const INITIAL_STATE_NOT_DECLARED:String = "The initial state attribute is undefined";
     private static const INITIAL_STATE_NOT_FOUND:String = "The initial state attribute refers to a state that is not defined";
-
-       private static const STATE_NAME_NOT_DECLARED:String = "The name attribute for this state element is undefined:";
+    private static const STATE_NAME_NOT_DECLARED:String = "The name attribute for this state element is undefined:";
     private static const TRANSITION_NAME_NOT_DECLARED:String = "The name attribute for this transition element is undefined:";
     private static const TRANSITION_TARGET_NOT_DECLARED:String = "The target attribute for this transition element is undefined:";
     private static const STATE_EQUALS:String = " state = ";
@@ -38,9 +38,9 @@ public class BaseXMLStateDecoder implements IStateDecoder {
         if (_fsm.@initial == undefined)
             throw new StateDecodingError(INITIAL_STATE_NOT_DECLARED);
 
-        var statenames:XMLList = _fsm..state.(hasOwnProperty( "@name" ) && @name == _fsm.@initial );
+        var statenames:XMLList = _fsm..state.(hasOwnProperty("@name") && @name == _fsm.@initial );
 
-        if ( statenames.length() == 0 )
+        if (statenames.length() == 0)
             throw new StateDecodingError(INITIAL_STATE_NOT_FOUND);
     }
 
@@ -106,7 +106,7 @@ public class BaseXMLStateDecoder implements IStateDecoder {
                 throw new StateDecodingError(TRANSITION_TARGET_NOT_DECLARED + STATE_EQUALS + state.name + POSITION_EQUALS + transDef.childIndex());
 
             if (! state.defineTrans(String(transDef.@name), String(transDef.@target)))
-                throw  new StateDecodingError(StateDecodingError.TRANSITION_WITH_SAME_NAME_ALREADY_REGISTERED);
+                throw  new StateDecodingError(TRANSITION_WITH_SAME_NAME_ALREADY_REGISTERED);
         }
     }
 

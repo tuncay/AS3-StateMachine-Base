@@ -32,6 +32,7 @@ import org.osflash.statemachine.errors.StateDecodingError;
  */
 public class StateMachineInjector implements IStateMachineInjector {
 
+     private static const STATE_WITH_SAME_NAME_ALREADY_REGISTERD:String = "A state with that name has already been registered: ";
     /**
      * The instance of the IStateDecoder
      */
@@ -54,7 +55,7 @@ public class StateMachineInjector implements IStateMachineInjector {
         var states:Array = _stateDecoder.getStateList();
         for each ( var state:IState in states ){
             if( !stateModel.registerState( state, isInitial( state.name ) ))
-                throw new StateDecodingError( StateDecodingError.STATE_WITH_SAME_NAME_ALREADY_REGISTERD );
+                throw new StateDecodingError( STATE_WITH_SAME_NAME_ALREADY_REGISTERD );
         }
         stateMachine.onRegister();
     }

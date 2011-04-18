@@ -8,6 +8,7 @@ import org.osflash.statemachine.errors.StateDecodingError;
  */
 public class BaseXMLStateDecoder implements IStateDecoder {
 
+    private static const NULL_DATA_ERROR:String = "No FSM data has been defined, or the value passed is null";
     private static const TRANSITION_WITH_SAME_NAME_ALREADY_REGISTERED:String = "A transition with that name has already been registered: ";
     private static const INITIAL_STATE_NOT_DECLARED:String = "The initial state attribute is undefined";
     private static const INITIAL_STATE_NOT_FOUND:String = "The initial state attribute refers to a state that is not defined";
@@ -25,8 +26,9 @@ public class BaseXMLStateDecoder implements IStateDecoder {
      *
      * @param fsm the FSM definition.
      */
-    public function BaseXMLStateDecoder(fsm:XML) {
-        setData(fsm);
+    public function BaseXMLStateDecoder(fsm:XML = null) {
+        if (fsm != null)
+            setData(fsm);
     }
 
     /**
@@ -35,6 +37,10 @@ public class BaseXMLStateDecoder implements IStateDecoder {
      */
     public function setData(value:Object):void {
         _fsm = XML(value);
+
+        if( _fsm == null )
+            throw new StateDecodingError( NULL_DATA_ERROR );
+
         if (_fsm.@initial == undefined)
             throw new StateDecodingError(INITIAL_STATE_NOT_DECLARED);
 
@@ -55,12 +61,15 @@ public class BaseXMLStateDecoder implements IStateDecoder {
      * @inheritDoc     */
     public function getStateList():Array {
 
+        if( _fsm == null )
+            throw new StateDecodingError( NULL_DATA_ERROR );
 
         var stateList:Array = [];
         var stateDefs:XMLList = _fsm..state;
+
         for (var i:int; i < stateDefs.length(); i++) {
             var stateDef:XML = stateDefs[i];
-            //todo: write test for this error
+
             if (stateDef.@name == undefined)
                 throw new StateDecodingError(STATE_NAME_NOT_DECLARED + POSITION_EQUALS + stateDef.childIndex());
 

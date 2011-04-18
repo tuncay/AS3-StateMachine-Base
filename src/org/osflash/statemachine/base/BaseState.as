@@ -25,10 +25,7 @@ public class BaseState implements IState {
     /**
      * @private
      */
-    private var _numberOfTransitions:int;
-
     private var _referringTransition:String;
-
 
     /**
      * This class is ment to be extended.
@@ -52,17 +49,9 @@ public class BaseState implements IState {
     /**
      * @inheritDoc
      */
-    public function get length():int {
-        return _numberOfTransitions;
-    }
-
-    /**
-     * @inheritDoc
-     */
     public function defineTrans(transitionName:String, target:String):Boolean {
         if (hasTrans(transitionName)) return false;
         _transitions[ transitionName ] = target;
-        _numberOfTransitions++;
         return true;
     }
 
@@ -80,7 +69,6 @@ public class BaseState implements IState {
     public function removeTrans(transitionName:String):Boolean {
         if (getTarget(transitionName) == null) return false;
         delete _transitions[ transitionName ];
-        _numberOfTransitions--;
         return true;
     }
 
@@ -100,7 +88,6 @@ public class BaseState implements IState {
     public function destroy():void {
         _transitions = null;
         _referringTransition = null;
-        _numberOfTransitions = 0;
     }
 }
 }

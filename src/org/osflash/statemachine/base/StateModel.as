@@ -4,9 +4,10 @@
  Copyright (c) 2008 Neil Manuell, Cliff Hall
  Your reuse is governed by the Creative Commons Attribution 3.0 License
  */
-package org.osflash.statemachine {
+package org.osflash.statemachine.base {
 import org.osflash.statemachine.core.IState;
 import org.osflash.statemachine.core.IStateModel;
+import org.osflash.statemachine.core.IStateModelOwner;
 import org.osflash.statemachine.errors.StateTransitionError;
 
 /**
@@ -21,7 +22,7 @@ import org.osflash.statemachine.errors.StateTransitionError;
  * @ see ITransitionController
  * @ see BaseTransitionController
  */
-public class StateModel implements IStateModel {
+public class StateModel implements IStateModel, IStateModelOwner {
 
     /**
      * Map of States objects by name.
@@ -52,6 +53,10 @@ public class StateModel implements IStateModel {
         _states[ state.name ] = state;
         if (initial) this._initial = IState(state);
         return true;
+    }
+
+    public function getState( stateName:String ):IState{
+        return  IState( _states[ stateName ] );
     }
 
     /**

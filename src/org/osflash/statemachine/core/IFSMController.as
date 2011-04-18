@@ -26,7 +26,7 @@ package org.osflash.statemachine.core {
                  * @param listener the method to handle the phase
                  * @return the listener Function passed as the parameter
                  */
-                function listenForStateChange( listener:Function ):Function;
+                function listenForStateChange( listener:Function ):*;
 
                 /**
                  * Adds a listener to the general <strong>changed</strong> phase of the transition,
@@ -34,14 +34,14 @@ package org.osflash.statemachine.core {
                  * @param listener the method to handle the phase
                  * @return the listener Function passed as the parameter
                  */
-                function listenForStateChangeOnce( listener:Function ):Function;
+                function listenForStateChangeOnce( listener:Function ):*;
 
                 /**
                  * Removes the listener from the general <strong>changed</strong> phase of the transition.
                  * @param listener the method to remove
                  * @return the listener Function passed as the parameter
                  */
-                function stopListeningForStateChange( listener:Function ):Function;
+                function stopListeningForStateChange( listener:Function ):*;
 
 
 

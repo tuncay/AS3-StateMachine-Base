@@ -18,20 +18,20 @@ public class TraceStateLogger implements IStateLogger {
 
     public var flags:int;
 
-    public function TraceStateLogger( prefix:String = "", active:Boolean = true, flags:int = 127 ) {
+    public function TraceStateLogger(prefix:String = "", active:Boolean = true, flags:int = 127) {
         this.prefix = prefix;
         this.active = active;
         this.flags = flags;
     }
 
-    public function log( msg:String):void {
-        if( active )
-            trace( prefix + msg );
+    public function log(msg:String):void {
+        if (active)
+            trace(prefix + msg);
     }
 
-    public function logPhase(phase:ITransitionPhase,state:IState):void {
-        if( active && ( flags & phase.index ) )
-            trace( prefix + " PHASE: " +  phase.name + " from STATE: " + state.name + " executed."  );
+    public function logPhase(phase:ITransitionPhase, state:IState):void {
+        if (active && ( flags & phase.index ))
+            trace(prefix + " PHASE: " + phase.name + " from STATE: " + state.name + " executed.");
     }
 }
 }

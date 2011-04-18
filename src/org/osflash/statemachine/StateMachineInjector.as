@@ -1,4 +1,4 @@
- /*
+/*
  ADAPTED FOR A STAND ALONE UTILITY FROM:
  PureMVC AS3 Utility - StateMachine
  Copyright (c) 2008 Neil Manuell, Cliff Hall
@@ -8,8 +8,8 @@ package org.osflash.statemachine {
 import org.osflash.statemachine.base.BaseStateMachine;
 import org.osflash.statemachine.core.IState;
 import org.osflash.statemachine.core.IStateDecoder;
-import org.osflash.statemachine.core.IStateModelOwner;
 import org.osflash.statemachine.core.IStateMachineInjector;
+import org.osflash.statemachine.core.IStateModelOwner;
 import org.osflash.statemachine.errors.StateDecodingError;
 
 /**
@@ -32,7 +32,7 @@ import org.osflash.statemachine.errors.StateDecodingError;
  */
 public class StateMachineInjector implements IStateMachineInjector {
 
-     private static const STATE_WITH_SAME_NAME_ALREADY_REGISTERD:String = "A state with that name has already been registered: ";
+    private static const STATE_WITH_SAME_NAME_ALREADY_REGISTERD:String = "A state with that name has already been registered: ";
     /**
      * The instance of the IStateDecoder
      */
@@ -42,20 +42,18 @@ public class StateMachineInjector implements IStateMachineInjector {
      * Creates an instance of the FSMInjector.
      * @param stateDecoder the decoder to be used in this instance.
      */
-    public function StateMachineInjector( stateDecoder:IStateDecoder )
-    {
+    public function StateMachineInjector(stateDecoder:IStateDecoder) {
         _stateDecoder = stateDecoder;
     }
 
     /**
      * @inheritDoc
      */
-    public function inject(stateModel:IStateModelOwner, stateMachine:BaseStateMachine):void
-    {
+    public function inject(stateModel:IStateModelOwner, stateMachine:BaseStateMachine):void {
         var states:Array = _stateDecoder.getStateList();
-        for each ( var state:IState in states ){
-            if( !stateModel.registerState( state, isInitial( state.name ) ))
-                throw new StateDecodingError( STATE_WITH_SAME_NAME_ALREADY_REGISTERD );
+        for each (var state:IState in states) {
+            if (!stateModel.registerState(state, isInitial(state.name)))
+                throw new StateDecodingError(STATE_WITH_SAME_NAME_ALREADY_REGISTERD);
         }
         stateMachine.onRegister();
     }
@@ -63,8 +61,7 @@ public class StateMachineInjector implements IStateMachineInjector {
     /**
      * @inheritDoc
      */
-    public function destroy():void
-    {
+    public function destroy():void {
         _stateDecoder.destroy();
         _stateDecoder = null;
     }
@@ -74,9 +71,8 @@ public class StateMachineInjector implements IStateMachineInjector {
      * @param stateName
      * @return whether the given state name belongs to the initial state or not.
      */
-    protected function isInitial( stateName:String ):Boolean
-    {
-        return _stateDecoder.isInitial( stateName );
+    protected function isInitial(stateName:String):Boolean {
+        return _stateDecoder.isInitial(stateName);
     }
 
 

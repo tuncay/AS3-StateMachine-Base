@@ -9,7 +9,6 @@ import org.osflash.statemachine.core.IState;
 import org.osflash.statemachine.core.IStateModel;
 import org.osflash.statemachine.core.IStateModelOwner;
 import org.osflash.statemachine.errors.StateDecodingError;
-import org.osflash.statemachine.errors.StateTransitionError;
 
 /**
  * A Finite State Machine implementation.
@@ -37,7 +36,7 @@ public class StateModel implements IStateModel, IStateModelOwner {
      */
     protected var _initial:IState;
 
-    public function get initialState():IState{
+    public function get initialState():IState {
         return _initial;
     }
 
@@ -58,8 +57,8 @@ public class StateModel implements IStateModel, IStateModelOwner {
         return true;
     }
 
-    public function getState( stateName:String ):IState{
-        return  IState( _states[ stateName ] );
+    public function getState(stateName:String):IState {
+        return  IState(_states[ stateName ]);
     }
 
     /**
@@ -84,8 +83,8 @@ public class StateModel implements IStateModel, IStateModelOwner {
     public function getTargetState(transitionName:String, state:IState):IState {
         var targetStateName:String = state.getTarget(transitionName);
         var targetState:IState = IState(_states[ targetStateName ]);
-        if( targetState == null && targetStateName != null)
-                throw new StateDecodingError(TARGET_DECLARATION_MISMATCH + targetStateName);
+        if (targetState == null && targetStateName != null)
+            throw new StateDecodingError(TARGET_DECLARATION_MISMATCH + targetStateName);
         return targetState;
     }
 

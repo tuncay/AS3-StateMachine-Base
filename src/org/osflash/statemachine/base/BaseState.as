@@ -60,7 +60,7 @@ public class BaseState implements IState {
      * @inheritDoc
      */
     public function defineTrans(transitionName:String, target:String):Boolean {
-        if ( hasTrans(transitionName) ) return false;
+        if (hasTrans(transitionName)) return false;
         _transitions[ transitionName ] = target;
         _numberOfTransitions++;
         return true;

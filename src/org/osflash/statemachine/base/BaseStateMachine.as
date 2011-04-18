@@ -5,7 +5,6 @@ import org.osflash.statemachine.core.IState;
 import org.osflash.statemachine.core.IStateLogger;
 import org.osflash.statemachine.core.IStateModelOwner;
 import org.osflash.statemachine.core.ITransitionPhase;
-import org.osflash.statemachine.errors.StateDecodingError;
 import org.osflash.statemachine.errors.StateTransitionError;
 
 /**
@@ -92,17 +91,17 @@ public class BaseStateMachine implements IFSMController, IStateLogger {
             throw new StateTransitionError(ILLEGAL_TRANSITION_ERROR + ( transitionPhase == null ) ? "[undefined]" : transitionPhase.name);
         else if (isTransitioning) {
             _cachedInfo = transitionName;
-            _cachedPayload = wrapPayload( payload );
+            _cachedPayload = wrapPayload(payload);
             listenForStateChangeOnce(invokeTransitionLater);
         }
-        else invokeTransition(transitionName, wrapPayload( payload ) );
+        else invokeTransition(transitionName, wrapPayload(payload));
     }
 
     public final function cancelStateTransition(reason:String, payloadBody:Object = null):void {
         if (isCancellationLegal) {
             _canceled = true;
             _cachedInfo = reason;
-            _cachedPayload = wrapPayload( payloadBody );
+            _cachedPayload = wrapPayload(payloadBody);
         } else
             throw new StateTransitionError(ILLEGAL_CANCEL_ERROR + ( transitionPhase == null ) ? "[undefined]" : transitionPhase.name);
 
@@ -259,8 +258,8 @@ public class BaseStateMachine implements IFSMController, IStateLogger {
         _cachedPayload = null;
     }
 
-     protected function wrapPayload(body:Object):IPayload{
-      return null;
+    protected function wrapPayload(body:Object):IPayload {
+        return null;
     }
 }
 }

@@ -27,7 +27,7 @@ public class BaseState implements IState {
      */
     private var _numberOfTransitions:int;
 
-    private var _referringAction:String;
+    private var _referringTransition:String;
 
 
     /**
@@ -46,7 +46,7 @@ public class BaseState implements IState {
     }
 
     public function get referringTransitionName():String {
-        return _referringAction;
+        return _referringTransition;
     }
 
     /**
@@ -89,7 +89,7 @@ public class BaseState implements IState {
      */
     public function getTarget(transitionName:String):String {
         if (_transitions[ transitionName ] != null)
-            _referringAction = transitionName;
+            _referringTransition = transitionName;
 
         return _transitions[ transitionName ];
     }
@@ -99,6 +99,7 @@ public class BaseState implements IState {
      */
     public function destroy():void {
         _transitions = null;
+        _referringTransition = null;
         _numberOfTransitions = 0;
     }
 }

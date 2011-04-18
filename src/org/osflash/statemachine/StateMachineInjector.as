@@ -5,11 +5,11 @@
  Your reuse is governed by the Creative Commons Attribution 3.0 License
  */
 package org.osflash.statemachine {
-
-import org.osflash.statemachine.core.IStateModelInjector;
+import org.osflash.statemachine.base.BaseStateMachine;
 import org.osflash.statemachine.core.IState;
 import org.osflash.statemachine.core.IStateDecoder;
-import org.osflash.statemachine.core.IStateModel;
+import org.osflash.statemachine.core.IStateModelOwner;
+import org.osflash.statemachine.core.IStateMachineInjector;
 import org.osflash.statemachine.errors.StateDecodingError;
 
 /**
@@ -30,7 +30,7 @@ import org.osflash.statemachine.errors.StateDecodingError;
  * @ see IState
  * @ see IStateMachine
  */
-public class StateModelInjector implements IStateModelInjector {
+public class StateMachineInjector implements IStateMachineInjector {
 
     /**
      * The instance of the IStateDecoder
@@ -41,7 +41,7 @@ public class StateModelInjector implements IStateModelInjector {
      * Creates an instance of the FSMInjector.
      * @param stateDecoder the decoder to be used in this instance.
      */
-    public function StateModelInjector( stateDecoder:IStateDecoder )
+    public function StateMachineInjector( stateDecoder:IStateDecoder )
     {
         _stateDecoder = stateDecoder;
     }
@@ -49,13 +49,14 @@ public class StateModelInjector implements IStateModelInjector {
     /**
      * @inheritDoc
      */
-    public function inject( stateModel:IStateModel ):void
+    public function inject(stateModel:IStateModelOwner, stateMachine:BaseStateMachine):void
     {
         var states:Array = _stateDecoder.getStateList();
         for each ( var state:IState in states ){
             if( !stateModel.registerState( state, isInitial( state.name ) ))
                 throw new StateDecodingError( StateDecodingError.STATE_WITH_SAME_NAME_ALREADY_REGISTERD );
         }
+        stateMachine.onRegister();
     }
 
     /**

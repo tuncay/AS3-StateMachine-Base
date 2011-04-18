@@ -1,9 +1,11 @@
 package org.osflash.statemachine.base {
 import org.osflash.statemachine.core.IFSMController;
+import org.osflash.statemachine.core.IPayload;
 import org.osflash.statemachine.core.IState;
 import org.osflash.statemachine.core.IStateLogger;
-import org.osflash.statemachine.core.IStateModel;
+import org.osflash.statemachine.core.IStateModelOwner;
 import org.osflash.statemachine.core.ITransitionPhase;
+import org.osflash.statemachine.errors.StateDecodingError;
 import org.osflash.statemachine.errors.StateTransitionError;
 
 /**
@@ -11,7 +13,7 @@ import org.osflash.statemachine.errors.StateTransitionError;
  */
 public class BaseStateMachine implements IFSMController, IStateLogger {
 
-     /**
+    /**
      * @private
      */
     protected var currentState:IState;
@@ -39,7 +41,7 @@ public class BaseStateMachine implements IFSMController, IStateLogger {
     /**
      * @private
      */
-    private var _cachedPayload:Object;
+    private var _cachedPayload:IPayload;
 
     /**
      * @private
@@ -56,12 +58,12 @@ public class BaseStateMachine implements IFSMController, IStateLogger {
      */
     private var _logger:IStateLogger;
 
-     /**
+    /**
      * @private
      */
-    private var _model:IStateModel;
+    private var _model:IStateModelOwner;
 
-    public function BaseStateMachine(model:IStateModel, logger:IStateLogger = null) {
+    public function BaseStateMachine(model:IStateModelOwner, logger:IStateLogger = null) {
         _model = model;
         _logger = logger;
     }
@@ -87,26 +89,26 @@ public class BaseStateMachine implements IFSMController, IStateLogger {
 
     public final function transition(transitionName:String, payload:Object = null):void {
         if (!isTransitionLegal)
-           throw new StateTransitionError(ILLEGAL_TRANSITION_ERROR + ( transitionPhase == null ) ? "[undefined]" : transitionPhase.name);
+            throw new StateTransitionError(ILLEGAL_TRANSITION_ERROR + ( transitionPhase == null ) ? "[undefined]" : transitionPhase.name);
         else if (isTransitioning) {
             _cachedInfo = transitionName;
-            _cachedPayload = payload;
+            _cachedPayload = wrapPayload( payload );
             listenForStateChangeOnce(invokeTransitionLater);
         }
-        else invokeTransition(transitionName, payload);
+        else invokeTransition(transitionName, wrapPayload( payload ) );
     }
 
-     public final function cancelStateTransition(reason:String, payload:Object = null):void {
+    public final function cancelStateTransition(reason:String, payloadBody:Object = null):void {
         if (isCancellationLegal) {
             _canceled = true;
             _cachedInfo = reason;
-            _cachedPayload = payload;
+            _cachedPayload = wrapPayload( payloadBody );
         } else
-            throw new StateTransitionError(ILLEGAL_CANCEL_ERROR  + ( transitionPhase == null ) ? "[undefined]" : transitionPhase.name);
+            throw new StateTransitionError(ILLEGAL_CANCEL_ERROR + ( transitionPhase == null ) ? "[undefined]" : transitionPhase.name);
 
     }
 
-     /**
+    /**
      * @inheritDoc
      */
     public function onRegister():void {
@@ -117,16 +119,16 @@ public class BaseStateMachine implements IFSMController, IStateLogger {
     /**
      * @private
      */
-    private function invokeTransition(transitionName:String, payload:Object = null):void {
-        var targetState:IState  = _model.getTargetState( transitionName, currentState );
-        if( targetState == null) log("Transition: " + transitionName + " is not defined in state: " + currentStateName);
-        else transitionToState( targetState, payload );
+    private function invokeTransition(transitionName:String, payload:IPayload):void {
+        var targetState:IState = _model.getTargetState(transitionName, currentState);
+        if (targetState == null) log("Transition: " + transitionName + " is not defined in state: " + currentStateName);
+        else transitionToState(targetState, payload);
     }
 
     /**
      * @private
      */
-    private function invokeTransitionLater(...args):void {
+    private function invokeTransitionLater(stateName:String):void {
         invokeTransition(_cachedInfo, _cachedPayload);
         _cachedInfo = null;
         _cachedPayload = null;
@@ -154,7 +156,8 @@ public class BaseStateMachine implements IFSMController, IStateLogger {
     }
 
 
-    protected function transitionToState(target:IState, payload:Object = null):void {
+    protected function transitionToState(target:IState, payload:IPayload):void {
+
         _isTransitioning = true;
         onTransition(target, payload);
         _isTransitioning = false;
@@ -165,10 +168,10 @@ public class BaseStateMachine implements IFSMController, IStateLogger {
         reset();
     }
 
-    private function handleCancelledTransition():void{
-          _canceled = false;
-            log("the current transition has been cancelled");
-            dispatchTransitionCancelled();
+    private function handleCancelledTransition():void {
+        _canceled = false;
+        log("the current transition has been cancelled");
+        dispatchTransitionCancelled();
     }
 
     /**
@@ -190,13 +193,17 @@ public class BaseStateMachine implements IFSMController, IStateLogger {
     public function destroy():void {
         reset();
         currentState = null;
+        currentTransitionPhase = null;
+        _logger = null;
+        _model = null;
+
     }
 
     /**
      * Do not call this in sub-classes for testing purposes only
      * @param value
      */
-    protected final function setIsTransitioning( value:Boolean):void{
+    protected final function setIsTransitioning(value:Boolean):void {
         _isTransitioning = value;
     }
 
@@ -209,15 +216,15 @@ public class BaseStateMachine implements IFSMController, IStateLogger {
         return false;
     }
 
-    public function listenForStateChange(listener:Function):Function {
+    public function listenForStateChange(listener:Function):* {
         return null;
     }
 
-    public function listenForStateChangeOnce(listener:Function):Function {
+    public function listenForStateChangeOnce(listener:Function):* {
         return null;
     }
 
-    public function stopListeningForStateChange(listener:Function):Function {
+    public function stopListeningForStateChange(listener:Function):* {
         return null;
     }
 
@@ -250,6 +257,10 @@ public class BaseStateMachine implements IFSMController, IStateLogger {
     protected function reset():void {
         _cachedInfo = null;
         _cachedPayload = null;
+    }
+
+     protected function wrapPayload(body:Object):IPayload{
+      return null;
     }
 }
 }

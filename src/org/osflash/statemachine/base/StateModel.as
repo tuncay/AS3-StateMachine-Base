@@ -78,6 +78,7 @@ public class StateModel implements IStateModel, IStateModelOwner {
         for each (var state:IState in _states) state.destroy();
         _states = null;
         _initial = null;
+
     }
 
     public function getTargetState(transitionName:String, state:IState):IState {

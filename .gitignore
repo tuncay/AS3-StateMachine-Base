@@ -9,6 +9,8 @@ bin/*
 obj/*
 .idea/*
 
+/tests/org/osflash/statemachine/old/*
+
 bin/_flexunit.swf
 
 .actionScriptProperties

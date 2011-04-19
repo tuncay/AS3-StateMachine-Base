@@ -4,11 +4,11 @@
  Copyright (c) 2008 Neil Manuell, Cliff Hall
  Your reuse is governed by the Creative Commons Attribution 3.0 License
  */
-package org.osflash.statemachine {
+package org.osflash.statemachine.base {
 import org.osflash.statemachine.base.BaseStateMachine;
 import org.osflash.statemachine.core.IState;
 import org.osflash.statemachine.core.IStateDecoder;
-import org.osflash.statemachine.core.IStateMachineInjector;
+import org.osflash.statemachine.core.IStateModelInjector;
 import org.osflash.statemachine.core.IStateModelOwner;
 import org.osflash.statemachine.errors.StateDecodingError;
 
@@ -30,9 +30,9 @@ import org.osflash.statemachine.errors.StateDecodingError;
  * @ see IState
  * @ see IStateMachine
  */
-public class StateMachineInjector implements IStateMachineInjector {
+public class StateModelInjector implements IStateModelInjector {
 
-    private static const STATE_WITH_SAME_NAME_ALREADY_REGISTERD:String = "A state with that name has already been registered: ";
+    private static const STATE_DECODER_MUST_NOT_BE_NULL:String = "IStateDecoder has not been declared";
     /**
      * The instance of the IStateDecoder
      */
@@ -42,20 +42,22 @@ public class StateMachineInjector implements IStateMachineInjector {
      * Creates an instance of the FSMInjector.
      * @param stateDecoder the decoder to be used in this instance.
      */
-    public function StateMachineInjector(stateDecoder:IStateDecoder) {
+    public function StateModelInjector(stateDecoder:IStateDecoder) {
         _stateDecoder = stateDecoder;
     }
 
     /**
      * @inheritDoc
      */
-    public function inject(stateModel:IStateModelOwner, stateMachine:BaseStateMachine):void {
+    public function inject(stateModel:IStateModelOwner):void {
+
+        if( _stateDecoder == null )
+            throw new StateDecodingError( STATE_DECODER_MUST_NOT_BE_NULL );
+
         var states:Array = _stateDecoder.getStateList();
         for each (var state:IState in states) {
-            if (!stateModel.registerState(state, isInitial(state.name)))
-                throw new StateDecodingError(STATE_WITH_SAME_NAME_ALREADY_REGISTERD);
+            stateModel.registerState(state, isInitial(state.name));
         }
-        stateMachine.onRegister();
     }
 
     /**

@@ -15,17 +15,35 @@ public class StateModelTest {
 
     private var stateModelOwner:IStateModelOwner;
     private var stateModel:IStateModel;
+    private var starting:IState;
+    private var loading:IState;
+    private var saving:IState;
 
     [Before]
     public function before():void {
+
         stateModelOwner = new StateModel();
         stateModel = stateModelOwner as IStateModel;
+
+        starting = new BaseState( STARTING );
+        starting.defineTrans( LOAD, LOADING );
+        starting.defineTrans( SAVE, SAVING );
+
+        loading = new BaseState( LOADING );
+        loading.defineTrans( SAVE, SAVING );
+
+        saving = new BaseState( SAVING );
+        saving.defineTrans( START, STARTING );
+        saving.defineTrans( LOAD, LOADING );
     }
 
     [After]
     public function after():void {
         stateModelOwner = null;
         stateModel = null;
+        starting = null;
+        loading = null;
+        saving = null;
     }
 
     [Test]
@@ -45,9 +63,12 @@ public class StateModelTest {
 
     [Test (expected="org.osflash.statemachine.errors.StateDecodingError")]
     public function when_no_states_have_been_registered_getTargetState_throws_error():void {
-        var state:IState = new BaseState( LOADING );
-        state.defineTrans( SAVE, SAVING );
-        Assert.assertNull( stateModelOwner.getTargetState( SAVE, state ) );
+        Assert.assertNull( stateModelOwner.getTargetState( START, saving ) );
+    }
+
+    [Test]
+    public function if_transition_is_not_defined_in_source_state_returns_null():void {
+        Assert.assertNull( stateModelOwner.getTargetState( SAVE, saving ) );
     }
 
     [Test]
@@ -57,30 +78,83 @@ public class StateModelTest {
 
     [Test]
     public function when_a_state_is_registered_as_initial_the_initialState_property_is_set_as_that_state():void {
-        var state:IState = new BaseState( LOADING );
-        stateModelOwner.registerState( state, true );
-        Assert.assertStrictlyEquals(state, stateModelOwner.initialState );
+        stateModelOwner.registerState( starting, true );
+        Assert.assertStrictlyEquals( starting, stateModelOwner.initialState );
     }
 
     [Test]
-    public function when_a_state_is_not_registered_as_initial_the_initialState_property_is_not_as_that_state():void {
-        var state:IState = new BaseState( LOADING );
-        stateModelOwner.registerState( state, false );
+    public function when_a_state_is_not_registered_as_initial_the_initialState_property_is_not_set_as_that_state():void {
+        stateModelOwner.registerState( saving, false );
         Assert.assertNull( stateModelOwner.initialState );
     }
 
     [Test]
     public function when_a_state_is_registered_hasState_returns_true_for_that_state_name():void {
-        var state:IState = new BaseState( LOADING );
-        stateModelOwner.registerState( state );
-        Assert.assertTrue( stateModelOwner.hasState( LOADING ) );
+        stateModelOwner.registerState( starting );
+        stateModelOwner.registerState( loading );
+        stateModelOwner.registerState( saving );
+        Assert.assertTrue(
+                         stateModelOwner.hasState( STARTING ) &&
+                         stateModelOwner.hasState( LOADING ) &&
+                         stateModelOwner.hasState( SAVING )
+                         )
     }
 
-    /*[Test (expected="org.osflash.statemachine.errors.StateDecodingError")]
-     public function when_null_value_is_passed_setData_throws_error():void {
+    [Test]
+    public function when_a_state_is_registered_getState_returns_the_IState_with_that_state_name():void {
+        stateModelOwner.registerState( starting );
+        stateModelOwner.registerState( loading );
+        stateModelOwner.registerState( saving );
+        Assert.assertTrue(
+                         stateModel.getState( STARTING ) == starting &&
+                         stateModel.getState( LOADING ) == loading &&
+                         stateModel.getState( SAVING ) == saving
+                         )
+    }
+
+    [Test]
+        public function calling_getTargetState_returns_the_target_IState_for_the_source_states_transition_name():void {
+            stateModelOwner.registerState( starting );
+            stateModelOwner.registerState( loading );
+            stateModelOwner.registerState( saving );
+            Assert.assertTrue(
+                             stateModelOwner.getTargetState( LOAD, starting ) === loading &&
+                             stateModelOwner.getTargetState( SAVE, starting ) === saving &&
+                             stateModelOwner.getTargetState( SAVE, loading ) === saving &&
+                             stateModelOwner.getTargetState( START, saving ) === starting &&
+                             stateModelOwner.getTargetState( LOAD, saving ) === loading
+                             )
+        }
 
 
-     }*/
+    [Test]
+    public function calling_removeState_on_a_registered_state_returns_true():void {
+        stateModelOwner.registerState( starting );
+        stateModelOwner.registerState( loading );
+        stateModelOwner.registerState( saving );
+        Assert.assertTrue(
+                         stateModelOwner.removeState( LOADING ) &&
+                         stateModelOwner.removeState( SAVING ) &&
+                         stateModelOwner.removeState( STARTING )
+                         )
+    }
+
+    [Test]
+    public function after_calling_removeState_on_a_registered_state_hasState_returns_false():void {
+        stateModelOwner.registerState( starting );
+        stateModelOwner.registerState( loading );
+        stateModelOwner.registerState( saving );
+
+        stateModelOwner.removeState( STARTING );
+        stateModelOwner.removeState( LOADING );
+        stateModelOwner.removeState( SAVING );
+
+        Assert.assertFalse(
+                         stateModelOwner.hasState( LOADING ) &&
+                         stateModelOwner.hasState( SAVING ) &&
+                         stateModelOwner.hasState( STARTING )
+                         )
+    }
 
 
     private const STARTING:String = "starting";
@@ -91,23 +165,6 @@ public class StateModelTest {
     private const START:String = "start";
 
 
-    private const THREE_CORRECTLY_DECLARED_STATES:XML =
-                  <fsm initial={LOADING}>
 
-                      <state name={STARTING}>
-                          <transition name={LOAD} target={LOADING}/>
-                          <transition name={SAVE} target={SAVING}/>
-                      </state>
-
-                      <state name={LOADING}>
-                          <transition name={SAVE} target={SAVING}/>
-                      </state>
-
-                      <state name={SAVING}>
-                          <transition name={START} target={STARTING}/>
-                          <transition name={LOAD} target={LOADING}/>
-                      </state>
-                  </fsm>
-    ;
 }
 }

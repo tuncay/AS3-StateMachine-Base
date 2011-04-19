@@ -29,111 +29,81 @@ public class BaseStateTest {
     }
 
     [Test]
-    public function name_valueIsPassedAsConstructorArgument_shouldBeAsPassedInConstructor():void {
+    public function name_value_passed_in_constructor_is_attributed_to_state_name_property():void {
         Assert.assertEquals(STATE_NAME, state.name);
     }
 
     [Test]
-    public function referringTransition_defaultValue_shouldBeNull():void {
-        Assert.assertNull(state.referringTransitionName);
-    }
-
-    [Test]
-    public function defineTrans_defineTransition_shouldReturnTrue():void {
+    public function defining_transition_once_returns_true():void {
         Assert.assertTrue(state.defineTrans(TRANSITION_NAME, TARGET_NAME));
     }
 
     [Test]
-    public function defineTrans_defineSameTransitionTwice_shouldReturnFalse():void {
+    public function defining_existing_transition_returns_false():void {
         state.defineTrans(TRANSITION_NAME, TARGET_NAME);
         Assert.assertFalse(state.defineTrans(TRANSITION_NAME, TARGET_NAME));
     }
 
-
-
     [Test]
-    public function hasTrans_defineTransitionThenTestForIt_shouldReturnTrue():void {
+    public function calling_hasTans_on_existing_transition_returns_true():void {
         state.defineTrans(TRANSITION_NAME, TARGET_NAME);
         Assert.assertTrue(state.hasTrans(TRANSITION_NAME));
     }
 
     [Test]
-    public function hasTrans_testForUndefinedTransition_shouldReturnFalse():void {
+    public function calling_hasTans_on_undefined_transition_returns_false():void {
         Assert.assertFalse(state.hasTrans(TRANSITION_NAME));
     }
 
     [Test]
-    public function getTarget_defineTransitionThenRetrieveTarget_shouldReturnTheTargetDefined():void {
+    public function calling_getTarget_on_existing_transition_returns_target_state_name():void {
         state.defineTrans(TRANSITION_NAME, TARGET_NAME);
         Assert.assertEquals(TARGET_NAME, state.getTarget(TRANSITION_NAME));
     }
 
     [Test]
-    public function getTarget_retrieveTargetFromUndefinedTransition_shouldReturnNull():void {
+    public function calling_getTarget_on_undefined_transition_returns_null():void {
         Assert.assertNull( state.getTarget(TRANSITION_NAME));
     }
 
     [Test]
-    public function removeTrans_defineThenRemoveTransition_shouldReturnTrue():void {
+    public function removing_existing_transition_returns_true():void {
         state.defineTrans(TRANSITION_NAME, TARGET_NAME);
         Assert.assertTrue(state.removeTrans(TRANSITION_NAME));
     }
 
     [Test]
-    public function removeTrans_removeUndefinedTransition_shouldReturnFalse():void {
+    public function removing_undefined_transition_returns_false():void {
         Assert.assertFalse(state.removeTrans(TRANSITION_NAME));
     }
 
-    [Test]
-    public function length_defaultValue_shouldBeZero():void {
-        Assert.assertEquals(0, state.length);
-    }
-
-    [Test]
-    public function length_defineTransitionThenTestLength_lengthShouldBeOne():void {
-        state.defineTrans(TRANSITION_NAME, TARGET_NAME);
-        Assert.assertEquals(1, state.length);
-    }
-
-    [Test]
-    public function length_defineThreeTransitionThenTestLength_lengthShouldBeThree():void {
-        state.defineTrans(TRANSITION_NAME + "1", TARGET_NAME);
-         state.defineTrans(TRANSITION_NAME + "2", TARGET_NAME);
-         state.defineTrans(TRANSITION_NAME + "3", TARGET_NAME);
-        Assert.assertEquals(3, state.length);
-    }
-
-    [Test]
-    public function length_defineThenRemoveTransitionThenTestLength_shouldReturnZero():void {
-        state.defineTrans(TRANSITION_NAME, TARGET_NAME);
-        state.removeTrans(TRANSITION_NAME);
-        Assert.assertEquals(0, state.length);
-    }
-
      [Test]
-    public function length_defineTransitionThenDestroy_shouldReturnZero():void {
-        state.defineTrans(TRANSITION_NAME, TARGET_NAME);
-        state.destroy();
-        Assert.assertEquals(0, state.length);
-    }
-
-       [Test]
-    public function referringTransitionName_testDefaultValue_shouldReturnNull():void {
-        Assert.assertNull( state.referringTransitionName );
+    public function default_value_for_referringTransitionName_is_null ():void {
+        Assert.assertNull(state.referringTransitionName);
     }
 
     [Test]
-    public function referringTransitionName_defineTransitionThenRetrieveTarget_shouldReturnTheTransitionName():void {
+    public function calling_getTarget_sets_the_referringTransitionName():void {
         state.defineTrans(TRANSITION_NAME, TARGET_NAME);
         state.getTarget(TRANSITION_NAME);
         Assert.assertEquals( TRANSITION_NAME, state.referringTransitionName);
     }
 
     [Test]
-    public function destroy_defineTransitionThenDestroyAndTest_shouldReturnFalse():void {
+    public function calling_destroy_sets_referringTransitionName_to_null():void {
+        state.defineTrans(TRANSITION_NAME, TARGET_NAME);
+        state.getTarget(TRANSITION_NAME);
+        state.destroy();
+        Assert.assertNull( state.referringTransitionName);
+    }
+
+    [Test]
+    public function after_defining_a_transition_then_destroying_calling_hasTrans_returns_false():void {
         state.defineTrans(TRANSITION_NAME, TARGET_NAME);
         state.destroy();
-        Assert.assertFalse(  state.hasTrans(TRANSITION_NAME));
+        Assert.assertFalse(  state.hasTrans(TRANSITION_NAME) );
     }
+
+
 }
 }

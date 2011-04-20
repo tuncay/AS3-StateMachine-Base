@@ -45,7 +45,7 @@ public class BaseXMLStateDecoder implements IStateDecoder {
         if (_fsm.@initial == undefined)
             throw new StateDecodingError(INITIAL_STATE_NOT_DECLARED);
 
-        var statenames:XMLList = _fsm..state.(hasOwnProperty("@name") && @name == _fsm.@initial );
+        const statenames:XMLList = _fsm..state.(hasOwnProperty("@name") && @name == _fsm.@initial );
 
         if (statenames.length() == 0)
             throw new StateDecodingError(INITIAL_STATE_NOT_FOUND);
@@ -66,16 +66,16 @@ public class BaseXMLStateDecoder implements IStateDecoder {
         if (_fsm == null)
             throw new StateDecodingError(NULL_DATA_ERROR);
 
-        var stateList:Array = [];
-        var stateDefs:XMLList = _fsm..state;
+        const stateList:Array = [];
+        const stateDefs:XMLList = _fsm..state;
 
         for (var i:int; i < stateDefs.length(); i++) {
-            var stateDef:XML = stateDefs[i];
+            const stateDef:XML = stateDefs[i];
 
             if (stateDef.@name == undefined)
                 throw new StateDecodingError(STATE_NAME_NOT_DECLARED + POSITION_EQUALS + stateDef.childIndex());
 
-            var state:IState = decodeState(stateDef);
+            const state:IState = decodeState(stateDef);
             decodeTransitions(state, stateDef);
 
             if (hasState(state, stateList))

@@ -119,7 +119,7 @@ public class BaseStateMachine implements IFSMController, IStateLogger {
      * @private
      */
     private function invokeTransition(transitionName:String, payload:IPayload):void {
-        var targetState:IState = _model.getTargetState(transitionName, currentState);
+        const targetState:IState = _model.getTargetState(transitionName, currentState);
         if (targetState == null) log("Transition: " + transitionName + " is not defined in state: " + currentStateName);
         else transitionToState(targetState, payload);
     }
@@ -156,7 +156,6 @@ public class BaseStateMachine implements IFSMController, IStateLogger {
 
 
     protected function transitionToState(target:IState, payload:IPayload):void {
-
         _isTransitioning = true;
         onTransition(target, payload);
         _isTransitioning = false;

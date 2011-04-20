@@ -82,8 +82,8 @@ public class StateModel implements IStateModel, IStateModelOwner {
     }
 
     public function getTargetState(transitionName:String, state:IState):IState {
-        var targetStateName:String = state.getTarget(transitionName);
-        var targetState:IState = IState(_states[ targetStateName ]);
+        const targetStateName:String = state.getTarget(transitionName);
+        const targetState:IState = IState(_states[ targetStateName ]);
         if (targetState == null && targetStateName != null)
             throw new StateDecodingError(TARGET_DECLARATION_MISMATCH + targetStateName);
         return targetState;

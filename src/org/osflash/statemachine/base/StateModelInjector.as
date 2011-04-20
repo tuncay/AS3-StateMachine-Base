@@ -54,7 +54,7 @@ public class StateModelInjector implements IStateModelInjector {
         if( _stateDecoder == null )
             throw new StateDecodingError( STATE_DECODER_MUST_NOT_BE_NULL );
 
-        var states:Array = _stateDecoder.getStateList();
+        const states:Array = _stateDecoder.getStateList();
         for each (var state:IState in states) {
             stateModel.registerState(state, isInitial(state.name));
         }

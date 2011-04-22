@@ -122,8 +122,9 @@ public class BaseStateMachine implements IFSMController, IStateLogger {
      * @inheritDoc
      */
     public function transitionToInitialState():void {
-        if ( _model.initialState )
+        if ( _model.initialState ){
             transitionToState( _model.initialState, null );
+        }
     }
 
     /**

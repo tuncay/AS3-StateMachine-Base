@@ -66,6 +66,17 @@ public class IFSMControllerTest {
         Assert.assertNull( fsmController.transitionPhase );
     }
 
+    [Test]
+     public function calling_transitionToInitialState_sets_currentState_name():void {
+     setUp( initialState, targetState );
+     mock.setIsTransitionLegalProperty( true );
+     mock.transitionToInitialState(  );
+
+        Assert.assertTrue( mock.getFullTransitionResults( initialState ) );
+        Assert.assertFalse( mock.getTransitionCancelledResults( initialState ) );
+        Assert.assertFalse( mock.getTransitionLaterResults() );
+     }
+
     [Test(expected="org.osflash.statemachine.errors.StateTransitionError")]
     public function calling_transition_in_illegal_phase_throws_Error():void {
         setUp( initialState, targetState );
@@ -116,8 +127,8 @@ public class IFSMControllerTest {
         mock.setIsTransitioningProperty( true );
         fsmController.transition( TRANSITION_NAME );
         Assert.assertTrue( mock.getTransitionLaterResults() );
-        Assert.assertFalse( mock.getTransitionCancelledResults() );
-        Assert.assertFalse( mock.getFullTransitionResults() );
+        Assert.assertFalse( mock.getTransitionCancelledResults( targetState ) );
+        Assert.assertFalse( mock.getFullTransitionResults( targetState ) );
     }
 
     [Test(expected="org.osflash.statemachine.errors.StateTransitionError")]
@@ -136,8 +147,8 @@ public class IFSMControllerTest {
         mock.setIsTransitioningProperty( false );
         fsmController.transition( TRANSITION_NAME );
 
-        Assert.assertFalse( mock.getFullTransitionResults() );
-        Assert.assertFalse( mock.getTransitionCancelledResults() );
+        Assert.assertFalse( mock.getFullTransitionResults( targetState ) );
+        Assert.assertFalse( mock.getTransitionCancelledResults( targetState ) );
         Assert.assertFalse( mock.getTransitionLaterResults() );
     }
 
@@ -148,17 +159,18 @@ public class IFSMControllerTest {
         mock.setIsTransitioningProperty( false );
         fsmController.transition( TRANSITION_NAME );
 
-        Assert.assertTrue( mock.getFullTransitionResults() );
-        Assert.assertFalse( mock.getTransitionCancelledResults() );
+        Assert.assertTrue( mock.getFullTransitionResults( targetState ) );
+        Assert.assertFalse( mock.getTransitionCancelledResults( targetState ) );
         Assert.assertFalse( mock.getTransitionLaterResults() );
+
 
     }
 
     [Test(expected="org.osflash.statemachine.errors.StateTransitionError")]
     public function cancelling_transition_when_isCancellationLegal_is_false_throws_Error():void {
 
-        const cancelTransitionCallback:Function = function():void{
-            fsmController.cancelStateTransition( REASON, CANCELLATION_PAYLOAD)
+        const cancelTransitionCallback:Function = function():void {
+            fsmController.cancelStateTransition( REASON, CANCELLATION_PAYLOAD )
         };
 
         setUp( initialState, targetState );
@@ -174,8 +186,8 @@ public class IFSMControllerTest {
     [Test]
     public function cancelling_transition_when_isCancellationLegal_is_true_results_in_correct_cancellation_procedures():void {
 
-        const cancelTransitionCallback:Function = function():void{
-            fsmController.cancelStateTransition( REASON, CANCELLATION_PAYLOAD)
+        const cancelTransitionCallback:Function = function():void {
+            fsmController.cancelStateTransition( REASON, CANCELLATION_PAYLOAD )
         };
 
         setUp( initialState, targetState );
@@ -185,17 +197,16 @@ public class IFSMControllerTest {
         mock.setCancelTransitionCallback( cancelTransitionCallback );
         fsmController.transition( TRANSITION_NAME );
 
-        Assert.assertTrue( mock.getTransitionCancelledResults() );
-        Assert.assertFalse( mock.getFullTransitionResults() );
+        Assert.assertTrue( mock.getTransitionCancelledResults( targetState ) );
+        Assert.assertFalse( mock.getFullTransitionResults( targetState ) );
         Assert.assertFalse( mock.getTransitionLaterResults() );
-
     }
 
-     [Test]
+    [Test]
     public function when_cancelling_transition_the_reason_is_cached():void {
 
-        const cancelTransitionCallback:Function = function():void{
-            fsmController.cancelStateTransition( REASON, CANCELLATION_PAYLOAD)
+        const cancelTransitionCallback:Function = function():void {
+            fsmController.cancelStateTransition( REASON, CANCELLATION_PAYLOAD )
         };
 
         setUp( initialState, targetState );
@@ -212,8 +223,8 @@ public class IFSMControllerTest {
     [Test]
     public function when_cancelling_transition_the_cancellation_payload_is_cached():void {
 
-        const cancelTransitionCallback:Function = function():void{
-            fsmController.cancelStateTransition( REASON, CANCELLATION_PAYLOAD);
+        const cancelTransitionCallback:Function = function():void {
+            fsmController.cancelStateTransition( REASON, CANCELLATION_PAYLOAD );
         };
 
         setUp( initialState, targetState );
@@ -224,7 +235,6 @@ public class IFSMControllerTest {
         fsmController.transition( TRANSITION_NAME );
 
         Assert.assertTrue( mock.cachedPayloadEquals( CANCELLATION_PAYLOAD ) );
-
     }
 
 

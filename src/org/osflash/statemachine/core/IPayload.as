@@ -24,6 +24,8 @@ public interface IPayload {
      */
     function get isNull():Boolean;
 
+    function equals( value:Object ):Boolean;
+
 
 }
 }

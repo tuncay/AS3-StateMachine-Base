@@ -55,6 +55,30 @@ public class TransitionPhaseTest {
     }
 
     [Test]
+    public function calling_equals_against_ITransitionPhase_with_equal_name_and_index_returns_true():void {
+        const tp:ITransitionPhase = new TransitionPhase( PHASE_NAME, PHASE_INDEX );
+        Assert.assertTrue( phase.equals( tp ) );
+    }
+
+    [Test]
+    public function calling_equals_against_ITransitionPhase_with_equal_name_and_unequal_index_returns_false():void {
+        const tp:ITransitionPhase = new TransitionPhase( PHASE_NAME, 64 );
+        Assert.assertTrue( phase.equals( tp ) );
+    }
+
+     [Test]
+    public function calling_equals_against_ITransitionPhase_with_unequal_name_and_equal_index_returns_false():void {
+        const tp:ITransitionPhase = new TransitionPhase( "differentName", PHASE_INDEX );
+        Assert.assertTrue( phase.equals( tp ) );
+    }
+
+      [Test]
+    public function calling_equals_against_ITransitionPhase_with_unequal_name_and_unequal_index_returns_false():void {
+        const tp:ITransitionPhase = new TransitionPhase( "differentName", 128 );
+        Assert.assertTrue( phase.equals( tp ) );
+    }
+
+    [Test]
     public function calling_equals_against_unequivalent_name_string_returns_false():void {
         Assert.assertFalse( phase.equals( PHASE_NAME_UNEQUAL ) );
     }

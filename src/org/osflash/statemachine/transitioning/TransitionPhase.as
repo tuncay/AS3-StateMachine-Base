@@ -7,11 +7,20 @@ import org.osflash.statemachine.core.ITransitionPhase;
 public class TransitionPhase implements ITransitionPhase {
 
     /**
+     * Represents a NULL transition phase, ie, no state transition is currently occuring
+     */
+    public static const NONE:TransitionPhase = new TransitionPhase( "none", 1 );
+
+    public static const GLOBAL_CHANGED:ITransitionPhase = new TransitionPhase( "globalChanged", 2 );
+
+    public static const CANCELLED:ITransitionPhase = new TransitionPhase( "cancelled", 4 );
+
+    /**
      * Creates a new instance
      * @param name  the name of the transition phase
      * @param index  a unique binary-placeholder
      */
-    public function TransitionPhase(name:String, index:int) {
+    public function TransitionPhase( name:String, index:int ) {
         _name = name;
         _index = index;
     }
@@ -22,7 +31,7 @@ public class TransitionPhase implements ITransitionPhase {
     private var _name:String;
 
     /**
-     * The name of the TransitionPhase
+     *  @inheritDoc
      */
     public function get name():String {
         return _name;
@@ -34,25 +43,21 @@ public class TransitionPhase implements ITransitionPhase {
     private var _index:int;
 
     /**
-     * unique index for TransitionPhase
-     * must be binary place-holder, as used for bit masking
+     *  @inheritDoc
      */
     public function get index():int {
         return _index;
     }
 
     /**
-     *  Tests to see whether the passed value is considered equal to
-     *  the TransitionPhase instance.
-     * @param value  either a ITransitionPhase, an int or a String
-     * @return
+     *  @inheritDoc
      */
-    public function equals(value:Object):Boolean {
-        if (value is ITransitionPhase)
-            return ( value === this );
-        else if (value is int)
+    public function equals( value:Object ):Boolean {
+        if ( value is ITransitionPhase )
+            return ( value === this ) ? true : (ITransitionPhase( value ).index == _index && ITransitionPhase( value ).name == _name);
+        else if ( value is int )
             return ( value == _index );
-        else if (value is String)
+        else if ( value is String )
             return ( value == _name );
 
         return false;

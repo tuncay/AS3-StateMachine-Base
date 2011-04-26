@@ -4,6 +4,9 @@ package org.osflash.statemachine.core {
  */
 public interface IStateModelOwner {
 
+    /**
+     * retrieves the initial state
+     */
     function get initialState():IState;
 
     /**
@@ -28,6 +31,12 @@ public interface IStateModelOwner {
      */
     function hasState(stateName:String):Boolean;
 
+    /**
+     * Retrieves the target IState from the named transition
+     * @param transitionName the name of the transition that defines the target
+     * @param state the state that defines the transition
+     * @return
+     */
     function getTargetState(transitionName:String, state:IState):IState
 
     /**

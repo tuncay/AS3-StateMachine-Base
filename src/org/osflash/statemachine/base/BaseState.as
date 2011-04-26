@@ -28,7 +28,7 @@ public class BaseState implements IState {
     private var _referringTransition:String;
 
     /**
-     * This class is ment to be extended.
+     * This class is  ment to be extended.
      * @param name the name of the state.
      */
     public function BaseState(name:String):void {
@@ -42,6 +42,9 @@ public class BaseState implements IState {
         return _name;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function get referringTransitionName():String {
         return _referringTransition;
     }

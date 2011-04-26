@@ -1,8 +1,9 @@
 package org.osflash.statemachine.core {
 public interface IStateModelInjector {
+
     /**
-     * Registers all the decoded states with the IStateMachine, then calls the onRegister method.
-     * @param stateModel the IStateMachine to inject
+     * Registers all the decoded states with the IStateModelOwner.
+     * @param stateModel the IStateModelOwner to inject
      */
     function inject(stateModel:IStateModelOwner):void
 

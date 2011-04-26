@@ -1,12 +1,17 @@
 package org.osflash.statemachine.core {
 /**
- * Contract with FSMInjector to encapsulate creation of concrete IState instances.
+ * Contract with FSMInjector to encapsulate creation of concrete IState instances for a given data source.
  */
 public interface IStateDecoder {
+
+    /**
+     * sets the FSM declaration
+     * @param value the FSM declaration
+     */
     function setData(value:Object):void;
 
     /**
-     * This the factory method for decoding the state definition into a concrete IState.
+     * This the factory method for decoding each state definition into a concrete IState.
      * @param stateDef the data defining the IState to be created.
      * @return the decoded state.
      */

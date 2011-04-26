@@ -3,6 +3,7 @@ package org.osflash.statemachine.core {
  * Contract for wrapping and reflecting class references
  */
 public interface IClassReflector {
+
     /**
      * the name of the class
      */

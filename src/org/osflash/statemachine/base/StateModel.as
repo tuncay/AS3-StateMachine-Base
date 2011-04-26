@@ -81,6 +81,9 @@ public class StateModel implements IStateModel, IStateModelOwner {
 
     }
 
+     /**
+     * @inheritDoc
+     */
     public function getTargetState(transitionName:String, state:IState):IState {
         const targetStateName:String = state.getTarget(transitionName);
         const targetState:IState = IState(_states[ targetStateName ]);

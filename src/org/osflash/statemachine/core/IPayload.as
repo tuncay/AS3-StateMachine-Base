@@ -9,8 +9,8 @@ package org.osflash.statemachine.core {
 
 /**
  * Contract for transition payload object.
- * Optional Null Object wrapper if you don't want null values
- * to be thrown around the place
+ * All payloads sent via a transition will be wrapped by an IPayload internally.
+ * This stops null values being thrown around the place
  */
 public interface IPayload {
 
@@ -24,6 +24,13 @@ public interface IPayload {
      */
     function get isNull():Boolean;
 
+    /**
+     * Performs a test to see whether the object passed is equal to its body.
+     * If an IPayload is passed as the value, then first it tests strict equality
+     * with itself, then if that fails, it tests if both IPayload bodys asre strictly equal
+     * @param value The Object to be tested
+     * @return whether the object is equal to the IPyload object, or its body
+     */
     function equals( value:Object ):Boolean;
 
 

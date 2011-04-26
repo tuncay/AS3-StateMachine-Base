@@ -6,6 +6,12 @@ public interface IStateLogger {
      */
     function log(msg:String):void;
 
+
+    /**
+     * Allows the logging of each phase as triggered in the BaseStateMachine's onTransition method
+     * @param phase
+     * @param state
+     */
     function logPhase(phase:ITransitionPhase, state:IState):void;
 
 }

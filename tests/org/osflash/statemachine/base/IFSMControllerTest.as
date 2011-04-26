@@ -14,6 +14,7 @@ import org.osflash.statemachine.core.IState;
 import org.osflash.statemachine.core.IStateModelOwner;
 import org.osflash.statemachine.supporting.MockFSMControllerForTestingBaseStateMachine;
 import org.osflash.statemachine.supporting.StubIStateModelOwnerForTestingFSMController;
+import org.osflash.statemachine.transitioning.TransitionPhase;
 
 public class IFSMControllerTest {
 
@@ -61,9 +62,9 @@ public class IFSMControllerTest {
     }
 
     [Test]
-    public function transitionPhase_default_value_should_be_null():void {
+    public function transitionPhase_default_value_should_be_NONE():void {
         setUp( initialState, targetState );
-        Assert.assertNull( fsmController.transitionPhase );
+        Assert.assertTrue( TransitionPhase.NONE.equals( fsmController.transitionPhase ) );
     }
 
     [Test]

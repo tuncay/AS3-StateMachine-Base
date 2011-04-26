@@ -7,24 +7,26 @@
  */
 package org.osflash.statemachine.supporting {
 import org.osflash.statemachine.base.BaseStateMachine;
-import org.osflash.statemachine.base.Payload;
-import org.osflash.statemachine.core.IPayload;
 import org.osflash.statemachine.core.IState;
+import org.osflash.statemachine.transitioning.TransitionPhase;
 
 public class MockFSMControllerForTestingBaseStateMachine extends BaseStateMachine {
 
     private var _isTransitionLegal:Boolean;
     private var _isCancellationLegal:Boolean;
     private var _listenForStateChangeOnce_wasCalled:Boolean;
-    private var _listenerToAddWas_invokeTransitionLater:Boolean;
+    private var _listenerToAdd_was_invokeTransitionLater:Boolean;
     private var _onTransition_wasCalled:Boolean;
     private var _dispatchGeneralStateChanged_wasCalled:Boolean;
     private var _dispatchTransitionCancelled_wasCalled:Boolean;
-    private var _isTransitioning_wasSetToTrueDurring_onTransiton:Boolean;
-    private var _isTransitioning_wasSetToFalseAfter_onTransiton:Boolean;
+    private var _isTransitioning_wasSetTo_true_during_onTransition:Boolean;
+    private var _isTransitioning_wasSetTo_false_after_onTransition:Boolean;
     private var _cancelTransitionCallBack:Function;
-    private var _onTransitionPayload_equalsCachedPayload:Boolean;
+    private var _onTransitionPayload_equals_cachedPayload:Boolean;
     private var _targetState:IState;
+    private var _currentTransitionPhase_wasSetTo_GLOBAL_CHANGED_before_dispatchGeneralStateChange:Boolean;
+    private var _currentTransitionPhase_wasSetTo_CANCELLED_before_dispatchTransitionCancelled:Boolean;
+    private var _currentTransitionPhase_wasSetTo_NONE_before_resetProperties:Boolean;
 
     public function MockFSMControllerForTestingBaseStateMachine( initial:IState, target:IState ) {
         super( new StubIStateModelOwnerForTestingFSMController( initial, target ) );
@@ -64,55 +66,62 @@ public class MockFSMControllerForTestingBaseStateMachine extends BaseStateMachin
     }
 
     public function getTransitionLaterResults():Boolean {
-        return (_listenerToAddWas_invokeTransitionLater && _listenForStateChangeOnce_wasCalled);
+        return (_listenerToAdd_was_invokeTransitionLater && _listenForStateChangeOnce_wasCalled);
     }
 
     public override function listenForStateChangeOnce( listener:Function ):* {
         _listenForStateChangeOnce_wasCalled = true;
-        _listenerToAddWas_invokeTransitionLater = (listener == invokeTransitionLater);
+        _listenerToAdd_was_invokeTransitionLater = (listener == invokeTransitionLater);
         return null;
     }
 
     public function getFullTransitionResults( targetState:IState ):Boolean {
         return (targetState === _targetState &&
                 _onTransition_wasCalled &&
-                _onTransitionPayload_equalsCachedPayload &&
+                _onTransitionPayload_equals_cachedPayload &&
                 _dispatchGeneralStateChanged_wasCalled &&
-                _isTransitioning_wasSetToTrueDurring_onTransiton &&
-                _isTransitioning_wasSetToFalseAfter_onTransiton);
+                _isTransitioning_wasSetTo_true_during_onTransition &&
+                _isTransitioning_wasSetTo_false_after_onTransition &&
+               _currentTransitionPhase_wasSetTo_GLOBAL_CHANGED_before_dispatchGeneralStateChange &&
+               _currentTransitionPhase_wasSetTo_NONE_before_resetProperties);
     }
 
     public function getTransitionCancelledResults( targetState:IState ):Boolean {
         return (targetState === _targetState &&
                 _onTransition_wasCalled &&
-                _onTransitionPayload_equalsCachedPayload &&
+                _onTransitionPayload_equals_cachedPayload &&
                 _dispatchTransitionCancelled_wasCalled &&
-                _isTransitioning_wasSetToTrueDurring_onTransiton &&
-                _isTransitioning_wasSetToFalseAfter_onTransiton);
+                _isTransitioning_wasSetTo_true_during_onTransition &&
+                _isTransitioning_wasSetTo_false_after_onTransition &&
+                _currentTransitionPhase_wasSetTo_CANCELLED_before_dispatchTransitionCancelled &&
+               _currentTransitionPhase_wasSetTo_NONE_before_resetProperties);
     }
 
 
     protected override function onTransition( target:IState, payload:Object ):void {
         _targetState = target;
-        _onTransitionPayload_equalsCachedPayload = cachedPayloadEquals( payload );
+        _onTransitionPayload_equals_cachedPayload = cachedPayloadEquals( payload );
         _onTransition_wasCalled = true;
-        _isTransitioning_wasSetToTrueDurring_onTransiton = isTransitioning;
+        _isTransitioning_wasSetTo_true_during_onTransition = isTransitioning;
         if ( _cancelTransitionCallBack != null ) _cancelTransitionCallBack();
     }
 
     protected override function dispatchGeneralStateChanged():void {
+        _currentTransitionPhase_wasSetTo_GLOBAL_CHANGED_before_dispatchGeneralStateChange =  currentTransitionPhase.equals( TransitionPhase.GLOBAL_CHANGED );
         _dispatchGeneralStateChanged_wasCalled = true;
-        _isTransitioning_wasSetToFalseAfter_onTransiton = !isTransitioning;
+        _isTransitioning_wasSetTo_false_after_onTransition = !isTransitioning;
     }
 
     protected override function dispatchTransitionCancelled():void {
+        _currentTransitionPhase_wasSetTo_CANCELLED_before_dispatchTransitionCancelled =  currentTransitionPhase.equals( TransitionPhase.CANCELLED );
         _dispatchTransitionCancelled_wasCalled = true;
-        _isTransitioning_wasSetToFalseAfter_onTransiton = !isTransitioning;
+        _isTransitioning_wasSetTo_false_after_onTransition = !isTransitioning;
     }
 
 
     // so caches arent reset and we can test there values
-    override protected function reset():void {
+    override protected function resetProperties():void {
+         _currentTransitionPhase_wasSetTo_NONE_before_resetProperties =  currentTransitionPhase.equals( TransitionPhase.NONE );
     }
 }
 }

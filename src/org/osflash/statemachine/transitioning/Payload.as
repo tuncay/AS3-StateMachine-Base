@@ -1,5 +1,5 @@
 
-package org.osflash.statemachine.base {
+package org.osflash.statemachine.transitioning {
 
 import org.osflash.statemachine.core.IPayload;
 

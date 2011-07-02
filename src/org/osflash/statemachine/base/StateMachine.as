@@ -5,6 +5,7 @@ import org.osflash.statemachine.core.TransitionController;
 import org.osflash.statemachine.core.TransitionValidator;
 import org.osflash.statemachine.core.UID;
 import org.osflash.statemachine.errors.StateTransitionError;
+import org.osflash.statemachine.model.TransitionModel;
 
 public class StateMachine implements IFSMController {
 

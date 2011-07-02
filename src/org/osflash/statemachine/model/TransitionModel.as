@@ -1,4 +1,4 @@
-package org.osflash.statemachine.base {
+package org.osflash.statemachine.model {
 
 import org.osflash.statemachine.core.IFSMProperties;
 import org.osflash.statemachine.core.IPayload;
@@ -6,7 +6,6 @@ import org.osflash.statemachine.core.IState;
 import org.osflash.statemachine.core.IStateModelOwner;
 import org.osflash.statemachine.core.StateTransitionModel;
 import org.osflash.statemachine.core.UID;
-import org.osflash.statemachine.transitioning.TransitionBinding;
 import org.osflash.statemachine.uids.StateTransitionPhaseUID;
 import org.osflash.statemachine.uids.getNullUID;
 

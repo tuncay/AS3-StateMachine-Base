@@ -5,7 +5,7 @@
  * Time: 13:35
  * To change this template use File | Settings | File Templates.
  */
-package org.osflash.statemachine.base {
+package org.osflash.statemachine.transitioning {
 import flexunit.framework.Assert;
 
 import org.hamcrest.assertThat;

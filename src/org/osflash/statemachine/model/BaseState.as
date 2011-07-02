@@ -1,4 +1,4 @@
-package org.osflash.statemachine.base {
+package org.osflash.statemachine.model {
 import org.osflash.statemachine.core.IState;
 import org.osflash.statemachine.core.UID;
 import org.osflash.statemachine.uids.getNullUID;

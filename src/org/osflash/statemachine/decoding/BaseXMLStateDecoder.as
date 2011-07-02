@@ -1,4 +1,5 @@
-package org.osflash.statemachine.base {
+package org.osflash.statemachine.decoding {
+import org.osflash.statemachine.base.*;
 import org.osflash.statemachine.core.IState;
 import org.osflash.statemachine.core.IStateDecoder;
 import org.osflash.statemachine.core.UID;

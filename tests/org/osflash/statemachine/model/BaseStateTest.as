@@ -5,20 +5,20 @@
  * Time: 13:35
  * To change this template use File | Settings | File Templates.
  */
-package org.osflash.statemachine.base {
+package org.osflash.statemachine.model {
 import flexunit.framework.Assert;
 
 import org.hamcrest.assertThat;
 import org.hamcrest.object.equalTo;
 import org.hamcrest.object.strictlyEqualTo;
 import org.osflash.statemachine.core.UID;
+import org.osflash.statemachine.model.BaseState;
 import org.osflash.statemachine.uids.StateTransitionUID;
 import org.osflash.statemachine.uids.StateUID;
 import org.osflash.statemachine.uids.flushUIDs;
 import org.osflash.statemachine.uids.getNullUID;
 
 public class BaseStateTest {
-
 
     private var _state:BaseState;
     private var _stateUID:StateUID;

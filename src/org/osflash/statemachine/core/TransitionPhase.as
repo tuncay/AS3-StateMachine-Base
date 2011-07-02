@@ -4,7 +4,7 @@
  * Time: 15:07
  */
 package org.osflash.statemachine.core {
-import org.osflash.statemachine.base.TransitionModel;
+import org.osflash.statemachine.model.TransitionModel;
 
 public interface TransitionPhase {
     function set model( value:TransitionModel):void;

@@ -5,7 +5,8 @@
  * Time: 17:11
  * To change this template use File | Settings | File Templates.
  */
-package org.osflash.statemachine.base {
+package org.osflash.statemachine.model {
+import org.osflash.statemachine.base.*;
 import org.flexunit.Assert;
 import org.hamcrest.assertThat;
 import org.hamcrest.collection.array;
@@ -23,6 +24,7 @@ import org.osflash.statemachine.core.IStateModel;
 import org.osflash.statemachine.core.IStateModelOwner;
 import org.osflash.statemachine.core.UID;
 import org.osflash.statemachine.errors.StateModelError;
+import org.osflash.statemachine.model.StateModel;
 import org.osflash.statemachine.supporting.injectToken;
 import org.osflash.statemachine.uids.StateTransitionUID;
 import org.osflash.statemachine.uids.StateUID;

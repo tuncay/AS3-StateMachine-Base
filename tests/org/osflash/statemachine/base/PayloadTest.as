@@ -8,6 +8,12 @@
 package org.osflash.statemachine.base {
 import flexunit.framework.Assert;
 
+import org.hamcrest.assertThat;
+import org.hamcrest.object.isFalse;
+import org.hamcrest.object.isTrue;
+import org.hamcrest.object.nullValue;
+import org.hamcrest.object.strictlyEqualTo;
+
 import org.osflash.statemachine.core.IPayload;
 
 public class PayloadTest {
@@ -20,7 +26,7 @@ public class PayloadTest {
 
     public function setUp( body:Object ):void {
 
-        payload = new Payload(body);
+        payload = new Payload( body );
     }
 
     [After]
@@ -30,55 +36,70 @@ public class PayloadTest {
     }
 
     [Test]
-    public function body_passed_in_constructor_assigned_to_body_property():void {
+    public function body_passed_in_constructor_is_assigned_to_body_property():void {
         const body:Object = {};
         setUp( body );
-        Assert.assertEquals(body, payload.body);
+        assertThat( payload.body, strictlyEqualTo( body ) );
     }
 
     [Test]
     public function body_of_IPayload_passed_in_constructor_is_assigned_to_body_property():void {
         const body:Object = {};
         setUp( new Payload( body ) );
-        Assert.assertEquals(body, payload.body);
+        assertThat( payload.body, strictlyEqualTo( body ) );
     }
 
     [Test]
     public function if_body_is_null_isNull_returns_true():void {
         setUp( null );
-        Assert.assertTrue( payload.isNull);
+        assertThat( payload.isNull, isTrue() );
     }
 
     [Test]
     public function if_body_is_set_isNull_returns_false():void {
-        setUp( {} );
-        Assert.assertFalse( payload.isNull);
-    }
-
-    [Test]
-    public function payload_equals_returns_true_aginst_body_instance():void {
         const body:Object = {};
         setUp( body );
-        Assert.assertTrue( payload.equals( body ));
+        assertThat( payload.isNull, isFalse() );
     }
 
     [Test]
-       public function payload_equals_returns_true_against_self():void {
-           const body:Object = {};
-           setUp( body );
-           Assert.assertTrue( payload.equals( payload ));
-       }
-
+    public function test_equal_against_strictlyEqual_body_instance__returns_true():void {
+        const body:Object = {};
+        setUp( body );
+        assertThat( payload.equals( body ), isTrue() );
+    }
 
     [Test]
-       public function payload_equals_returns_true_against_payload_with_same_body():void {
-           const body:Object = {};
-            const payload2:IPayload = new Payload( body );
-           setUp( body );
-           Assert.assertTrue( payload.equals( payload2 ));
-       }
+    public function test_equal_against_self__returns_true():void {
+        const body:Object = {};
+        setUp( body );
+        assertThat( payload.equals( payload ), isTrue() );
+    }
 
+    [Test]
+    public function test_equal_against_Payload_with_strictlyEqual_body_instance__returns_true():void {
+        const body:Object = {};
+        const payload2:IPayload = new Payload( body );
+        setUp( body );
+        assertThat( payload.equals( payload2 ), isTrue() );
+    }
 
+    [Test]
+    public function test_equal_against_Payload_with_non_equal_body_instance__returns_false():void {
+        const body1:Object = {};
+        const body2:Object = {};
+        const payload2:IPayload = new Payload( body2 );
+        setUp( body1 );
+        assertThat( payload.equals( payload2 ), isFalse() );
+    }
+
+    [Test]
+    public function test_equal_against_non_equal_body_instance__returns_false():void {
+        const body1:Object = {};
+        const body2:Object = {};
+        setUp( body1 );
+        assertThat( payload.equals( body2 ), isFalse() );
+    }
 
 
 }

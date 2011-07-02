@@ -7,163 +7,257 @@
  */
 package org.osflash.statemachine.base {
 import org.flexunit.Assert;
+import org.hamcrest.assertThat;
+import org.hamcrest.collection.array;
+import org.hamcrest.core.allOf;
+import org.hamcrest.core.not;
+import org.hamcrest.core.throws;
+import org.hamcrest.object.equalTo;
+import org.hamcrest.object.hasPropertyWithValue;
+import org.hamcrest.object.instanceOf;
+import org.hamcrest.object.isFalse;
+import org.hamcrest.object.isTrue;
+import org.hamcrest.object.strictlyEqualTo;
 import org.osflash.statemachine.core.IState;
 import org.osflash.statemachine.core.IStateModel;
 import org.osflash.statemachine.core.IStateModelOwner;
+import org.osflash.statemachine.core.UID;
+import org.osflash.statemachine.errors.StateModelError;
+import org.osflash.statemachine.supporting.injectToken;
+import org.osflash.statemachine.uids.StateTransitionUID;
+import org.osflash.statemachine.uids.StateUID;
+import org.osflash.statemachine.uids.flushUIDs;
+import org.osflash.statemachine.uids.getUIDFromIdentifier;
 
 public class StateModelTest {
 
-    private var stateModelOwner:IStateModelOwner;
-    private var stateModel:IStateModel;
+    private var stateModel:StateModel;
     private var starting:IState;
     private var loading:IState;
     private var saving:IState;
 
+    private var startingUID:UID;
+    private var loadingUID:UID;
+    private var savingUID:UID;
+
+    private var startUID:UID;
+    private var loadUID:UID;
+    private var saveUID:UID;
+
     [Before]
     public function before():void {
 
-        stateModelOwner = new StateModel();
-        stateModel = stateModelOwner as IStateModel;
+        startingUID = new StateUID( "starting" );
+        loadingUID = new StateUID( "loading" );
+        savingUID = new StateUID( "saving" );
 
-        starting = new BaseState( STARTING );
-        starting.defineTrans( LOAD, LOADING );
-        starting.defineTrans( SAVE, SAVING );
+        startUID = new StateTransitionUID( "start" );
+        loadUID = new StateTransitionUID( "load" );
+        saveUID = new StateTransitionUID( "save" );
 
-        loading = new BaseState( LOADING );
-        loading.defineTrans( SAVE, SAVING );
 
-        saving = new BaseState( SAVING );
-        saving.defineTrans( START, STARTING );
-        saving.defineTrans( LOAD, LOADING );
+        stateModel = new StateModel();
+
+        starting = new BaseState( startingUID );
+        starting.defineTransition( loadUID, loadingUID );
+        starting.defineTransition( saveUID, savingUID );
+
+        loading = new BaseState( loadingUID );
+        loading.defineTransition( saveUID, savingUID );
+
+        saving = new BaseState( savingUID );
+        saving.defineTransition( startUID, startingUID );
+        saving.defineTransition( loadUID, loadingUID );
     }
 
     [After]
     public function after():void {
-        stateModelOwner = null;
         stateModel = null;
         starting = null;
         loading = null;
         saving = null;
+
+        startingUID = null;
+        loadingUID = null;
+        savingUID = null;
+
+        startUID = null;
+        loadUID = null;
+        saveUID = null;
+
+        flushUIDs();
+    }
+
+    private function registerAllStates():void {
+        stateModel.registerState( starting );
+        stateModel.registerState( loading );
+        stateModel.registerState( saving );
+    }
+
+    private function removeAllStates():void {
+        stateModel.removeState( startingUID );
+        stateModel.removeState( loadingUID );
+        stateModel.removeState( savingUID );
     }
 
     [Test]
     public function when_no_states_have_been_registered_hasState_returns_false():void {
-        Assert.assertFalse( stateModelOwner.hasState( LOADING ) );
+        assertThat( stateModel.hasState( loadingUID ), isFalse() );
     }
 
     [Test]
-    public function when_no_states_have_been_registered_initialState_returns_null():void {
-        Assert.assertNull( stateModelOwner.initialState );
+    public function when_no_states_have_been_registered_initialState_throws_StateModelError():void {
+        const expectedMessage:String = StateModelError.NO_INITIAL_STATE_DECLARED;
+        const throwFunction:Function = function ():void {
+            stateModel.initialState;
+        };
+        assertThat( throwFunction, throws( allOf( instanceOf( StateModelError ), hasPropertyWithValue( "message", expectedMessage ) ) ) );
     }
 
     [Test]
     public function when_no_states_have_been_registered_removeState_returns_false():void {
-        Assert.assertFalse( stateModelOwner.removeState( LOADING ) );
+        assertThat( stateModel.removeState( loadingUID ), isFalse() );
     }
 
-    [Test (expected="org.osflash.statemachine.errors.StateDecodingError")]
-    public function when_no_states_have_been_registered_getTargetState_throws_error():void {
-        Assert.assertNull( stateModelOwner.getTargetState( START, saving ) );
+    [Test ]
+    public function when_no_states_have_been_registered_getTargetState_throws_StateModelError():void {
+        var expectedMessage:String = StateModelError.TARGET_DECLARATION_MISMATCH;
+        expectedMessage = injectToken( expectedMessage, "state", saving.uid.toString() );
+        expectedMessage = injectToken( expectedMessage, "transition", startUID.toString() );
+        expectedMessage = injectToken( expectedMessage, "target", starting.uid.toString() );
+
+        const throwFunction:Function = function ():void {
+            stateModel.getTargetState( startUID, saving );
+        };
+        assertThat( throwFunction, throws( allOf( instanceOf( StateModelError ), hasPropertyWithValue( "message", expectedMessage ) ) ) );
+    }
+
+
+    [Test]
+    public function if_transition_is_not_defined_in_source_state_throws_StateModelError():void {
+
+        var expectedMessage:String = StateModelError.TRANSITION_NOT_DECLARED_IN_STATE;
+        expectedMessage = injectToken( expectedMessage, "state", saving.uid.toString() );
+        expectedMessage = injectToken( expectedMessage, "transition", saveUID.toString() );
+
+        const throwFunction:Function = function ():void {
+            stateModel.getTargetState( saveUID, saving );
+        };
+        assertThat( throwFunction, throws( allOf( instanceOf( StateModelError ), hasPropertyWithValue( "message", expectedMessage ) ) ) );
     }
 
     [Test]
-    public function if_transition_is_not_defined_in_source_state_returns_null():void {
-        Assert.assertNull( stateModelOwner.getTargetState( SAVE, saving ) );
+    public function when_no_states_have_been_registered_getState_throws_StateModelError():void {
+
+        var expectedMessage:String = StateModelError.STATE_REQUESTED_IS_NOT_REGISTERED;
+        expectedMessage = injectToken( expectedMessage, "state", saving.uid.toString() );
+
+        const throwFunction:Function = function ():void {
+            stateModel.getState( saving.uid );
+        };
+        assertThat( throwFunction, throws( allOf( instanceOf( StateModelError ), hasPropertyWithValue( "message", expectedMessage ) ) ) );
     }
 
     [Test]
-    public function when_no_states_have_been_registered_getState_returns_null():void {
-        Assert.assertNull( stateModel.getState( LOADING ) );
-    }
-
-    [Test]
-    public function when_a_state_is_registered_as_initial_the_initialState_property_is_set_as_that_state():void {
-        stateModelOwner.registerState( starting, true );
-        Assert.assertStrictlyEquals( starting, stateModelOwner.initialState );
+    public function when_a_state_is_registered_as_initial__the_initialState_property_is_set_as_that_state():void {
+        stateModel.registerState( starting, true );
+        assertThat( stateModel.initialState, strictlyEqualTo( starting ) )
     }
 
     [Test]
     public function when_a_state_is_not_registered_as_initial_the_initialState_property_is_not_set_as_that_state():void {
-        stateModelOwner.registerState( saving, false );
-        Assert.assertNull( stateModelOwner.initialState );
+        stateModel.registerState( starting, true );
+        stateModel.registerState( saving, false );
+        assertThat( stateModel.initialState, allOf( strictlyEqualTo( starting ), not( saving ) ) );
     }
+
 
     [Test]
     public function when_a_state_is_registered_hasState_returns_true_for_that_state_name():void {
-        stateModelOwner.registerState( starting );
-        stateModelOwner.registerState( loading );
-        stateModelOwner.registerState( saving );
-        Assert.assertTrue(
-                         stateModelOwner.hasState( STARTING ) &&
-                         stateModelOwner.hasState( LOADING ) &&
-                         stateModelOwner.hasState( SAVING )
-                         )
+
+        registerAllStates();
+        const got:Array = [
+            stateModel.hasState( startingUID ),
+            stateModel.hasState( loadingUID ),
+            stateModel.hasState( savingUID )
+        ];
+        assertThat( got, array(
+        isTrue(),
+        isTrue(),
+        isTrue() ) );
     }
 
     [Test]
     public function when_a_state_is_registered_getState_returns_the_IState_with_that_state_name():void {
-        stateModelOwner.registerState( starting );
-        stateModelOwner.registerState( loading );
-        stateModelOwner.registerState( saving );
-        Assert.assertTrue(
-                         stateModel.getState( STARTING ) == starting &&
-                         stateModel.getState( LOADING ) == loading &&
-                         stateModel.getState( SAVING ) == saving
-                         )
+
+        registerAllStates();
+
+        var gotStates:Array = [
+            stateModel.getState( startingUID ),
+            stateModel.getState( loadingUID ),
+            stateModel.getState( savingUID )
+        ];
+
+        assertThat( gotStates, array(
+        strictlyEqualTo( starting ),
+        strictlyEqualTo( loading ),
+        strictlyEqualTo( saving ) ) );
     }
 
     [Test]
-        public function calling_getTargetState_returns_the_target_IState_for_the_source_states_transition_name():void {
-            stateModelOwner.registerState( starting );
-            stateModelOwner.registerState( loading );
-            stateModelOwner.registerState( saving );
-            Assert.assertTrue(
-                             stateModelOwner.getTargetState( LOAD, starting ) === loading &&
-                             stateModelOwner.getTargetState( SAVE, starting ) === saving &&
-                             stateModelOwner.getTargetState( SAVE, loading ) === saving &&
-                             stateModelOwner.getTargetState( START, saving ) === starting &&
-                             stateModelOwner.getTargetState( LOAD, saving ) === loading
-                             )
-        }
+    public function calling_getTargetState_returns_the_target_IState_for_the_source_states_transition_name():void {
+        registerAllStates();
+
+        var gotStates:Array = [
+            stateModel.getTargetState( loadUID, starting ),
+            stateModel.getTargetState( saveUID, starting ),
+            stateModel.getTargetState( saveUID, loading ),
+            stateModel.getTargetState( startUID, saving ),
+            stateModel.getTargetState( loadUID, saving )
+        ];
+
+        assertThat( gotStates, array(
+        strictlyEqualTo( loading ),
+        strictlyEqualTo( saving ),
+        strictlyEqualTo( saving ),
+        strictlyEqualTo( starting ),
+        strictlyEqualTo( loading ) ) );
+    }
 
 
     [Test]
     public function calling_removeState_on_a_registered_state_returns_true():void {
-        stateModelOwner.registerState( starting );
-        stateModelOwner.registerState( loading );
-        stateModelOwner.registerState( saving );
-        Assert.assertTrue(
-                         stateModelOwner.removeState( LOADING ) &&
-                         stateModelOwner.removeState( SAVING ) &&
-                         stateModelOwner.removeState( STARTING )
-                         )
+        registerAllStates();
+
+        const got:Array = [
+            stateModel.removeState( loadingUID ),
+            stateModel.removeState( savingUID ),
+            stateModel.removeState( startingUID )
+        ];
+
+        assertThat( got, array(
+        isTrue(),
+        isTrue(),
+        isTrue() ) );
     }
 
     [Test]
     public function after_calling_removeState_on_a_registered_state_hasState_returns_false():void {
-        stateModelOwner.registerState( starting );
-        stateModelOwner.registerState( loading );
-        stateModelOwner.registerState( saving );
 
-        stateModelOwner.removeState( STARTING );
-        stateModelOwner.removeState( LOADING );
-        stateModelOwner.removeState( SAVING );
+        registerAllStates();
+        removeAllStates();
 
-        Assert.assertFalse(
-                         stateModelOwner.hasState( LOADING ) &&
-                         stateModelOwner.hasState( SAVING ) &&
-                         stateModelOwner.hasState( STARTING )
-                         )
+        const got:Array = [
+            stateModel.hasState( startingUID ),
+            stateModel.hasState( loadingUID ),
+            stateModel.hasState( savingUID )
+        ];
+
+        assertThat( got, array(
+        isFalse(),
+        isFalse(),
+        isFalse() ) );
     }
-
-
-    private const STARTING:String = "starting";
-    private const LOADING:String = "loading";
-    private const SAVING:String = "saving";
-    private const LOAD:String = "load";
-    private const SAVE:String = "save";
-    private const START:String = "start";
-
 
 
 }

@@ -11,7 +11,7 @@ import flexunit.framework.Assert;
 import org.osflash.statemachine.base.BaseState;
 import org.osflash.statemachine.core.IState;
 import org.osflash.statemachine.core.ITransitionPhase;
-import org.osflash.statemachine.transitioning.TransitionPhase;
+import org.osflash.statemachine.uids.StateTransitionPhaseUID;
 
 public class TraceStateLoggerTest {
 
@@ -157,19 +157,19 @@ public class TraceStateLoggerTest {
         }
 
         Assert.assertEquals( phase.name, phaseName );
-        Assert.assertEquals( state.name, stateName );
+        Assert.assertEquals( state.id, stateName );
     }
 
     private static const LOGGER_PREFIX:String = "[TEST]";
     private static const MESSAGE:String = "Logger test message";
 
-    private static const NONE:TransitionPhase = new TransitionPhase( "none", 1 );
-    private static const EXITING_GUARD:TransitionPhase = new TransitionPhase( "exitingGuard", 2 );
-    private static const ENTERING_GUARD:TransitionPhase = new TransitionPhase( "enteringGuard", 4 );
-    private static const ENTERED:TransitionPhase = new TransitionPhase( "entered", 8 );
-    private static const TEAR_DOWN:TransitionPhase = new TransitionPhase( "tearDown", 16 );
-    private static const CANCELLED:TransitionPhase = new TransitionPhase( "cancelled", 32 );
-    private static const GLOBAL_CHANGED:TransitionPhase = new TransitionPhase( "globalChanged", 64 );
+    private static const NONE:StateTransitionPhaseUID = new StateTransitionPhaseUID( "none", 1 );
+    private static const EXITING_GUARD:StateTransitionPhaseUID = new StateTransitionPhaseUID( "exitingGuard", 2 );
+    private static const ENTERING_GUARD:StateTransitionPhaseUID = new StateTransitionPhaseUID( "enteringGuard", 4 );
+    private static const ENTERED:StateTransitionPhaseUID = new StateTransitionPhaseUID( "entered", 8 );
+    private static const TEAR_DOWN:StateTransitionPhaseUID = new StateTransitionPhaseUID( "tearDown", 16 );
+    private static const CANCELLED:StateTransitionPhaseUID = new StateTransitionPhaseUID( "cancelled", 32 );
+    private static const GLOBAL_CHANGED:StateTransitionPhaseUID = new StateTransitionPhaseUID( "globalChanged", 64 );
 
     private static const STATE = new BaseState( "testing" );
 

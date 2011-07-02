@@ -8,6 +8,8 @@
 package org.osflash.statemachine.supporting {
 import org.osflash.statemachine.core.IState;
 import org.osflash.statemachine.core.IStateModelOwner;
+import org.osflash.statemachine.uids.StateUID;
+import org.osflash.statemachine.uids.StateTransitionUID;
 
 public class StubStateModelForTestingStateModelInjector implements IStateModelOwner{
 
@@ -36,11 +38,11 @@ public class StubStateModelForTestingStateModelInjector implements IStateModelOw
         return false;
     }
 
-    public function getTargetState( transitionName:String, state:IState ):IState {
+    public function getTargetState( transitionName:StateTransitionUID, state:IState ):IState {
         return null;
     }
 
-    public function destroy():void {
+    public function dispose():void {
     }
 }
 }

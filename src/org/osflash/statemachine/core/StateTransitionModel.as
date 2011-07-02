@@ -12,7 +12,9 @@ public interface StateTransitionModel {
     function get currentState():IState;
     function get targetState():IState;
     function get payload():IPayload;
+    function get transitionPhase(  ):UID;
     function set transitionPhase( value:UID ):void;
     function setTargetStateAsCurrent():void;
+    function cancelTransition( reason:UID, payload:Object ):void
 }
 }

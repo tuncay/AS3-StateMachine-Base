@@ -2,11 +2,11 @@ package org.osflash.statemachine.transitioning {
 
 import org.osflash.statemachine.base.StateTransition;
 import org.osflash.statemachine.model.TransitionModel;
-import org.osflash.statemachine.core.TransitionController;
+import org.osflash.statemachine.core.StateTransitionController;
 import org.osflash.statemachine.core.UID;
 import org.osflash.statemachine.logging.log;
 
-public class BaseTransitionController implements TransitionController {
+public class BaseTransitionController implements StateTransitionController {
 
     private var _model:TransitionModel;
     private var _transition:StateTransition;

@@ -1,6 +1,6 @@
 package org.osflash.statemachine.core {
 
-public interface TransitionController {
+public interface StateTransitionController {
 
     function transition( transition:UID, payload:Object = null ):void
 

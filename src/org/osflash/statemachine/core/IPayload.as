@@ -19,6 +19,8 @@ public interface IPayload {
      */
     function get body():Object;
 
+    function setBody( body:Object ):void;
+
     /**
      * Indicates whether the body is a null value.
      */

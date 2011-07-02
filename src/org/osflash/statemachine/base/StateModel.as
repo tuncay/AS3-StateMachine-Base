@@ -1,95 +1,86 @@
-/*
- ADAPTED FOR A STAND ALONE UTILITY FROM:
- PureMVC AS3 Utility - StateMachine
- Copyright (c) 2008 Neil Manuell, Cliff Hall
- Your reuse is governed by the Creative Commons Attribution 3.0 License
- */
 package org.osflash.statemachine.base {
 import org.osflash.statemachine.core.IState;
 import org.osflash.statemachine.core.IStateModel;
 import org.osflash.statemachine.core.IStateModelOwner;
-import org.osflash.statemachine.errors.StateDecodingError;
+import org.osflash.statemachine.core.UID;
+import org.osflash.statemachine.errors.StateModelError;
 
-/**
- * A Finite State Machine implementation.
- * <P>
- * Handles registration and removal of state definitions.
- * Dependencies on any Observers (Events, Signals, Notifications)
- * are encapsulated within the <code>ITransitionController</code>
- * which controls the phases of the transition between states
- * </P>
- *
- * @ see ITransitionController
- * @ see BaseTransitionController
- */
 public class StateModel implements IStateModel, IStateModelOwner {
 
-    private static const TARGET_DECLARATION_MISMATCH:String = "Target state does not exist: ";
-
-    /**
-     * Map of States objects by name.
-     */
     protected var _states:Object = new Object();
-
-    /**
-     * The initial state of the FSM.
-     */
     protected var _initial:IState;
 
     public function get initialState():IState {
+        if ( _initial == null ) {
+            throw new StateModelError( StateModelError.NO_INITIAL_STATE_DECLARED );
+        }
         return _initial;
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function hasState(stateName:String):Boolean {
-        return ( _states[ stateName ] != null );
+    public function hasState( stateID:UID ):Boolean {
+        return ( _states[ stateID.identifier ] != null );
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function registerState(state:IState, initial:Boolean = false):Boolean {
-        if (state == null || hasState(state.name)) return false;
-        _states[ state.name ] = state;
-        if (initial) this._initial = IState(state);
+    public function registerState( state:IState, initial:Boolean = false ):Boolean {
+        if ( state == null || hasState( state.uid ) ) return false;
+        _states[ state.uid.identifier ] = state;
+        if ( initial ) this._initial = IState( state );
         return true;
     }
 
-    public function getState(stateName:String):IState {
-        return  IState(_states[ stateName ]);
+    public function getState( stateID:UID ):IState {
+        if( !hasState( stateID ) ){
+            throwStateNotRegisteredError( stateID );
+        }
+        return  IState( _states[ stateID.identifier ] );
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function removeState(stateName:String):Boolean {
-        if (!hasState(stateName)) return false;
-        delete _states[ stateName ];
+
+
+    public function removeState( stateID:UID ):Boolean {
+        if ( !hasState( stateID ) ) return false;
+        delete _states[ stateID.identifier ];
         return true;
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function destroy():void {
-
-        for each (var state:IState in _states) state.destroy();
+    public function dispose():void {
+        for each ( var state:IState in _states )
+            state.dispose();
         _states = null;
         _initial = null;
-
     }
 
-     /**
-     * @inheritDoc
-     */
-    public function getTargetState(transitionName:String, state:IState):IState {
-        const targetStateName:String = state.getTarget(transitionName);
-        const targetState:IState = IState(_states[ targetStateName ]);
-        if (targetState == null && targetStateName != null)
-            throw new StateDecodingError(TARGET_DECLARATION_MISMATCH + targetStateName);
+    public function getTargetState( transitionUID:UID, state:IState ):IState {
+        if( !state.hasTrans( transitionUID )){
+            throwTransitionNotDefinedInState(state.uid, transitionUID );
+        }
+        const targetStateUID:UID = state.getTarget( transitionUID );
+        const targetState:IState = IState( _states[ targetStateUID.identifier ] );
+        if ( targetState == null && targetStateUID != null ) {
+            throwTargetMismatchError( state.uid, targetStateUID, transitionUID );
+        }
         return targetState;
+    }
+
+    private function throwTransitionNotDefinedInState( state:UID, transition:UID ):void {
+       const error:StateModelError = new StateModelError( StateModelError.TRANSITION_NOT_DECLARED_IN_STATE );
+        error.injectMessageWithToken( "state", state.identifier );
+        error.injectMessageWithToken( "transition", transition.identifier );
+        throw error;
+    }
+
+    private function throwTargetMismatchError( state:UID, target:UID, transition:UID ):void {
+        const error:StateModelError = new StateModelError( StateModelError.TARGET_DECLARATION_MISMATCH );
+        error.injectMessageWithToken( "state", state.identifier );
+        error.injectMessageWithToken( "target", target.identifier );
+        error.injectMessageWithToken( "transition", transition.identifier );
+        throw error;
+    }
+
+     private function throwStateNotRegisteredError( state:UID ):void {
+         const error:StateModelError = new StateModelError( StateModelError.STATE_REQUESTED_IS_NOT_REGISTERED );
+        error.injectMessageWithToken( "state", state.identifier );
+        throw error;
     }
 
 

@@ -40,7 +40,7 @@ public class TraceStateLogger implements IStateLogger {
 
     public function logPhase( phase:ITransitionPhase, state:IState ):void {
         if ( active && ( flags & phase.index ) )
-            writeLog( (prefix || "" ) + " phase[" + phase.name + "] from state[" + state.name + "] executed." );
+            writeLog( (prefix || "" ) + " phase[" + phase.name + "] from state[" + state.id + "] executed." );
         else
             writeLog( null );
     }

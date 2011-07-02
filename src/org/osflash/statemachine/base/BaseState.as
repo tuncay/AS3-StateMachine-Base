@@ -1,96 +1,47 @@
-/*
- ADAPTED FOR ROBOTLEGS FROM:
- PureMVC AS3 Utility - StateMachine
- Copyright (c) 2008 Neil Manuell, Cliff Hall
- Your reuse is governed by the Creative Commons Attribution 3.0 License
- */
 package org.osflash.statemachine.base {
 import org.osflash.statemachine.core.IState;
+import org.osflash.statemachine.core.UID;
+import org.osflash.statemachine.uids.getNullUID;
 
-/**
- * The Abstract class from which all states should extend.
- */
 public class BaseState implements IState {
 
-    /**
-     *  Transition map of actions to target states.
-     */
     protected var _transitions:Object = new Object();
 
-    /**
-     * @private
-     */
-    private var _name:String;
+    private var _uid:UID;
 
-    /**
-     * @private
-     */
-    private var _referringTransition:String;
-
-    /**
-     * This class is  ment to be extended.
-     * @param name the name of the state.
-     */
-    public function BaseState(name:String):void {
-        _name = name.toString();
+    public function BaseState( id:UID ):void {
+        _uid = id;
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function get name():String {
-        return _name;
+    public function get uid():UID {
+        return _uid;
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function get referringTransitionName():String {
-        return _referringTransition;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function defineTrans(transitionName:String, target:String):Boolean {
-        if (hasTrans(transitionName)) return false;
-        _transitions[ transitionName ] = target;
+    public function defineTransition( transitionUID:UID, target:UID ):Boolean {
+        if ( hasTrans( transitionUID ) ) return false;
+        _transitions[ transitionUID.identifier ] = target;
         return true;
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function hasTrans(transitionName:String):Boolean {
-        if (_transitions == null) return false;
-        return ( _transitions[ transitionName ] != null );
+    public function hasTrans( transitionUID:UID ):Boolean {
+        if ( _transitions == null ) return false;
+        return ( _transitions[ transitionUID.identifier ] != null );
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function removeTrans(transitionName:String):Boolean {
-        if (getTarget(transitionName) == null) return false;
-        delete _transitions[ transitionName ];
+    public function removeTrans( transitionUID:UID ):Boolean {
+        const targetUID:UID = getTarget( transitionUID );
+        if ( targetUID.equals( getNullUID() ) ) return false;
+        delete _transitions[ transitionUID.identifier ];
         return true;
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function getTarget(transitionName:String):String {
-        if (_transitions[ transitionName ] != null)
-            _referringTransition = transitionName;
-
-        return _transitions[ transitionName ];
+    public function getTarget( transitionUID:UID ):UID {
+        const returnUID:UID = _transitions[ transitionUID.identifier ];
+        return (returnUID == null ) ? getNullUID() : returnUID;
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function destroy():void {
+    public function dispose():void {
         _transitions = null;
-        _referringTransition = null;
     }
 }
 }

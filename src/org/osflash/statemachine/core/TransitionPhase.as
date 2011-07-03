@@ -7,7 +7,6 @@ package org.osflash.statemachine.core {
 import org.osflash.statemachine.model.TransitionModel;
 
 public interface TransitionPhase {
-    function set model( value:TransitionModel):void;
       function process( model:Object ):Boolean;
 }
 }

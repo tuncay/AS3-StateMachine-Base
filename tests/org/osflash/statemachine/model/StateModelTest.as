@@ -6,30 +6,23 @@
  * To change this template use File | Settings | File Templates.
  */
 package org.osflash.statemachine.model {
-import org.osflash.statemachine.base.*;
-import org.flexunit.Assert;
 import org.hamcrest.assertThat;
 import org.hamcrest.collection.array;
 import org.hamcrest.core.allOf;
 import org.hamcrest.core.not;
 import org.hamcrest.core.throws;
-import org.hamcrest.object.equalTo;
 import org.hamcrest.object.hasPropertyWithValue;
 import org.hamcrest.object.instanceOf;
 import org.hamcrest.object.isFalse;
 import org.hamcrest.object.isTrue;
 import org.hamcrest.object.strictlyEqualTo;
 import org.osflash.statemachine.core.IState;
-import org.osflash.statemachine.core.IStateModel;
-import org.osflash.statemachine.core.IStateModelOwner;
 import org.osflash.statemachine.core.UID;
 import org.osflash.statemachine.errors.StateModelError;
-import org.osflash.statemachine.model.StateModel;
 import org.osflash.statemachine.supporting.injectToken;
 import org.osflash.statemachine.uids.StateTransitionUID;
 import org.osflash.statemachine.uids.StateUID;
 import org.osflash.statemachine.uids.flushUIDs;
-import org.osflash.statemachine.uids.getUIDFromIdentifier;
 
 public class StateModelTest {
 

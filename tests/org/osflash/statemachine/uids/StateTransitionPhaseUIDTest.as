@@ -2,7 +2,6 @@ package org.osflash.statemachine.uids {
 
 import org.hamcrest.assertThat;
 import org.hamcrest.object.equalTo;
-import org.osflash.statemachine.uids.BaseUID;
 
 public class StateTransitionPhaseUIDTest extends IUIDBaseTests {
 

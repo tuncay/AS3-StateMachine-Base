@@ -1,9 +1,5 @@
 package org.osflash.statemachine.model {
-import flash.utils.setTimeout;
-
 import org.hamcrest.assertThat;
-import org.hamcrest.object.isFalse;
-import org.hamcrest.object.isTrue;
 import org.hamcrest.object.strictlyEqualTo;
 import org.osflash.statemachine.core.IPayload;
 import org.osflash.statemachine.core.UID;
@@ -15,15 +11,12 @@ public class TransitionBindingTest {
     private var transitionBinding:TransitionBinding;
 
     public function setUp( transition:UID, body:Object ):void {
-
         transitionBinding = new TransitionBinding( transition, body );
     }
 
     [After]
     public function tearDown():void {
-
         transitionBinding = null;
-
     }
 
     [Test]

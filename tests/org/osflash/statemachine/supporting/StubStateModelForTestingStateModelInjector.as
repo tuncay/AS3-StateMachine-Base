@@ -8,7 +8,6 @@
 package org.osflash.statemachine.supporting {
 import org.osflash.statemachine.core.IState;
 import org.osflash.statemachine.core.IStateModelOwner;
-import org.osflash.statemachine.uids.StateUID;
 import org.osflash.statemachine.uids.StateTransitionUID;
 
 public class StubStateModelForTestingStateModelInjector implements IStateModelOwner{

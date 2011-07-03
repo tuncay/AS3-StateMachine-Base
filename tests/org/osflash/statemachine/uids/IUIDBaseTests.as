@@ -6,7 +6,6 @@ import org.hamcrest.core.throws;
 import org.hamcrest.object.equalTo;
 import org.hamcrest.object.hasPropertyWithValue;
 import org.hamcrest.object.instanceOf;
-import org.osflash.statemachine.base.*;
 import org.osflash.statemachine.core.UID;
 import org.osflash.statemachine.errors.UIDError;
 

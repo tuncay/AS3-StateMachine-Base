@@ -12,7 +12,6 @@ import org.hamcrest.assertThat;
 import org.hamcrest.object.equalTo;
 import org.hamcrest.object.strictlyEqualTo;
 import org.osflash.statemachine.core.UID;
-import org.osflash.statemachine.model.BaseState;
 import org.osflash.statemachine.uids.StateTransitionUID;
 import org.osflash.statemachine.uids.StateUID;
 import org.osflash.statemachine.uids.flushUIDs;

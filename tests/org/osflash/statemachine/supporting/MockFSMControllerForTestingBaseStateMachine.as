@@ -6,7 +6,6 @@
  * To change this template use File | Settings | File Templates.
  */
 package org.osflash.statemachine.supporting {
-import BaseStateMachine;
 import org.osflash.statemachine.core.IState;
 import org.osflash.statemachine.uids.StateTransitionPhaseUID;
 

@@ -8,9 +8,8 @@
 package org.osflash.statemachine.logging {
 import flexunit.framework.Assert;
 
-import org.osflash.statemachine.model.BaseState;
 import org.osflash.statemachine.core.IState;
-import org.osflash.statemachine.core.ITransitionPhase;
+import org.osflash.statemachine.model.BaseState;
 import org.osflash.statemachine.uids.StateTransitionPhaseUID;
 
 public class TraceStateLoggerTest {

@@ -1,9 +1,5 @@
-/**
- * User: revisual.co.uk
- * Date: 02/07/11
- * Time: 18:21
- */
 package org.osflash.statemachine.transitioning {
+
 import org.osflash.statemachine.core.TransitionPhase;
 import org.osflash.statemachine.errors.StateTransitionError;
 

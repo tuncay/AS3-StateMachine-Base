@@ -1,8 +1,13 @@
 package org.osflash.statemachine.transitioning {
 import org.hamcrest.assertThat;
 import org.hamcrest.collection.array;
+import org.hamcrest.core.allOf;
 import org.hamcrest.core.isA;
+import org.hamcrest.core.throws;
+import org.hamcrest.object.hasPropertyWithValue;
+import org.hamcrest.object.instanceOf;
 import org.osflash.statemachine.core.TransitionPhase;
+import org.osflash.statemachine.errors.StateTransitionError;
 import org.osflash.statemachine.transitioning.supporting.GrumpyPhase;
 import org.osflash.statemachine.transitioning.supporting.HappyPhaseFive;
 import org.osflash.statemachine.transitioning.supporting.HappyPhaseFour;
@@ -10,6 +15,7 @@ import org.osflash.statemachine.transitioning.supporting.HappyPhaseOne;
 import org.osflash.statemachine.transitioning.supporting.HappyPhaseThree;
 import org.osflash.statemachine.transitioning.supporting.HappyPhaseTwo;
 import org.osflash.statemachine.transitioning.supporting.IPhaseRegister;
+import org.osflash.statemachine.uids.getNullUID;
 
 public class StateTransitionTest implements IPhaseRegister {
 
@@ -57,12 +63,13 @@ public class StateTransitionTest implements IPhaseRegister {
     [Test]
     public function when_no_phases_pushed_throws_StateTransitionError():void {
 
-        stateTransition.dispatchPhases( this );
+        var expectedMessage:String = StateTransitionError.NO_PHASES_HAVE_BEEN_PUSHED_TO_STATE_TRANSITION;
 
-        assertThat( phasesGot, array(
-        isA( HappyPhaseOne ),
-        isA( HappyPhaseTwo ),
-        isA( GrumpyPhase ) ) );
+        const throwFunction:Function = function ():void {
+             stateTransition.dispatchPhases( this );
+        };
+        assertThat( throwFunction, throws( allOf( instanceOf( StateTransitionError ), hasPropertyWithValue( "message", expectedMessage ) ) ) );
+
 
     }
 

@@ -4,7 +4,7 @@
  * Time: 09:53
  */
 package org.osflash.statemachine.core {
-public interface UID {
+public interface IUID {
 
     function get identifier():String;
     function get index():int;

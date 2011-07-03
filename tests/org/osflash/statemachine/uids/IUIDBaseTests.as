@@ -6,7 +6,7 @@ import org.hamcrest.core.throws;
 import org.hamcrest.object.equalTo;
 import org.hamcrest.object.hasPropertyWithValue;
 import org.hamcrest.object.instanceOf;
-import org.osflash.statemachine.core.UID;
+import org.osflash.statemachine.core.IUID;
 import org.osflash.statemachine.errors.UIDError;
 
 public class IUIDBaseTests {
@@ -15,7 +15,7 @@ public class IUIDBaseTests {
     protected const type:String = "type";
     protected const index:int = 16;
 
-    protected var subject:UID;
+    protected var subject:IUID;
 
     public function setUp( id:String, type:String = null, index:int = -2 ):void {
 
@@ -43,7 +43,7 @@ public class IUIDBaseTests {
         assertThat( subject.identifier, equalTo( expectedIdentifier ) );
     }
 
-     [Test]
+    [Test]
     public function index_value_passed_in_constructor_is_attributed_to_index_property():void {
         setUp( id, type, index );
         assertThat( subject.index, equalTo( index ) );
@@ -60,7 +60,7 @@ public class IUIDBaseTests {
     public function default_delimiter_property_is_forward_slash():void {
         setUp( id, type, index );
         const expectedIdentifier:String = subject.type + "/" + id;
-        assertThat( subject.identifier, equalTo( expectedIdentifier  ) );
+        assertThat( subject.identifier, equalTo( expectedIdentifier ) );
     }
 
     [Test]
@@ -71,7 +71,7 @@ public class IUIDBaseTests {
 
     [Test]
     public function calling_equals_against_non_self_IUID__returns_false():void {
-        const uid_2:UID = new BaseUID( "uid_1", "test" );
+        const uid_2:IUID = new BaseUID( "uid_1", "test" );
         setUp( id, type, index );
         assertThat( subject.equals( uid_2 ), equalTo( false ) );
     }

@@ -1,13 +1,11 @@
 package org.osflash.statemachine.core {
 public interface IFSMProperties {
 
-    function get currentStateUID():UID;
+    function get currentStateUID():IUID;
 
-    function get referringTransition():UID;
+    function get referringTransition():IUID;
 
-    function get isCurrentlyTransitioning():Boolean;
-
-    function get transitionPhase( ):UID
+    function get transitionPhase( ):IUID
 
 
 }

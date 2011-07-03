@@ -3,15 +3,15 @@ import org.osflash.statemachine.uids.StateUID;
 
 public interface IState {
 
-    function get uid():UID;
+    function get uid():IUID;
 
-    function defineTransition( transitionID:UID, target:UID ):Boolean;
+    function defineTransition( transitionID:IUID, target:IUID ):Boolean;
 
-    function removeTrans(transitionName:UID):Boolean;
+    function removeTrans(transitionName:IUID):Boolean;
 
-    function hasTrans(transitionName:UID):Boolean;
+    function hasTrans(transitionName:IUID):Boolean;
 
-    function getTarget(transitionName:UID):UID;
+    function getTarget(transitionName:IUID):IUID;
 
     function dispose():void;
 

@@ -5,11 +5,11 @@ public interface IStateModelOwner {
 
     function registerState(state:IState, initial:Boolean = false):Boolean;
 
-    function removeState(stateUID:UID):Boolean;
+    function removeState(stateUID:IUID):Boolean;
 
-    function hasState(stateUID:UID):Boolean;
+    function hasState(stateUID:IUID):Boolean;
 
-    function getTargetState(transitionUID:UID, state:IState):IState ;
+    function getTargetState(transitionUID:IUID, state:IState):IState ;
 
     function dispose():void;
 }

@@ -12,7 +12,7 @@ public interface IStateLogger {
      * @param phase
      * @param state
      */
-    function logPhase(phase:ITransitionPhase, state:IState):void;
+    function logPhase(phase:IUID, state:IState):void;
 
 }
 }

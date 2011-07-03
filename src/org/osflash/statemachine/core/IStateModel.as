@@ -4,6 +4,6 @@ package org.osflash.statemachine.core {
  */
 public interface IStateModel {
 
-    function getState(stateID:UID):IState;
+    function getState(stateID:IUID):IState;
 }
 }

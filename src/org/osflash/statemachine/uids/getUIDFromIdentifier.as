@@ -4,9 +4,9 @@
  * Time: 15:13
  */
 package org.osflash.statemachine.uids {
-import org.osflash.statemachine.core.UID;
+import org.osflash.statemachine.core.IUID;
 
-public function getUIDFromIdentifier( id:String):UID {
+public function getUIDFromIdentifier( id:String):IUID {
         return BaseUID.getUIDFromIdentifier( id );
     }
 

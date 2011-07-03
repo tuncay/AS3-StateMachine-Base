@@ -1,12 +1,12 @@
 
 package org.osflash.statemachine.uids {
 
-import org.osflash.statemachine.core.UID;
+import org.osflash.statemachine.core.IUID;
 import org.osflash.statemachine.errors.UIDError;
 
-internal class BaseUID implements UID {
+internal class BaseUID implements IUID {
 
-    internal static const NULL_UID:UID = new BaseUID( null, null );
+    internal static const NULL_UID:IUID = new BaseUID( null, null );
 
     private static var _registry:Array;
     public static var delimiter:String = "/";
@@ -26,12 +26,12 @@ internal class BaseUID implements UID {
        _registry = [];
     }
 
-    internal static function getUIDFromIdentifier( name:String ):UID {
+    internal static function getUIDFromIdentifier( name:String ):IUID {
         if( hasUID( name ) )
-            return UID(  _registry[ name ] );
+            return IUID(  _registry[ name ] );
         return NULL_UID;
     }
-    private function registerIUID( iuid:UID):void{
+    private function registerIUID( iuid:IUID):void{
         if( _registry == null )
             flushUIDs();
         if( hasUID( iuid.identifier ) )
@@ -67,8 +67,8 @@ internal class BaseUID implements UID {
 
     public function equals( value:Object ):Boolean {
 
-        if ( value is UID ) {
-            return ( UID( value ).identifier == this.identifier );
+        if ( value is IUID ) {
+            return ( IUID( value ).identifier == this.identifier );
         }
         if( value is String ){
             return ( String( value ) == this.identifier );

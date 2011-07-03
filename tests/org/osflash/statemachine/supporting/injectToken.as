@@ -5,9 +5,9 @@
  */
 package org.osflash.statemachine.supporting {
 
-public function injectToken( value:String,  keyword:String, replace:String ):String {
-        const regexp:RegExp = new RegExp( "\\$\\{(" + keyword + ")\\}", "g" );
-        return  value.replace( regexp, replace );
-    }
+public function injectToken( value:String, keyword:String, replace:String ):String {
+    const regexp:RegExp = new RegExp( "\\$\\{(" + keyword + ")\\}", "g" );
+    return  value.replace( regexp, replace );
+}
 
 }

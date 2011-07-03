@@ -4,11 +4,12 @@
  * Time: 22:57
  */
 package org.osflash.statemachine.base.supporting {
-import org.osflash.statemachine.core.TransitionValidator;
+import org.osflash.statemachine.core.IFSMProperties;
+import org.osflash.statemachine.core.ITransitionValidator;
 
-public class GrumpyValidator implements TransitionValidator {
+public class GrumpyValidator implements ITransitionValidator {
 
-    public function validate( model:Object ):Boolean {
+    public function validate( model:IFSMProperties ):Boolean {
         return false;
     }
 }

@@ -22,7 +22,7 @@ public interface IStateDecoder {
      * @param stateName the name of the state.
      * @return
      */
-    function isInitial(stateName:String):Boolean;
+    function isInitial(stateName:IUID):Boolean;
 
     /**
      * Iterates through the FSM definition, and returns an array of decoded states.

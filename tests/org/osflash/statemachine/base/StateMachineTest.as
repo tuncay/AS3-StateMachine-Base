@@ -11,9 +11,9 @@ import org.osflash.statemachine.base.supporting.HappyValidator;
 import org.osflash.statemachine.base.supporting.ITransitionRegister;
 import org.osflash.statemachine.base.supporting.MockStateTransitionController;
 import org.osflash.statemachine.base.supporting.MockStateTransitionModel;
-import org.osflash.statemachine.core.StateTransitionController;
-import org.osflash.statemachine.core.StateTransitionModel;
-import org.osflash.statemachine.core.UID;
+import org.osflash.statemachine.core.IFSMProperties;
+import org.osflash.statemachine.core.IStateTransitionController;
+import org.osflash.statemachine.core.IUID;
 import org.osflash.statemachine.errors.StateTransitionError;
 import org.osflash.statemachine.model.BaseState;
 import org.osflash.statemachine.supporting.injectToken;
@@ -23,16 +23,15 @@ import org.osflash.statemachine.uids.getNullUID;
 public class StateMachineTest implements ITransitionRegister {
 
     public var stateMachine:StateMachine;
-    private var _transitionGot:UID;
+    private var _transitionGot:IUID;
     private var _payloadGot:Object;
-    private var _reasonGot:UID;
+    private var _reasonGot:IUID;
 
     [Before]
     public function before():void {
-        const model:StateTransitionModel = new MockStateTransitionModel( this );
-        const controller:StateTransitionController = new MockStateTransitionController( this );
+        const model:IFSMProperties = new MockStateTransitionModel( this );
+        const controller:IStateTransitionController = new MockStateTransitionController( this );
         stateMachine = new StateMachine( model, controller );
-
     }
 
     [After]
@@ -77,7 +76,7 @@ public class StateMachineTest implements ITransitionRegister {
         assertThat( _reasonGot, strictlyEqualTo( getNullUID() ) );
     }
 
-     [Test]
+    [Test]
     public function valid_cancellation_passes_payload_to_transitionController():void {
         const expected:Object = {};
         setHappyValidators();
@@ -100,9 +99,9 @@ public class StateMachineTest implements ITransitionRegister {
     }
 
     [Test]
-    public function transitionToInitialState_calls_transitionToInitialState_on_transitionController(  ):void {
-           stateMachine.transitionToInitialState();
-        assertThat( _payloadGot,  isA( BaseState ));
+    public function transitionToInitialState_calls_transitionToInitialState_on_transitionController():void {
+        stateMachine.transitionToInitialState();
+        assertThat( _payloadGot, isA( BaseState ) );
     }
 
     private function setHappyValidators():void {
@@ -113,7 +112,7 @@ public class StateMachineTest implements ITransitionRegister {
         stateMachine.setValidators( new GrumpyValidator(), new GrumpyValidator() );
     }
 
-    public function setTransition( transition:UID ):void {
+    public function setTransition( transition:IUID ):void {
         _transitionGot = transition;
     }
 
@@ -121,7 +120,7 @@ public class StateMachineTest implements ITransitionRegister {
         _payloadGot = payload;
     }
 
-    public function setReason( reason:UID ):void {
+    public function setReason( reason:IUID ):void {
         _reasonGot = reason;
     }
 }

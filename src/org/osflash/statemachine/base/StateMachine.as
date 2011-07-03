@@ -1,34 +1,46 @@
 package org.osflash.statemachine.base {
 
 import org.osflash.statemachine.core.IFSMController;
-import org.osflash.statemachine.core.StateTransitionModel;
-import org.osflash.statemachine.core.StateTransitionController;
-import org.osflash.statemachine.core.TransitionValidator;
-import org.osflash.statemachine.core.UID;
+import org.osflash.statemachine.core.IFSMProperties;
+import org.osflash.statemachine.core.IStateTransitionController;
+import org.osflash.statemachine.core.ITransitionValidator;
+import org.osflash.statemachine.core.IUID;
 import org.osflash.statemachine.errors.StateTransitionError;
 
-public class StateMachine implements IFSMController {
+public class StateMachine implements IFSMController, IFSMProperties {
 
-    private var _transitionModel:StateTransitionModel;
-    private var _transitionController:StateTransitionController;
-    private var _transitionValidator:TransitionValidator;
-    private var _cancellationValidator:TransitionValidator;
+    private var _transitionModel:IFSMProperties;
+    private var _transitionController:IStateTransitionController;
+    private var _transitionValidator:ITransitionValidator;
+    private var _cancellationValidator:ITransitionValidator;
 
-    public function StateMachine( model:StateTransitionModel, controller:StateTransitionController ) {
+    public function StateMachine( model:IFSMProperties, controller:IStateTransitionController ) {
         _transitionModel = model;
         _transitionController = controller;
+    }
+
+     public function get currentStateUID():IUID {
+        return _transitionModel.currentStateUID;
+    }
+
+    public function get referringTransition():IUID {
+        return _transitionModel.referringTransition;
+    }
+
+    public function get transitionPhase():IUID {
+        return _transitionModel.transitionPhase;
     }
 
     public final function transitionToInitialState():void {
         _transitionController.transitionToInitialState();
     }
 
-    public final function setValidators( transition:TransitionValidator, cancellation:TransitionValidator ):void {
+    public final function setValidators( transition:ITransitionValidator, cancellation:ITransitionValidator ):void {
         _transitionValidator = transition;
         _cancellationValidator = cancellation;
     }
 
-    public final function transition( transition:UID, payload:Object = null ):void {
+    public final function transition( transition:IUID, payload:Object = null ):void {
         if ( isTransitionFromValidPhase ) {
             _transitionController.transition( transition, payload );
         } else {
@@ -36,9 +48,9 @@ public class StateMachine implements IFSMController {
         }
     }
 
-    public final function cancelStateTransition( reason:UID, payload:Object = null ):void {
+    public final function cancelStateTransition( reason:IUID, payload:Object = null ):void {
         if ( isCancellationFromValidPhase ) {
-            _transitionModel.cancelTransition( reason, payload );
+            _transitionController.cancelStateTransition( reason, payload );
         } else {
             throwStateTransitionError( StateTransitionError.INVALID_CANCEL_ERROR );
         }
@@ -57,5 +69,6 @@ public class StateMachine implements IFSMController {
     private final function get isCancellationFromValidPhase():Boolean {
         return (_cancellationValidator == null) ? false : _cancellationValidator.validate( _transitionModel );
     }
+
 }
 }

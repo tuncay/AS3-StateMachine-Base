@@ -1,20 +1,21 @@
 package org.osflash.statemachine.transitioning {
 
-import org.osflash.statemachine.core.TransitionPhase;
+import org.osflash.statemachine.core.IPhaseDispatcher;
+import org.osflash.statemachine.core.ITransitionPhase;
 import org.osflash.statemachine.errors.StateTransitionError;
 
-public class StateTransition {
+public class StateTransition implements IPhaseDispatcher {
 
     private var _transitionPhases:Array;
 
     public function StateTransition() {
-        initialise();
+        initialiseStateTransition();
     }
 
-    protected function initialise():void {
+    protected function initialiseStateTransition():void {
     }
 
-    public final function pushTransitionPhase( phase:TransitionPhase ):void {
+    public final function pushTransitionPhase( phase:ITransitionPhase ):void {
         if ( _transitionPhases == null )_transitionPhases = [];
         _transitionPhases.push( phase );
     }
@@ -25,7 +26,7 @@ public class StateTransition {
         }
         var n:int = 0;
         while ( n < _transitionPhases.length ) {
-            const phase:TransitionPhase = TransitionPhase( _transitionPhases[n++] );
+            const phase:ITransitionPhase = ITransitionPhase( _transitionPhases[n++] );
             const proceedWithTransition:Boolean = phase.process( model );
             if ( !proceedWithTransition ) break;
         }

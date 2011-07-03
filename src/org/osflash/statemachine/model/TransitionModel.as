@@ -2,40 +2,47 @@ package org.osflash.statemachine.model {
 
 import org.osflash.statemachine.core.IFSMProperties;
 import org.osflash.statemachine.core.IPayload;
+import org.osflash.statemachine.core.ITransitionPhaseModel;
 import org.osflash.statemachine.core.IState;
 import org.osflash.statemachine.core.IStateModelOwner;
-import org.osflash.statemachine.core.StateTransitionModel;
-import org.osflash.statemachine.core.UID;
+import org.osflash.statemachine.core.IStateTransitionModel;
+import org.osflash.statemachine.core.IUID;
 import org.osflash.statemachine.uids.StateTransitionPhaseUID;
 import org.osflash.statemachine.uids.getNullUID;
 
-public class TransitionModel implements IFSMProperties, StateTransitionModel {
+public class TransitionModel implements IStateTransitionModel, ITransitionPhaseModel {
 
     private var _stateModel:IStateModelOwner;
     private var _currentState:IState;
     private var _queue:Array;
-    private var _currentTransitionPhase:UID;
-    private var _isCurrentlyTransitioning:Boolean;
+    private var _currentTransitionPhase:IUID;
     private var _currentBinding:TransitionBinding;
     private var _cancellationBinding:TransitionBinding;
 
     public final function TransitionModel( stateModel:IStateModelOwner ) {
         _stateModel = stateModel;
-        _currentTransitionPhase = getNullUID();
         _queue = [];
         reset();
     }
 
-    public function get currentStateUID():UID {
+    public function get currentStateUID():IUID {
         return _currentState.uid;
     }
 
-    public function get referringTransition():UID {
+    public function get referringTransition():IUID {
         return (_currentBinding == null ) ? getNullUID() : _currentBinding.transition;
     }
 
-    public function get isCurrentlyTransitioning():Boolean {
-        return _isCurrentlyTransitioning;
+    public function get payload():IPayload {
+        return _currentBinding.payload;
+    }
+
+    public function get transitionPhase( ):IUID {
+        return _currentTransitionPhase;
+    }
+
+    public function set transitionPhase( value:IUID ):void {
+        _currentTransitionPhase = value;
     }
 
     public function get hasNextTransitions():Boolean {
@@ -66,11 +73,11 @@ public class TransitionModel implements IFSMProperties, StateTransitionModel {
         _currentState = targetState;
     }
 
-    public function pushTransition( transition:UID, payload:Object ):void {
+    public function enqueueTransition( transition:IUID, payload:Object = null ):void {
         _queue.push( new TransitionBinding( transition, payload ) );
     }
 
-    public function cancelTransition( reason:UID, payload:Object ):void {
+    public function cancelTransition( reason:IUID, payload:Object = null ):void {
         _cancellationBinding = new TransitionBinding( reason, payload );
     }
 
@@ -88,25 +95,11 @@ public class TransitionModel implements IFSMProperties, StateTransitionModel {
         _cancellationBinding = null;
     }
 
-    public function markTransitionAsStarted():void {
-        _isCurrentlyTransitioning = true;
+    public function shiftNextTransition():void {
         _currentBinding = _queue.shift();
     }
 
-    public function markTransitionAsEnded():void {
-        _isCurrentlyTransitioning = false;
-    }
 
-    public function get payload():IPayload {
-        return _currentBinding.payload;
-    }
 
-    public function get transitionPhase( ):UID {
-        return _currentTransitionPhase;
-    }
-
-     public function set transitionPhase( value:UID ):void {
-        _currentTransitionPhase = value;
-    }
 }
 }

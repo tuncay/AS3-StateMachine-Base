@@ -9,11 +9,11 @@ package org.osflash.statemachine.uids {
 import org.hamcrest.assertThat;
 import org.hamcrest.object.equalTo;
 import org.hamcrest.object.sameInstance;
-import org.osflash.statemachine.core.UID;
+import org.osflash.statemachine.core.IUID;
 
 public class UIDStaticTests {
 
-    private var uid:UID;
+    private var uid:IUID;
     private const id:String = "id";
     private const type:String = "type";
 
@@ -35,7 +35,7 @@ public class UIDStaticTests {
 
     [Test]
     public function getIUIDFromIdentifier_returns_corresponding_IUID():void {
-        setUp( id,  type);
+        setUp( id, type );
         assertThat( BaseUID.getUIDFromIdentifier( uid.identifier ), sameInstance( uid ) );
     }
 

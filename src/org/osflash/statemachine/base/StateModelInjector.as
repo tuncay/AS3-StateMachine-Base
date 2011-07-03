@@ -9,6 +9,7 @@ import org.osflash.statemachine.core.IState;
 import org.osflash.statemachine.core.IStateDecoder;
 import org.osflash.statemachine.core.IStateModelInjector;
 import org.osflash.statemachine.core.IStateModelOwner;
+import org.osflash.statemachine.core.IUID;
 import org.osflash.statemachine.errors.StateDecodingError;
 
 public class StateModelInjector implements IStateModelInjector {
@@ -28,7 +29,7 @@ public class StateModelInjector implements IStateModelInjector {
 
         const states:Array = _stateDecoder.getStateList();
         for each (var state:IState in states) {
-            stateModel.registerState(state, isInitial(state.id));
+            stateModel.registerState(state, isInitial(state.uid));
         }
     }
 
@@ -37,7 +38,7 @@ public class StateModelInjector implements IStateModelInjector {
         _stateDecoder = null;
     }
 
-    protected function isInitial(stateName:String):Boolean {
+    protected function isInitial(stateName:IUID):Boolean {
         return _stateDecoder.isInitial(stateName);
     }
 

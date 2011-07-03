@@ -1,15 +1,11 @@
-/**
- * User: revisual.co.uk
- * Date: 02/07/11
- * Time: 22:30
- */
 package org.osflash.statemachine.base.supporting {
-import org.osflash.statemachine.core.StateTransitionController;
-import org.osflash.statemachine.core.UID;
+
+import org.osflash.statemachine.core.IStateTransitionController;
+import org.osflash.statemachine.core.IUID;
 import org.osflash.statemachine.model.BaseState;
 import org.osflash.statemachine.uids.getNullUID;
 
-public class MockStateTransitionController implements StateTransitionController {
+public class MockStateTransitionController implements IStateTransitionController {
 
     private var _register:ITransitionRegister;
 
@@ -17,13 +13,19 @@ public class MockStateTransitionController implements StateTransitionController 
         _register = register;
     }
 
-    public function transition( transition:UID, payload:Object = null ):void {
+    public function transition( transition:IUID, payload:Object = null ):void {
         _register.setTransition( transition );
         _register.setPayload( payload );
     }
 
     public function transitionToInitialState():void {
-         _register.setPayload( new BaseState( getNullUID()) )
+        _register.setPayload( new BaseState( getNullUID() ) )
     }
+
+    public function cancelStateTransition( reason:IUID, payload:Object = null ):void {
+        _register.setReason( reason );
+        _register.setPayload( payload );
+    }
+
 }
 }

@@ -2,7 +2,7 @@ package org.osflash.statemachine.decoding {
 import org.osflash.statemachine.base.*;
 import org.osflash.statemachine.core.IState;
 import org.osflash.statemachine.core.IStateDecoder;
-import org.osflash.statemachine.core.UID;
+import org.osflash.statemachine.core.IUID;
 import org.osflash.statemachine.uids.BaseUID;
 import org.osflash.statemachine.errors.StateDecodingError;
 import org.osflash.statemachine.uids.getUIDFromIdentifier;
@@ -78,7 +78,7 @@ public class BaseXMLStateDecoder implements IStateDecoder {
     }
 
     public function decodeState( stateDef:Object ):IState {
-        const stateUID:UID = getUIDFromIdentifier( stateDef.@name );
+        const stateUID:IUID = getUIDFromIdentifier( stateDef.@name );
         return new BaseState( stateUID );
     }
 
@@ -107,8 +107,8 @@ public class BaseXMLStateDecoder implements IStateDecoder {
     }
 
     private function defineTransition( state:IState, transDef:XML ):void {
-        const transitionUID:UID = getUIDFromIdentifier( transDef.@name );
-        const targetUID:UID = getUIDFromIdentifier( transDef.@target );
+        const transitionUID:IUID = getUIDFromIdentifier( transDef.@name );
+        const targetUID:IUID = getUIDFromIdentifier( transDef.@target );
 
 
         state.defineTransition( transitionUID, targetUID )

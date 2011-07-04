@@ -1,12 +1,12 @@
 package org.osflash.statemachine.model {
 
-import org.osflash.statemachine.core.IFSMProperties;
 import org.osflash.statemachine.core.IPayload;
-import org.osflash.statemachine.core.ITransitionPhaseModel;
 import org.osflash.statemachine.core.IState;
-import org.osflash.statemachine.core.IStateModelOwner;
-import org.osflash.statemachine.core.IStateTransitionModel;
-import org.osflash.statemachine.core.IUID;
+import org.osflash.statemachine.model.IStateModelOwner;
+import org.osflash.statemachine.model.IStateTransitionModel;
+import org.osflash.statemachine.model.ITransitionPhaseModel;
+import org.osflash.statemachine.uids.IUID;
+import org.osflash.statemachine.errors.StateTransitionError;
 import org.osflash.statemachine.uids.StateTransitionPhaseUID;
 import org.osflash.statemachine.uids.getNullUID;
 
@@ -37,16 +37,12 @@ public class TransitionModel implements IStateTransitionModel, ITransitionPhaseM
         return _currentBinding.payload;
     }
 
-    public function get transitionPhase( ):IUID {
+    public function get transitionPhase():IUID {
         return _currentTransitionPhase;
     }
 
     public function set transitionPhase( value:IUID ):void {
         _currentTransitionPhase = value;
-    }
-
-    public function get hasNextTransitions():Boolean {
-        return ( _queue.length != 0 );
     }
 
     public function get targetState():IState {
@@ -81,25 +77,35 @@ public class TransitionModel implements IStateTransitionModel, ITransitionPhaseM
         _cancellationBinding = new TransitionBinding( reason, payload );
     }
 
-    public function discardUndefinedTransition():Boolean {
-        if ( _currentState.hasTrans( TransitionBinding( _queue[0] ).transition ) ) {
-            return false
-        } else {
-            _queue.shift();
-            return true;
-        }
-    }
-
     public function reset():void {
         _currentTransitionPhase = StateTransitionPhaseUID.NONE;
         _cancellationBinding = null;
     }
 
-    public function shiftNextTransition():void {
-        _currentBinding = _queue.shift();
+    public function dequeueNextTransition():void {
+        const discardedTransition:IUID = discardUndefinedTransition();
+        if ( discardedTransition.equals( getNullUID() ) ) {
+            _currentBinding = _queue.shift();
+        } else {
+            throwUndefinedTransitionError( discardedTransition );
+        }
     }
 
+    private function discardUndefinedTransition():IUID {
+        if ( _currentState.hasTrans( TransitionBinding( _queue[0] ).transition ) ) {
+            return getNullUID();
+        } else {
+            const transitionBinding:TransitionBinding = _queue.shift();
+            return transitionBinding.transition;
+        }
+    }
 
+    private function throwUndefinedTransitionError( transition:IUID ):void {
+        const error:StateTransitionError = new StateTransitionError( StateTransitionError.TRANSITION_UNDEFINED_IN_CURRENT_STATE );
+        error.injectMessageWithToken( "state", _currentState.toString() );
+        error.injectMessageWithToken( "transition", transition.toString() );
+        throw error;
+    }
 
 }
 }

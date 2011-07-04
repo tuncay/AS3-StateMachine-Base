@@ -1,14 +1,14 @@
 package org.osflash.statemachine.transitioning {
 
-import org.osflash.statemachine.core.IPhaseDispatcher;
-import org.osflash.statemachine.core.IStateTransitionController;
-import org.osflash.statemachine.core.IStateTransitionModel;
-import org.osflash.statemachine.core.IUID;
+import org.osflash.statemachine.model.IPhaseDispatcher;
+import org.osflash.statemachine.transitioning.IStateTransitionController;
+import org.osflash.statemachine.model.IStateTransitionModel;
+import org.osflash.statemachine.uids.IUID;
 import org.osflash.statemachine.logging.log;
 
 public class StateTransitionController implements IStateTransitionController {
 
-   private var _model:IStateTransitionModel;
+    private var _model:IStateTransitionModel;
     private var _transition:IPhaseDispatcher;
     private var _isCurrentlyTransitioning:Boolean;
 
@@ -19,40 +19,34 @@ public class StateTransitionController implements IStateTransitionController {
 
     public function transitionToInitialState():void {
         _model.setInitialStateAsCurrent();
-        transitionToState( );
+        executeTransition();
     }
 
     public final function transition( transition:IUID, payload:Object = null ):void {
         _model.enqueueTransition( transition, payload );
         if ( _isCurrentlyTransitioning ) {
-            log( " currently transitioning, the request is queued" );
+            log( "fsm is currently transitioning, the request to transition has been queued" );
         }
         else {
             prepareAndExecuteNextTransition();
         }
     }
 
-   public function cancelStateTransition( reason:IUID, payload:Object = null ):void{
-       _model.cancelTransition( reason, payload );
-   }
+    public function cancelStateTransition( reason:IUID, payload:Object = null ):void {
+        _model.cancelTransition( reason, payload );
+    }
 
     private final function prepareAndExecuteNextTransition():void {
-        if ( _model.hasNextTransition  ) {
-            if ( _model.discardUndefinedTransition() ) {
-                transitionToState( );
-            }
-            else {
-                log( "[" + _model.referringTransition + "]" + " is not defined in state: " + "[" +_model.currentStateUID + "]" );
-                prepareAndExecuteNextTransition();
-            }
+        if ( _model.hasNextTransition ) {
+            _model.dequeueNextTransition();
+            executeTransition();
         }
     }
 
-    protected final function transitionToState( ):void {
-       _isCurrentlyTransitioning = true;
-        _model.shiftNextTransition();
+    protected final function executeTransition():void {
+        _isCurrentlyTransitioning = true;
         _transition.dispatchPhases( _model );
-         _isCurrentlyTransitioning = false;
+        _isCurrentlyTransitioning = false;
         _model.reset();
         prepareAndExecuteNextTransition();
     }

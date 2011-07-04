@@ -1,8 +1,7 @@
 package org.osflash.statemachine.transitioning {
 
-import org.osflash.statemachine.core.IPhaseDispatcher;
-import org.osflash.statemachine.core.ITransitionPhase;
 import org.osflash.statemachine.errors.StateTransitionError;
+import org.osflash.statemachine.model.IPhaseDispatcher;
 
 public class StateTransition implements IPhaseDispatcher {
 
@@ -28,7 +27,7 @@ public class StateTransition implements IPhaseDispatcher {
         while ( n < _transitionPhases.length ) {
             const phase:ITransitionPhase = ITransitionPhase( _transitionPhases[n++] );
             const proceedWithTransition:Boolean = phase.process( model );
-            if ( !proceedWithTransition ) break;
+            if ( !proceedWithTransition ) return;
         }
     }
 }

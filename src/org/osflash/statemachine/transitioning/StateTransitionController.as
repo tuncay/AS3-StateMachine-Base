@@ -24,7 +24,7 @@ public class StateTransitionController implements IStateTransitionController {
 
     public final function transition( transition:IUID, payload:Object = null ):void {
         _model.enqueueTransition( transition, payload );
-        if ( _isCurrentlyTransitioning ) {
+       if ( _isCurrentlyTransitioning ) {
             log( "fsm is currently transitioning, the request to transition has been queued" );
         }
         else {
@@ -33,7 +33,7 @@ public class StateTransitionController implements IStateTransitionController {
     }
 
     public function cancelStateTransition( reason:IUID, payload:Object = null ):void {
-        _model.cancelTransition( reason, payload );
+        _model.addReasonForCancellation( reason, payload );
     }
 
     private final function prepareAndExecuteNextTransition():void {
@@ -50,11 +50,5 @@ public class StateTransitionController implements IStateTransitionController {
         _model.reset();
         prepareAndExecuteNextTransition();
     }
-
-    public function destroy():void {
-        _model = null;
-        _transition = null;
-    }
-
 }
 }

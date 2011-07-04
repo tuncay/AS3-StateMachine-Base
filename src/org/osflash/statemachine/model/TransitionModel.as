@@ -73,7 +73,7 @@ public class TransitionModel implements IStateTransitionModel, ITransitionPhaseM
         _queue.push( new TransitionBinding( transition, payload ) );
     }
 
-    public function cancelTransition( reason:IUID, payload:Object = null ):void {
+    public function addReasonForCancellation( reason:IUID, payload:Object = null ):void {
         _cancellationBinding = new TransitionBinding( reason, payload );
     }
 

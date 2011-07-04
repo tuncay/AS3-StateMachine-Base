@@ -4,11 +4,9 @@ import org.hamcrest.assertThat;
 import org.hamcrest.core.allOf;
 import org.hamcrest.object.equalTo;
 import org.hamcrest.object.hasPropertyChain;
-import org.hamcrest.object.hasPropertyWithValue;
 import org.hamcrest.object.isFalse;
 import org.hamcrest.object.nullValue;
 import org.hamcrest.object.strictlyEqualTo;
-import org.osflash.statemachine.uids.IUID;
 import org.osflash.statemachine.uids.StateTransitionUID;
 import org.osflash.statemachine.uids.flushUIDs;
 
@@ -50,9 +48,9 @@ public class TransitionQueueTest {
 
     [Test]
     public function queue_is_last_on_last_off():void {
-        enqueueMultipleItems();
-        transitionQueue.dequeueTransition();
-        transitionQueue.dequeueTransition();
+        enqueueThreeItems();
+        dequeueTwice();
+
         assertThat( transitionQueue.dequeueTransition(),
         allOf(
         hasPropertyChain( "transition.identifier", equalTo( "transition/testing_three" ) ),
@@ -64,10 +62,15 @@ public class TransitionQueueTest {
         transitionQueue.enqueueTransition( new StateTransitionUID( "testing_one" ), "body_one" );
     }
 
-    private function enqueueMultipleItems():void {
+    private function enqueueThreeItems():void {
         transitionQueue.enqueueTransition( new StateTransitionUID( "testing_one" ), "body_one" );
         transitionQueue.enqueueTransition( new StateTransitionUID( "testing_two" ), "body_two" );
         transitionQueue.enqueueTransition( new StateTransitionUID( "testing_three" ), "body_three" );
+    }
+
+     private function dequeueTwice():void {
+        transitionQueue.dequeueTransition();
+        transitionQueue.dequeueTransition();
     }
 
 

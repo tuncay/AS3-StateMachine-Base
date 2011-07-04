@@ -2,11 +2,8 @@ package org.osflash.statemachine.model {
 
 import org.osflash.statemachine.core.IPayload;
 import org.osflash.statemachine.core.IState;
-import org.osflash.statemachine.model.IStateModelOwner;
-import org.osflash.statemachine.model.IStateTransitionModel;
-import org.osflash.statemachine.model.ITransitionPhaseModel;
-import org.osflash.statemachine.uids.IUID;
 import org.osflash.statemachine.errors.StateTransitionError;
+import org.osflash.statemachine.uids.IUID;
 import org.osflash.statemachine.uids.StateTransitionPhaseUID;
 import org.osflash.statemachine.uids.getNullUID;
 
@@ -62,7 +59,11 @@ public class TransitionModel implements IStateTransitionModel, ITransitionPhaseM
     }
 
     public function setInitialStateAsCurrent():void {
-        _currentState = _stateModel.initialState;
+        if ( _currentState == null ) {
+            _currentState = _stateModel.initialState;
+        } else {
+            throw new StateTransitionError( StateTransitionError.INITIAL_STATE_CAN_ONLY_BE_SET_ONCE );
+        }
     }
 
     public function setTargetStateAsCurrent():void {

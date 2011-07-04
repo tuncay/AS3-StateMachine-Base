@@ -34,7 +34,7 @@ internal class TransitionModelProperties {
 
     private function throwUndefinedTransitionError( transition:IUID ):void {
         const error:StateTransitionError = new StateTransitionError( StateTransitionError.TRANSITION_UNDEFINED_IN_CURRENT_STATE );
-        error.injectMessageWithToken( "state", _currentState.toString() );
+        error.injectMessageWithToken( "state", _currentState.uid.toString() );
         error.injectMessageWithToken( "transition", transition.toString() );
         throw error;
     }
@@ -49,7 +49,7 @@ internal class TransitionModelProperties {
     }
 
     internal function get currentPayload():IPayload {
-        if ( hasTransitionBeenCancelled ) {
+        if ( hasTransitionBeenCancelled && !_cancellationBinding.payload.isNull ) {
             return _cancellationBinding.payload;
         }
         return _currentBinding.payload;

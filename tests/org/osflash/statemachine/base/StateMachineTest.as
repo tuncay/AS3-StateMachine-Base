@@ -1,4 +1,5 @@
 package org.osflash.statemachine.base {
+
 import org.hamcrest.assertThat;
 import org.hamcrest.core.allOf;
 import org.hamcrest.core.isA;
@@ -12,11 +13,11 @@ import org.osflash.statemachine.base.supporting.ITransitionRegister;
 import org.osflash.statemachine.base.supporting.MockStateTransitionController;
 import org.osflash.statemachine.base.supporting.MockStateTransitionModel;
 import org.osflash.statemachine.core.IFSMProperties;
-import org.osflash.statemachine.transitioning.IStateTransitionController;
-import org.osflash.statemachine.uids.IUID;
 import org.osflash.statemachine.errors.StateTransitionError;
 import org.osflash.statemachine.model.BaseState;
 import org.osflash.statemachine.supporting.injectToken;
+import org.osflash.statemachine.transitioning.IStateTransitionController;
+import org.osflash.statemachine.uids.IUID;
 import org.osflash.statemachine.uids.flushUIDs;
 import org.osflash.statemachine.uids.getNullUID;
 

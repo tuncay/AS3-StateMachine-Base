@@ -6,8 +6,8 @@
  * To change this template use File | Settings | File Templates.
  */
 package org.osflash.statemachine.transitioning {
+
 import org.hamcrest.assertThat;
-import org.hamcrest.object.equalTo;
 import org.hamcrest.object.isFalse;
 import org.hamcrest.object.isTrue;
 import org.hamcrest.object.strictlyEqualTo;

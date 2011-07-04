@@ -1,4 +1,5 @@
 package org.osflash.statemachine.errors {
+
 /**
 
  */

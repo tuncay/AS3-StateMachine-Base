@@ -69,7 +69,7 @@ public class TransitionModel implements IStateTransitionModel, ITransitionPhaseM
     }
 
     public function dequeueNextTransition():void {
-        const nextTransition:TransitionBinding = _queue.getNext();
+        const nextTransition:TransitionBinding = _queue.dequeueTransition();
         _properties.setCurrentTransition( nextTransition );
     }
 

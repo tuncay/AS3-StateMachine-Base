@@ -1,4 +1,5 @@
 package org.osflash.statemachine.decoding {
+
 /**
  * Contract for wrapping and reflecting class references
  */
@@ -28,7 +29,7 @@ public interface IClassReflector {
      * @param value item to evaluate against
      * @return the result of the comparison
      */
-    function equals(value:Object):Boolean
+    function equals( value:Object ):Boolean
 
     /**
      * destroys the instance

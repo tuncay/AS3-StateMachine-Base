@@ -1,9 +1,9 @@
 package org.osflash.statemachine.model {
+
 import org.osflash.statemachine.core.IState;
 import org.osflash.statemachine.core.IStateModel;
-import org.osflash.statemachine.model.IStateModelOwner;
-import org.osflash.statemachine.uids.IUID;
 import org.osflash.statemachine.errors.StateModelError;
+import org.osflash.statemachine.uids.IUID;
 
 public class StateModel implements IStateModel, IStateModelOwner {
 
@@ -29,12 +29,11 @@ public class StateModel implements IStateModel, IStateModelOwner {
     }
 
     public function getState( stateID:IUID ):IState {
-        if( !hasState( stateID ) ){
+        if ( !hasState( stateID ) ) {
             throwStateNotRegisteredError( stateID );
         }
         return  IState( _states[ stateID.identifier ] );
     }
-
 
 
     public function removeState( stateID:IUID ):Boolean {
@@ -51,8 +50,8 @@ public class StateModel implements IStateModel, IStateModelOwner {
     }
 
     public function getTargetState( transitionUID:IUID, state:IState ):IState {
-        if( !state.hasTrans( transitionUID )){
-            throwTransitionNotDefinedInState(state.uid, transitionUID );
+        if ( !state.hasTrans( transitionUID ) ) {
+            throwTransitionNotDefinedInState( state.uid, transitionUID );
         }
         const targetStateUID:IUID = state.getTarget( transitionUID );
         const targetState:IState = IState( _states[ targetStateUID.identifier ] );
@@ -63,7 +62,7 @@ public class StateModel implements IStateModel, IStateModelOwner {
     }
 
     private function throwTransitionNotDefinedInState( state:IUID, transition:IUID ):void {
-       const error:StateModelError = new StateModelError( StateModelError.TRANSITION_NOT_DECLARED_IN_STATE );
+        const error:StateModelError = new StateModelError( StateModelError.TRANSITION_NOT_DECLARED_IN_STATE );
         error.injectMessageWithToken( "state", state.identifier );
         error.injectMessageWithToken( "transition", transition.identifier );
         throw error;
@@ -77,8 +76,8 @@ public class StateModel implements IStateModel, IStateModelOwner {
         throw error;
     }
 
-     private function throwStateNotRegisteredError( state:IUID ):void {
-         const error:StateModelError = new StateModelError( StateModelError.STATE_REQUESTED_IS_NOT_REGISTERED );
+    private function throwStateNotRegisteredError( state:IUID ):void {
+        const error:StateModelError = new StateModelError( StateModelError.STATE_REQUESTED_IS_NOT_REGISTERED );
         error.injectMessageWithToken( "state", state.identifier );
         throw error;
     }

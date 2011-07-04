@@ -1,9 +1,10 @@
 package org.osflash.statemachine.model {
+
 import org.hamcrest.assertThat;
 import org.hamcrest.object.strictlyEqualTo;
 import org.osflash.statemachine.core.IPayload;
-import org.osflash.statemachine.uids.IUID;
 import org.osflash.statemachine.transitioning.*;
+import org.osflash.statemachine.uids.IUID;
 import org.osflash.statemachine.uids.getNullUID;
 
 public class TransitionBindingTest {

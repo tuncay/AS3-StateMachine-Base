@@ -4,7 +4,8 @@
  * Time: 15:07
  */
 package org.osflash.statemachine.transitioning {
+
 public interface ITransitionPhase {
-      function process( model:Object ):Boolean;
+    function process( model:Object ):Boolean;
 }
 }

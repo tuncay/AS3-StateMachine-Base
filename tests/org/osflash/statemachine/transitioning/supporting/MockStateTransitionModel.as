@@ -4,6 +4,7 @@
  * Time: 14:18
  */
 package org.osflash.statemachine.transitioning.supporting {
+
 import org.osflash.statemachine.core.IState;
 import org.osflash.statemachine.model.IStateTransitionModel;
 import org.osflash.statemachine.uids.IUID;
@@ -18,7 +19,7 @@ public class MockStateTransitionModel implements IStateTransitionModel {
     public function MockStateTransitionModel( registry:IResultsRegistry, transitions:Array ) {
         _registry = registry;
         if ( transitions != null ) {
-           _transitions = transitions;
+            _transitions = transitions;
         }
     }
 
@@ -41,7 +42,7 @@ public class MockStateTransitionModel implements IStateTransitionModel {
     }
 
     public function dequeueNextTransition():void {
-        const o:Object =  _transitions.shift();
+        const o:Object = _transitions.shift();
         _registry.pushResult( "IStateTransitionModel.dequeueNextTransition()::" + o.transition.toString() + "," + o.payload.toString() );
 
     }

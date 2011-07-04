@@ -4,6 +4,7 @@
  * Time: 07:28
  */
 package org.osflash.statemachine.transitioning.supporting {
+
 import org.osflash.statemachine.transitioning.ITransitionPhase;
 
 public class HappyPhaseOne implements ITransitionPhase {

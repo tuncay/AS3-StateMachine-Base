@@ -1,4 +1,5 @@
 package org.osflash.statemachine.transitioning {
+
 import org.hamcrest.assertThat;
 import org.hamcrest.collection.array;
 import org.hamcrest.core.allOf;
@@ -6,7 +7,6 @@ import org.hamcrest.core.isA;
 import org.hamcrest.core.throws;
 import org.hamcrest.object.hasPropertyWithValue;
 import org.hamcrest.object.instanceOf;
-import org.osflash.statemachine.transitioning.ITransitionPhase;
 import org.osflash.statemachine.errors.StateTransitionError;
 import org.osflash.statemachine.transitioning.supporting.GrumpyPhase;
 import org.osflash.statemachine.transitioning.supporting.HappyPhaseFive;

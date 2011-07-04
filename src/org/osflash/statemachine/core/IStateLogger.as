@@ -1,4 +1,5 @@
 package org.osflash.statemachine.core {
+
 import org.osflash.statemachine.uids.IUID;
 
 public interface IStateLogger {
@@ -6,7 +7,7 @@ public interface IStateLogger {
      * Allows wrapping of logging functionality within the StateMachine framework
      * @param msg The message to log
      */
-    function log(msg:String):void;
+    function log( msg:String ):void;
 
 
     /**
@@ -14,7 +15,7 @@ public interface IStateLogger {
      * @param phase
      * @param state
      */
-    function logPhase(phase:IUID, state:IState):void;
+    function logPhase( phase:IUID, state:IState ):void;
 
 }
 }

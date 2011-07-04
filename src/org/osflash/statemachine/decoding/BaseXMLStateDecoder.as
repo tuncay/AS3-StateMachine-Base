@@ -1,10 +1,8 @@
 package org.osflash.statemachine.decoding {
-import org.osflash.statemachine.base.*;
+
 import org.osflash.statemachine.core.IState;
-import org.osflash.statemachine.decoding.IStateDecoder;
-import org.osflash.statemachine.uids.IUID;
-import org.osflash.statemachine.uids.BaseUID;
 import org.osflash.statemachine.errors.StateDecodingError;
+import org.osflash.statemachine.uids.IUID;
 import org.osflash.statemachine.uids.getUIDFromIdentifier;
 
 public class BaseXMLStateDecoder implements IStateDecoder {

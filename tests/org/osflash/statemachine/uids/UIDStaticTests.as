@@ -6,10 +6,10 @@
  * To change this template use File | Settings | File Templates.
  */
 package org.osflash.statemachine.uids {
+
 import org.hamcrest.assertThat;
 import org.hamcrest.object.equalTo;
 import org.hamcrest.object.sameInstance;
-import org.osflash.statemachine.uids.IUID;
 
 public class UIDStaticTests {
 

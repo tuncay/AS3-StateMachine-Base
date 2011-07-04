@@ -1,7 +1,5 @@
-
 package org.osflash.statemachine.uids {
 
-import org.osflash.statemachine.uids.IUID;
 import org.osflash.statemachine.errors.UIDError;
 
 internal class BaseUID implements IUID {
@@ -22,19 +20,21 @@ internal class BaseUID implements IUID {
         _index = index;
         registerIUID( this );
     }
-    internal static function flushUIDs(  ):void {
-       _registry = [];
+
+    internal static function flushUIDs():void {
+        _registry = [];
     }
 
     internal static function getUIDFromIdentifier( name:String ):IUID {
-        if( hasUID( name ) )
-            return IUID(  _registry[ name ] );
+        if ( hasUID( name ) )
+            return IUID( _registry[ name ] );
         return NULL_UID;
     }
-    private function registerIUID( iuid:IUID):void{
-        if( _registry == null )
+
+    private function registerIUID( iuid:IUID ):void {
+        if ( _registry == null )
             flushUIDs();
-        if( hasUID( iuid.identifier ) )
+        if ( hasUID( iuid.identifier ) )
             throw new UIDError( UIDError.NON_UNIQUE_IDENTIFIER + iuid.identifier );
         else
             _registry[ iuid.identifier ] = iuid;
@@ -42,8 +42,8 @@ internal class BaseUID implements IUID {
     }
 
     private static function hasUID( name:String ):Boolean {
-    return (_registry[ name ] != null );
-}
+        return (_registry[ name ] != null );
+    }
 
     public function get identifier():String {
         return _type + delimiter + _id;
@@ -53,7 +53,7 @@ internal class BaseUID implements IUID {
         return _type;
     }
 
-     public function get index():int {
+    public function get index():int {
         return _index;
     }
 
@@ -62,7 +62,7 @@ internal class BaseUID implements IUID {
     }
 
     public function get isNull():Boolean {
-       return ( _id == null );
+        return ( _id == null );
     }
 
     public function equals( value:Object ):Boolean {
@@ -70,7 +70,7 @@ internal class BaseUID implements IUID {
         if ( value is IUID ) {
             return ( IUID( value ).identifier == this.identifier );
         }
-        if( value is String ){
+        if ( value is String ) {
             return ( String( value ) == this.identifier );
         }
         return false;

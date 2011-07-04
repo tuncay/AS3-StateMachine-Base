@@ -5,8 +5,8 @@
  */
 package org.osflash.statemachine.uids {
 
-    public function flushUIDs():void {
-        BaseUID.flushUIDs();
-    }
+public function flushUIDs():void {
+    BaseUID.flushUIDs();
+}
 
 }

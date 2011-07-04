@@ -5,6 +5,6 @@
  */
 package org.osflash.statemachine.logging {
 
-    public function logPhase() {
-    }
+public function logPhase() {
+}
 }

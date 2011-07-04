@@ -6,6 +6,7 @@
  * To change this template use File | Settings | File Templates.
  */
 package org.osflash.statemachine.logging {
+
 public class TraceStateLoggerTest {
 
     private var logger:TraceStateLogger;

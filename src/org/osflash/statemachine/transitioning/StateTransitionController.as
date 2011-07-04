@@ -1,10 +1,9 @@
 package org.osflash.statemachine.transitioning {
 
+import org.osflash.statemachine.logging.log;
 import org.osflash.statemachine.model.IPhaseDispatcher;
-import org.osflash.statemachine.transitioning.IStateTransitionController;
 import org.osflash.statemachine.model.IStateTransitionModel;
 import org.osflash.statemachine.uids.IUID;
-import org.osflash.statemachine.logging.log;
 
 public class StateTransitionController implements IStateTransitionController {
 
@@ -24,7 +23,7 @@ public class StateTransitionController implements IStateTransitionController {
 
     public final function transition( transition:IUID, payload:Object = null ):void {
         _model.addTransition( transition, payload );
-       if ( _isCurrentlyTransitioning ) {
+        if ( _isCurrentlyTransitioning ) {
             log( "fsm is currently transitioning, the request to transition has been queued" );
         }
         else {

@@ -1,4 +1,5 @@
 package org.osflash.statemachine.core {
+
 import org.osflash.statemachine.uids.IUID;
 
 public interface IFSMProperties {
@@ -7,7 +8,7 @@ public interface IFSMProperties {
 
     function get referringTransition():IUID;
 
-    function get transitionPhase( ):IUID
+    function get transitionPhase():IUID
 
 
 }

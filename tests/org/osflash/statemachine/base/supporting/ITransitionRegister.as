@@ -1,4 +1,5 @@
 package org.osflash.statemachine.base.supporting {
+
 import org.osflash.statemachine.uids.IUID;
 
 public interface ITransitionRegister {

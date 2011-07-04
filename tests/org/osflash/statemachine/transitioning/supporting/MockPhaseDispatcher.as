@@ -4,6 +4,7 @@
  * Time: 14:21
  */
 package org.osflash.statemachine.transitioning.supporting {
+
 import flash.utils.describeType;
 
 import org.osflash.statemachine.model.IPhaseDispatcher;

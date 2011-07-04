@@ -5,6 +5,6 @@
  */
 package org.osflash.statemachine.logging {
 
-    public function log(msg:String):void {
-    }
+public function log( msg:String ):void {
+}
 }

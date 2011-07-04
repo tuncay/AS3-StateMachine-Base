@@ -4,6 +4,7 @@
  * Time: 22:48
  */
 package org.osflash.statemachine.base.supporting {
+
 import org.osflash.statemachine.core.IFSMProperties;
 import org.osflash.statemachine.transitioning.ITransitionValidator;
 

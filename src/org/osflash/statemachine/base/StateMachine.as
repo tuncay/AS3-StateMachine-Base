@@ -2,10 +2,10 @@ package org.osflash.statemachine.base {
 
 import org.osflash.statemachine.core.IFSMController;
 import org.osflash.statemachine.core.IFSMProperties;
+import org.osflash.statemachine.errors.StateTransitionError;
 import org.osflash.statemachine.transitioning.IStateTransitionController;
 import org.osflash.statemachine.transitioning.ITransitionValidator;
 import org.osflash.statemachine.uids.IUID;
-import org.osflash.statemachine.errors.StateTransitionError;
 
 public class StateMachine implements IFSMController, IFSMProperties {
 
@@ -19,7 +19,7 @@ public class StateMachine implements IFSMController, IFSMProperties {
         _transitionController = controller;
     }
 
-     public function get currentStateUID():IUID {
+    public function get currentStateUID():IUID {
         return _transitionModel.currentStateUID;
     }
 

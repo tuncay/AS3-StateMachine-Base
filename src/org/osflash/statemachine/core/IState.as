@@ -1,6 +1,6 @@
 package org.osflash.statemachine.core {
+
 import org.osflash.statemachine.uids.IUID;
-import org.osflash.statemachine.uids.StateUID;
 
 public interface IState {
 
@@ -8,11 +8,11 @@ public interface IState {
 
     function defineTransition( transitionID:IUID, target:IUID ):Boolean;
 
-    function removeTrans(transitionName:IUID):Boolean;
+    function removeTrans( transitionName:IUID ):Boolean;
 
-    function hasTrans(transitionName:IUID):Boolean;
+    function hasTrans( transitionName:IUID ):Boolean;
 
-    function getTarget(transitionName:IUID):IUID;
+    function getTarget( transitionName:IUID ):IUID;
 
     function dispose():void;
 

@@ -6,6 +6,7 @@
  * To change this template use File | Settings | File Templates.
  */
 package org.osflash.statemachine.model {
+
 import flexunit.framework.Assert;
 
 import org.hamcrest.assertThat;

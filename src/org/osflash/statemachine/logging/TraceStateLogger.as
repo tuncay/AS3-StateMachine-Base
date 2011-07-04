@@ -6,6 +6,7 @@
  * To change this template use File | Settings | File Templates.
  */
 package org.osflash.statemachine.logging {
+
 import org.osflash.statemachine.core.IState;
 import org.osflash.statemachine.core.IStateLogger;
 import org.osflash.statemachine.transitioning.ITransitionPhase;

@@ -1,5 +1,5 @@
 package org.osflash.statemachine.transitioning.supporting {
-import org.osflash.statemachine.core.ITransitionPhase;
+import org.osflash.statemachine.transitioning.ITransitionPhase;
 
 public class GrumpyPhase implements ITransitionPhase {
 

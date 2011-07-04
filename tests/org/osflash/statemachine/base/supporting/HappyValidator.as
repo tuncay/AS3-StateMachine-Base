@@ -5,7 +5,7 @@
  */
 package org.osflash.statemachine.base.supporting {
 import org.osflash.statemachine.core.IFSMProperties;
-import org.osflash.statemachine.core.ITransitionValidator;
+import org.osflash.statemachine.transitioning.ITransitionValidator;
 
 public class HappyValidator implements ITransitionValidator {
 

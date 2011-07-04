@@ -1,4 +1,7 @@
-package org.osflash.statemachine.core {
+package org.osflash.statemachine.model {
+import org.osflash.statemachine.core.*;
+import org.osflash.statemachine.uids.IUID;
+
 public interface IStateModelOwner {
 
     function get initialState():IState;

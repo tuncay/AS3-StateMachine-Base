@@ -2,9 +2,9 @@ package org.osflash.statemachine.base {
 
 import org.osflash.statemachine.core.IFSMController;
 import org.osflash.statemachine.core.IFSMProperties;
-import org.osflash.statemachine.core.IStateTransitionController;
-import org.osflash.statemachine.core.ITransitionValidator;
-import org.osflash.statemachine.core.IUID;
+import org.osflash.statemachine.transitioning.IStateTransitionController;
+import org.osflash.statemachine.transitioning.ITransitionValidator;
+import org.osflash.statemachine.uids.IUID;
 import org.osflash.statemachine.errors.StateTransitionError;
 
 public class StateMachine implements IFSMController, IFSMProperties {

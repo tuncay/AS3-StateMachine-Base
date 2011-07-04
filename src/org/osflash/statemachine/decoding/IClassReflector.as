@@ -1,4 +1,4 @@
-package org.osflash.statemachine.core {
+package org.osflash.statemachine.decoding {
 /**
  * Contract for wrapping and reflecting class references
  */

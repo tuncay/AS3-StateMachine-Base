@@ -3,7 +3,7 @@
  * Date: 24/06/11
  * Time: 09:53
  */
-package org.osflash.statemachine.core {
+package org.osflash.statemachine.uids {
 public interface IUID {
 
     function get identifier():String;

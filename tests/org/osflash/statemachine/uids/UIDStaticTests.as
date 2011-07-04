@@ -9,7 +9,7 @@ package org.osflash.statemachine.uids {
 import org.hamcrest.assertThat;
 import org.hamcrest.object.equalTo;
 import org.hamcrest.object.sameInstance;
-import org.osflash.statemachine.core.IUID;
+import org.osflash.statemachine.uids.IUID;
 
 public class UIDStaticTests {
 

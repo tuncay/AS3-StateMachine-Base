@@ -1,6 +1,6 @@
 package org.osflash.statemachine.model {
 import org.osflash.statemachine.core.IPayload;
-import org.osflash.statemachine.core.IUID;
+import org.osflash.statemachine.uids.IUID;
 import org.osflash.statemachine.transitioning.Payload;
 
 public class TransitionBinding {

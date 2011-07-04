@@ -1,8 +1,8 @@
 package org.osflash.statemachine.model {
 import org.osflash.statemachine.core.IState;
 import org.osflash.statemachine.core.IStateModel;
-import org.osflash.statemachine.core.IStateModelOwner;
-import org.osflash.statemachine.core.IUID;
+import org.osflash.statemachine.model.IStateModelOwner;
+import org.osflash.statemachine.uids.IUID;
 import org.osflash.statemachine.errors.StateModelError;
 
 public class StateModel implements IStateModel, IStateModelOwner {

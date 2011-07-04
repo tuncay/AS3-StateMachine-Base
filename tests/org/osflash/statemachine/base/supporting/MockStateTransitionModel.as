@@ -5,7 +5,7 @@
  */
 package org.osflash.statemachine.base.supporting {
 import org.osflash.statemachine.core.IFSMProperties;
-import org.osflash.statemachine.core.IUID;
+import org.osflash.statemachine.uids.IUID;
 import org.osflash.statemachine.uids.getNullUID;
 
 public class MockStateTransitionModel implements IFSMProperties {

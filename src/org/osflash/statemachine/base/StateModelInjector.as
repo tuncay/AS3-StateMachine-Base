@@ -6,10 +6,10 @@
  */
 package org.osflash.statemachine.base {
 import org.osflash.statemachine.core.IState;
-import org.osflash.statemachine.core.IStateDecoder;
-import org.osflash.statemachine.core.IStateModelInjector;
-import org.osflash.statemachine.core.IStateModelOwner;
-import org.osflash.statemachine.core.IUID;
+import org.osflash.statemachine.decoding.IStateDecoder;
+import org.osflash.statemachine.decoding.IStateModelInjector;
+import org.osflash.statemachine.model.IStateModelOwner;
+import org.osflash.statemachine.uids.IUID;
 import org.osflash.statemachine.errors.StateDecodingError;
 
 public class StateModelInjector implements IStateModelInjector {

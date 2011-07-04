@@ -1,4 +1,6 @@
-package org.osflash.statemachine.core {
+package org.osflash.statemachine.decoding {
+import org.osflash.statemachine.model.IStateModelOwner;
+
 public interface IStateModelInjector {
 
     /**

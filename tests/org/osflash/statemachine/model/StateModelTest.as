@@ -17,7 +17,7 @@ import org.hamcrest.object.isFalse;
 import org.hamcrest.object.isTrue;
 import org.hamcrest.object.strictlyEqualTo;
 import org.osflash.statemachine.core.IState;
-import org.osflash.statemachine.core.IUID;
+import org.osflash.statemachine.uids.IUID;
 import org.osflash.statemachine.errors.StateModelError;
 import org.osflash.statemachine.supporting.injectToken;
 import org.osflash.statemachine.uids.StateTransitionUID;

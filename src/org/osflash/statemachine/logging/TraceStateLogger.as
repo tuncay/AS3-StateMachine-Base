@@ -8,7 +8,7 @@
 package org.osflash.statemachine.logging {
 import org.osflash.statemachine.core.IState;
 import org.osflash.statemachine.core.IStateLogger;
-import org.osflash.statemachine.core.ITransitionPhase;
+import org.osflash.statemachine.transitioning.ITransitionPhase;
 
 public class TraceStateLogger implements IStateLogger {
 

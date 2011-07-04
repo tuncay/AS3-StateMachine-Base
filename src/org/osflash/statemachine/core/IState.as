@@ -1,4 +1,5 @@
 package org.osflash.statemachine.core {
+import org.osflash.statemachine.uids.IUID;
 import org.osflash.statemachine.uids.StateUID;
 
 public interface IState {

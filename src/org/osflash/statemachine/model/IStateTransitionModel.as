@@ -1,5 +1,8 @@
 
-package org.osflash.statemachine.core {
+package org.osflash.statemachine.model {
+import org.osflash.statemachine.core.*;
+import org.osflash.statemachine.core.*;
+import org.osflash.statemachine.uids.IUID;
 
 public interface IStateTransitionModel extends IFSMProperties {
 
@@ -7,8 +10,7 @@ public interface IStateTransitionModel extends IFSMProperties {
     function setInitialStateAsCurrent():void;
     function enqueueTransition( transition:IUID, payload:Object = null ):void;
      function cancelTransition( reason:IUID, payload:Object = null ):void;
-    function discardUndefinedTransition():Boolean;
-    function shiftNextTransition():void
+    function dequeueNextTransition():void
     function reset():void;
 }
 }

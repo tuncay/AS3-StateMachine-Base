@@ -6,7 +6,7 @@ import org.hamcrest.core.isA;
 import org.hamcrest.core.throws;
 import org.hamcrest.object.hasPropertyWithValue;
 import org.hamcrest.object.instanceOf;
-import org.osflash.statemachine.core.ITransitionPhase;
+import org.osflash.statemachine.transitioning.ITransitionPhase;
 import org.osflash.statemachine.errors.StateTransitionError;
 import org.osflash.statemachine.transitioning.supporting.GrumpyPhase;
 import org.osflash.statemachine.transitioning.supporting.HappyPhaseFive;

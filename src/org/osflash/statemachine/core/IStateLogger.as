@@ -1,4 +1,6 @@
 package org.osflash.statemachine.core {
+import org.osflash.statemachine.uids.IUID;
+
 public interface IStateLogger {
     /**
      * Allows wrapping of logging functionality within the StateMachine framework

@@ -1,7 +1,7 @@
 
 package org.osflash.statemachine.uids {
 
-import org.osflash.statemachine.core.IUID;
+import org.osflash.statemachine.uids.IUID;
 import org.osflash.statemachine.errors.UIDError;
 
 internal class BaseUID implements IUID {

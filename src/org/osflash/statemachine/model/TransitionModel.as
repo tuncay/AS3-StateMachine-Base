@@ -13,7 +13,6 @@ public class TransitionModel implements IStateTransitionModel, ITransitionPhaseM
     public final function TransitionModel( stateModel:IStateModelOwner ) {
         _stateModel = stateModel;
         _queue = new TransitionQueue();
-        reset();
     }
 
     public function get currentStateUID():IUID {

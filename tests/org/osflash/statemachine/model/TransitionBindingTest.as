@@ -23,7 +23,7 @@ public class TransitionBindingTest {
     [Test]
     public function transition_param_passed_in_constructor_attributed_to_transition_property():void {
         setUp( getNullUID(), {} );
-        assertThat( transitionBinding.transition, strictlyEqualTo( getNullUID() ) )
+        assertThat( transitionBinding.uid, strictlyEqualTo( getNullUID() ) )
     }
 
     [Test]

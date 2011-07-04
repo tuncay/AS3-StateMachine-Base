@@ -41,7 +41,7 @@ public class TransitionQueueTest {
         enqueueSingleItem();
         assertThat( transitionQueue.dequeueTransition(),
         allOf(
-        hasPropertyChain( "transition.identifier", strictlyEqualTo( "transition/testing_one" ) ),
+        hasPropertyChain( "uid.identifier", strictlyEqualTo( "transition/testing_one" ) ),
         hasPropertyChain( "payload.body", strictlyEqualTo( "body_one" )
         ) ) );
     }
@@ -53,7 +53,7 @@ public class TransitionQueueTest {
 
         assertThat( transitionQueue.dequeueTransition(),
         allOf(
-        hasPropertyChain( "transition.identifier", equalTo( "transition/testing_three" ) ),
+        hasPropertyChain( "uid.identifier", equalTo( "transition/testing_three" ) ),
         hasPropertyChain( "payload.body", strictlyEqualTo( "body_three" )
         ) ) );
     }

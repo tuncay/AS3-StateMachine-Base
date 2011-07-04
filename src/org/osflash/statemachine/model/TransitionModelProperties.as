@@ -15,6 +15,11 @@ internal class TransitionModelProperties {
 
     internal var currentTransitionPhase:IUID;
 
+
+    public function TransitionModelProperties() {
+        reset();
+    }
+
     internal function get currentState():IState {
         return _currentState;
     }
@@ -24,11 +29,11 @@ internal class TransitionModelProperties {
     }
 
     internal function setCurrentTransition( binding:TransitionBinding ):void {
-        const result:Boolean = _currentState.hasTrans( binding.transition );
+        const result:Boolean = _currentState.hasTrans( binding.uid );
         if ( result ) {
             _currentBinding = binding;
         } else {
-            throwUndefinedTransitionError( binding.transition );
+            throwUndefinedTransitionError( binding.uid );
         }
     }
 
@@ -45,7 +50,11 @@ internal class TransitionModelProperties {
     }
 
     internal function get referringTransition():IUID {
-        return (_currentBinding == null ) ? getNullUID() : _currentBinding.transition;
+        return (_currentBinding == null ) ? getNullUID() : _currentBinding.uid;
+    }
+
+     internal function get cancellationReason():IUID {
+        return (_cancellationBinding == null ) ? getNullUID() : _cancellationBinding.uid;
     }
 
     internal function get currentPayload():IPayload {

@@ -23,7 +23,7 @@ public class StateTransitionController implements IStateTransitionController {
     }
 
     public final function transition( transition:IUID, payload:Object = null ):void {
-        _model.enqueueTransition( transition, payload );
+        _model.addTransition( transition, payload );
        if ( _isCurrentlyTransitioning ) {
             log( "fsm is currently transitioning, the request to transition has been queued" );
         }

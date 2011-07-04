@@ -2,111 +2,81 @@ package org.osflash.statemachine.model {
 
 import org.osflash.statemachine.core.IPayload;
 import org.osflash.statemachine.core.IState;
-import org.osflash.statemachine.errors.StateTransitionError;
 import org.osflash.statemachine.uids.IUID;
-import org.osflash.statemachine.uids.StateTransitionPhaseUID;
-import org.osflash.statemachine.uids.getNullUID;
 
 public class TransitionModel implements IStateTransitionModel, ITransitionPhaseModel {
 
     private var _stateModel:IStateModelOwner;
-    private var _currentState:IState;
-    private var _queue:Array;
-    private var _currentTransitionPhase:IUID;
-    private var _currentBinding:TransitionBinding;
-    private var _cancellationBinding:TransitionBinding;
+    private var _queue:TransitionQueue;
+    private var _properties:TransitionModelProperties;
 
     public final function TransitionModel( stateModel:IStateModelOwner ) {
         _stateModel = stateModel;
-        _queue = [];
+        _queue = new TransitionQueue();
         reset();
     }
 
     public function get currentStateUID():IUID {
-        return _currentState.uid;
+        return _properties.currentState.uid;
     }
 
     public function get referringTransition():IUID {
-        return (_currentBinding == null ) ? getNullUID() : _currentBinding.transition;
-    }
-
-    public function get payload():IPayload {
-        return _currentBinding.payload;
+        return _properties.referringTransition;
     }
 
     public function get transitionPhase():IUID {
-        return _currentTransitionPhase;
+        return _properties.currentTransitionPhase;
     }
 
     public function set transitionPhase( value:IUID ):void {
-        _currentTransitionPhase = value;
-    }
-
-    public function get targetState():IState {
-        return _stateModel.getTargetState( referringTransition, _currentState );
-    }
-
-    public function get currentState():IState {
-        return _currentState;
-    }
-
-    public function get hasTransitionBeenCancelled():Boolean {
-        return ( _cancellationBinding != null );
+        _properties.currentTransitionPhase = value;
     }
 
     public function get hasNextTransition():Boolean {
-        return ( _queue.length != 0 );
+        return _queue.hasNext;
+    }
+
+    public function get payload():IPayload {
+        return _properties.currentPayload;
+    }
+
+    public function get currentState():IState {
+        return _properties.currentState;
+    }
+
+    public function get targetState():IState {
+        return _stateModel.getTargetState( referringTransition, _properties.currentState );
+    }
+
+    public function get hasTransitionBeenCancelled():Boolean {
+        return _properties.hasTransitionBeenCancelled;
     }
 
     public function setInitialStateAsCurrent():void {
-        if ( _currentState == null ) {
-            _currentState = _stateModel.initialState;
-        } else {
-            throw new StateTransitionError( StateTransitionError.INITIAL_STATE_CAN_ONLY_BE_SET_ONCE );
-        }
+        _properties.setCurrentState( _stateModel.initialState, true );
     }
 
     public function setTargetStateAsCurrent():void {
-        _currentState = targetState;
+        _properties.setCurrentState( targetState );
     }
 
-    public function enqueueTransition( transition:IUID, payload:Object = null ):void {
-        _queue.push( new TransitionBinding( transition, payload ) );
+    public function addTransition( transition:IUID, payload:Object = null ):void {
+        _queue.enqueueTransition( transition, payload );
     }
 
     public function addReasonForCancellation( reason:IUID, payload:Object = null ):void {
-        _cancellationBinding = new TransitionBinding( reason, payload );
-    }
-
-    public function reset():void {
-        _currentTransitionPhase = StateTransitionPhaseUID.NONE;
-        _cancellationBinding = null;
+        _properties.setCancellationReason( reason, payload );
     }
 
     public function dequeueNextTransition():void {
-        const discardedTransition:IUID = discardUndefinedTransition();
-        if ( discardedTransition.equals( getNullUID() ) ) {
-            _currentBinding = _queue.shift();
-        } else {
-            throwUndefinedTransitionError( discardedTransition );
-        }
+        const nextTransition:TransitionBinding = _queue.getNext();
+        _properties.setCurrentTransition( nextTransition );
     }
 
-    private function discardUndefinedTransition():IUID {
-        if ( _currentState.hasTrans( TransitionBinding( _queue[0] ).transition ) ) {
-            return getNullUID();
-        } else {
-            const transitionBinding:TransitionBinding = _queue.shift();
-            return transitionBinding.transition;
-        }
+    public function reset():void {
+        _properties.reset();
     }
 
-    private function throwUndefinedTransitionError( transition:IUID ):void {
-        const error:StateTransitionError = new StateTransitionError( StateTransitionError.TRANSITION_UNDEFINED_IN_CURRENT_STATE );
-        error.injectMessageWithToken( "state", _currentState.toString() );
-        error.injectMessageWithToken( "transition", transition.toString() );
-        throw error;
-    }
 
 }
 }

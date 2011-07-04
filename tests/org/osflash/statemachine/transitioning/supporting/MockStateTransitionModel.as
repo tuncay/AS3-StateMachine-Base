@@ -31,7 +31,7 @@ public class MockStateTransitionModel implements IStateTransitionModel {
         _registry.pushResult( "IStateTransitionModel.setInitialStateAsCurrent()" );
     }
 
-    public function enqueueTransition( transition:IUID, payload:Object = null ):void {
+    public function addTransition( transition:IUID, payload:Object = null ):void {
         _transitions.push( {transition:transition, payload:payload} );
         _registry.pushResult( "IStateTransitionModel.enqueueTransition(" + transition.toString() + "," + payload.toString() + ")" );
     }

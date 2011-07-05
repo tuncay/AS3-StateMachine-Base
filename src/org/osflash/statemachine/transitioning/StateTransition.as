@@ -5,7 +5,7 @@ import org.osflash.statemachine.model.IPhaseDispatcher;
 
 public class StateTransition implements IPhaseDispatcher {
 
-    private var _transitionPhases:Array;
+    private var _transitionPhases:Vector.<ITransitionPhase>;
 
     public function StateTransition() {
         initialiseStateTransition();
@@ -15,7 +15,7 @@ public class StateTransition implements IPhaseDispatcher {
     }
 
     public final function pushTransitionPhase( phase:ITransitionPhase ):void {
-        if ( _transitionPhases == null )_transitionPhases = [];
+        if ( _transitionPhases == null )_transitionPhases = new Vector.<ITransitionPhase>;
         _transitionPhases.push( phase );
     }
 

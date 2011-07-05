@@ -4,10 +4,10 @@ import org.osflash.statemachine.uids.IUID;
 
 public class TransitionQueue {
 
-    private var _queue:Array;
+    private var _queue:Vector.<TransitionBinding>;
 
     public function TransitionQueue() {
-        _queue = [];
+        _queue = new Vector.<TransitionBinding>;
     }
 
     public function get hasNext():Boolean {
@@ -19,7 +19,7 @@ public class TransitionQueue {
     }
 
     public function dequeueTransition():TransitionBinding {
-        return TransitionBinding( _queue.shift() );
+        return  _queue.shift();
     }
 }
 }

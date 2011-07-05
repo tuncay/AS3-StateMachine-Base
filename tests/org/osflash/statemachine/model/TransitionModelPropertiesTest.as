@@ -25,7 +25,7 @@ import org.osflash.statemachine.uids.getUIDFromIdentifier;
 
 public class TransitionModelPropertiesTest {
 
-    private var _properties:TransitionModelProperties;
+    private var _properties:ITransitionModelProperties;
     private var _state:IState;
 
     [Before]
@@ -146,7 +146,7 @@ public class TransitionModelPropertiesTest {
         _properties.currentState = _state;
         _properties.currentTransitionPhase = new StateTransitionPhaseUID( "one" );
         _properties.cancellationReason = new CancellationReasonUID( "one" );
-        _properties.setCurrentTransition( new TransitionBinding( transition, "payload_one" ) );
+        _properties.currentTransitionBinding = new TransitionBinding( transition, "payload_one" );
     }
 
     private function assertThatCancellationReasonThrowsStateTransitionCancellationError( reason:IUID ):void {
@@ -167,7 +167,7 @@ public class TransitionModelPropertiesTest {
         expectedMessage = injectToken( expectedMessage, "transition", transition.toString() );
 
         const throwFunction:Function = function ():void {
-           _properties.setCurrentTransition( new TransitionBinding( transition, "payload_two" ) );
+           _properties.currentTransitionBinding =  new TransitionBinding( transition, "payload_two" ) ;
         };
         assertThat( throwFunction, throws( allOf( instanceOf( StateTransitionError ), hasPropertyWithValue( "message", expectedMessage ) ) ) );
     }

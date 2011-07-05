@@ -10,8 +10,9 @@ public class TransitionModel implements IStateTransitionModel, ITransitionPhaseM
     private var _queue:TransitionQueue;
     private var _properties:TransitionModelProperties;
 
-    public final function TransitionModel( stateModel:IStateModelOwner ) {
+    public final function TransitionModel( stateModel:IStateModelOwner, properties:TransitionModelProperties = null ) {
         _stateModel = stateModel;
+        _properties = properties || new TransitionModelProperties();
         _queue = new TransitionQueue();
     }
 
@@ -52,11 +53,11 @@ public class TransitionModel implements IStateTransitionModel, ITransitionPhaseM
     }
 
     public function setInitialStateAsCurrent():void {
-        _properties.setCurrentState( _stateModel.initialState );
+        _properties.currentState = _stateModel.initialState;
     }
 
     public function setTargetStateAsCurrent():void {
-        _properties.setCurrentState( targetState );
+        _properties.currentState = targetState;
     }
 
     public function addTransition( transition:IUID, payload:Object = null ):void {
@@ -64,7 +65,7 @@ public class TransitionModel implements IStateTransitionModel, ITransitionPhaseM
     }
 
     public function addReasonForCancellation( reason:IUID ):void {
-        _properties.cancellationReason = reason, payload;
+        _properties.cancellationReason = reason,payload;
     }
 
     public function dequeueNextTransition():void {

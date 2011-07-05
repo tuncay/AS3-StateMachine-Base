@@ -9,43 +9,50 @@ import org.osflash.statemachine.uids.IUID;
 import org.osflash.statemachine.uids.StateTransitionPhaseUID;
 import org.osflash.statemachine.uids.getNullUID;
 
-internal class TransitionModelProperties {
+internal class TransitionModelProperties implements ITransitionModelProperties {
 
     private var _currentState:IState;
     private var _currentBinding:TransitionBinding;
     private var _cancellationReason:IUID;
-
-    internal var currentTransitionPhase:IUID;
+    private var _currentTransitionPhase:IUID;
 
     public function TransitionModelProperties() {
         reset();
     }
 
-    internal function get currentState():IState {
+    public function get currentState():IState {
         return _currentState;
     }
 
-    internal function set currentState( state:IState ):void {
+    public function set currentState( state:IState ):void {
         _currentState = state;
     }
 
-    internal function get hasTransitionBeenCancelled():Boolean {
+      public function get currentTransitionPhase():IUID {
+        return _currentTransitionPhase;
+    }
+
+    public function set currentTransitionPhase( phase:IUID ):void {
+        _currentTransitionPhase = phase;
+    }
+
+    public function get hasTransitionBeenCancelled():Boolean {
         return ( !_cancellationReason.isNull );
     }
 
-    internal function get currentPayload():IPayload {
+    public function get currentPayload():IPayload {
         return ( _currentBinding == null ) ? new Payload( null ) : _currentBinding.payload;
     }
 
-    internal function get referringTransition():IUID {
+    public function get referringTransition():IUID {
         return (_currentBinding == null ) ? getNullUID() : _currentBinding.uid;
     }
 
-    internal function get cancellationReason():IUID {
+    public function get cancellationReason():IUID {
         return (_cancellationReason == null ) ? getNullUID() : _cancellationReason;
     }
 
-    internal function set cancellationReason( reason:IUID ):void {
+    public function set cancellationReason( reason:IUID ):void {
         if ( reason != null && !reason.isNull ) {
             _cancellationReason = reason;
         } else {
@@ -56,7 +63,7 @@ internal class TransitionModelProperties {
         }
     }
 
-    internal function setCurrentTransition( binding:TransitionBinding ):void {
+    public function set currentTransitionBinding( binding:TransitionBinding ):void {
         const result:Boolean = _currentState.hasTrans( binding.uid );
         if ( result ) {
             _currentBinding = binding;
@@ -68,7 +75,7 @@ internal class TransitionModelProperties {
         }
     }
 
-    internal function reset():void {
+    public function reset():void {
         currentTransitionPhase = StateTransitionPhaseUID.NONE;
         _cancellationReason = getNullUID();
     }

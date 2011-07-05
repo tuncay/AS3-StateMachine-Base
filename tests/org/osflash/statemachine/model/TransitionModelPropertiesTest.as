@@ -25,12 +25,12 @@ import org.osflash.statemachine.uids.getUIDFromIdentifier;
 
 public class TransitionModelPropertiesTest {
 
-    private var _properties:ITransitionModelProperties;
+    private var _properties:ITransitionProperties;
     private var _state:IState;
 
     [Before]
     public function before():void {
-        _properties = new TransitionModelProperties();
+        _properties = new TransitionProperties();
     }
 
     [After]

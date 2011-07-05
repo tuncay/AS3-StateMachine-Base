@@ -6,12 +6,12 @@ import org.osflash.statemachine.uids.IUID;
 
 public class TransitionBinding {
 
-    private var _uid:IUID;
+    private var _transition:IUID;
     private var _payload:IPayload;
 
 
     public function TransitionBinding( transition:IUID, body:Object ) {
-        _uid = transition;
+        _transition = transition;
         if ( body is IPayload ) {
             _payload = IPayload( body );
         } else {
@@ -19,8 +19,8 @@ public class TransitionBinding {
         }
     }
 
-    public function get uid():IUID {
-        return _uid;
+    public function get transition():IUID {
+        return _transition;
     }
 
     public function get payload():IPayload {

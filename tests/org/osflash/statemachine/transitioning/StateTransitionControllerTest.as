@@ -3,7 +3,7 @@ package org.osflash.statemachine.transitioning {
 import org.hamcrest.assertThat;
 import org.hamcrest.collection.array;
 import org.hamcrest.object.equalTo;
-import org.osflash.statemachine.model.IStateTransitionModel;
+import org.osflash.statemachine.model.ITransitionModel;
 import org.osflash.statemachine.transitioning.supporting.IResultsRegistry;
 import org.osflash.statemachine.transitioning.supporting.MockPhaseDispatcher;
 import org.osflash.statemachine.transitioning.supporting.MockStateTransitionModel;
@@ -20,7 +20,7 @@ public class StateTransitionControllerTest implements IResultsRegistry {
 
 
     public function setUp( transitions:Array = null ):void {
-        const transitionModel:IStateTransitionModel = new MockStateTransitionModel( this, transitions );
+        const transitionModel:ITransitionModel = new MockStateTransitionModel( this, transitions );
         stateTransitionController = new StateTransitionController( transitionModel, new MockPhaseDispatcher( this ) );
         got = [];
 

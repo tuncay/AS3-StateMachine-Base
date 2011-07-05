@@ -7,7 +7,7 @@ import org.osflash.statemachine.transitioning.*;
 import org.osflash.statemachine.uids.IUID;
 import org.osflash.statemachine.uids.getNullUID;
 
-public class TransitionBindingTest {
+public class StateTransitionBindingTest {
 
     private var transitionBinding:TransitionBinding;
 
@@ -23,7 +23,7 @@ public class TransitionBindingTest {
     [Test]
     public function transition_param_passed_in_constructor_attributed_to_transition_property():void {
         setUp( getNullUID(), {} );
-        assertThat( transitionBinding.uid, strictlyEqualTo( getNullUID() ) )
+        assertThat( transitionBinding.transition, strictlyEqualTo( getNullUID() ) )
     }
 
     [Test]

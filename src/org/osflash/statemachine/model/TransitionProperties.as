@@ -9,14 +9,14 @@ import org.osflash.statemachine.uids.IUID;
 import org.osflash.statemachine.uids.StateTransitionPhaseUID;
 import org.osflash.statemachine.uids.getNullUID;
 
-internal class TransitionModelProperties implements ITransitionModelProperties {
+internal class TransitionProperties implements ITransitionProperties {
 
     private var _currentState:IState;
     private var _currentBinding:TransitionBinding;
     private var _cancellationReason:IUID;
     private var _currentTransitionPhase:IUID;
 
-    public function TransitionModelProperties() {
+    public function TransitionProperties() {
         reset();
     }
 
@@ -45,7 +45,7 @@ internal class TransitionModelProperties implements ITransitionModelProperties {
     }
 
     public function get referringTransition():IUID {
-        return (_currentBinding == null ) ? getNullUID() : _currentBinding.uid;
+        return (_currentBinding == null ) ? getNullUID() : _currentBinding.transition;
     }
 
     public function get cancellationReason():IUID {
@@ -64,13 +64,13 @@ internal class TransitionModelProperties implements ITransitionModelProperties {
     }
 
     public function set currentTransitionBinding( binding:TransitionBinding ):void {
-        const result:Boolean = _currentState.hasTrans( binding.uid );
+        const result:Boolean = _currentState.hasTrans( binding.transition );
         if ( result ) {
             _currentBinding = binding;
         } else {
             const error:StateTransitionError = new StateTransitionError( StateTransitionError.TRANSITION_UNDEFINED_IN_CURRENT_STATE );
             error.injectMessageWithToken( "state", _currentState.uid.toString() );
-            error.injectMessageWithToken( "transition", binding.uid.toString() );
+            error.injectMessageWithToken( "transition", binding.transition.toString() );
             throw error;
         }
     }

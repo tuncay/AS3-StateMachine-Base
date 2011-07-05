@@ -6,10 +6,10 @@
 package org.osflash.statemachine.transitioning.supporting {
 
 import org.osflash.statemachine.core.IState;
-import org.osflash.statemachine.model.IStateTransitionModel;
+import org.osflash.statemachine.model.ITransitionModel;
 import org.osflash.statemachine.uids.IUID;
 
-public class MockStateTransitionModel implements IStateTransitionModel {
+public class MockStateTransitionModel implements ITransitionModel {
 
     public var currentState:IState;
 
@@ -23,7 +23,7 @@ public class MockStateTransitionModel implements IStateTransitionModel {
         }
     }
 
-    public function get hasNextTransition():Boolean {
+    public function get hasTransition():Boolean {
         _registry.pushResult( "IStateTransitionModel.hasNextTransition()" );
         return (_transitions.length != 0);
     }
@@ -37,11 +37,11 @@ public class MockStateTransitionModel implements IStateTransitionModel {
         _registry.pushResult( "IStateTransitionModel.enqueueTransition(" + transition.toString() + "," + payload.toString() + ")" );
     }
 
-    public function addReasonForCancellation( reason:IUID ):void {
+    public function set cancellationReason( reason:IUID ):void {
         _registry.pushResult( "IStateTransitionModel.addReasonForCancellation(" + reason.toString() + ")" );
     }
 
-    public function dequeueNextTransition():void {
+    public function dequeueTransition():void {
         const o:Object = _transitions.shift();
         _registry.pushResult( "IStateTransitionModel.dequeueNextTransition()::" + o.transition.toString() + "," + o.payload.toString() );
 

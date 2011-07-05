@@ -4,15 +4,15 @@ import org.osflash.statemachine.core.IPayload;
 import org.osflash.statemachine.core.IState;
 import org.osflash.statemachine.uids.IUID;
 
-public class TransitionModel implements IStateTransitionModel, ITransitionPhaseModel {
+public class TransitionModel implements ITransitionModel, ITransitionPhaseModel {
 
     private var _stateModel:IStateModelOwner;
     private var _queue:TransitionQueue;
-    private var _properties:TransitionModelProperties;
+    private var _properties:ITransitionProperties;
 
-    public final function TransitionModel( stateModel:IStateModelOwner, properties:TransitionModelProperties = null ) {
+    public final function TransitionModel( stateModel:IStateModelOwner, properties:ITransitionProperties ) {
         _stateModel = stateModel;
-        _properties = properties || new TransitionModelProperties();
+        _properties = properties;
         _queue = new TransitionQueue();
     }
 
@@ -32,7 +32,7 @@ public class TransitionModel implements IStateTransitionModel, ITransitionPhaseM
         _properties.currentTransitionPhase = value;
     }
 
-    public function get hasNextTransition():Boolean {
+    public function get hasTransition():Boolean {
         return _queue.hasNext;
     }
 
@@ -64,19 +64,16 @@ public class TransitionModel implements IStateTransitionModel, ITransitionPhaseM
         _queue.enqueueTransition( transition, payload );
     }
 
-    public function addReasonForCancellation( reason:IUID ):void {
-        _properties.cancellationReason = reason,payload;
+    public function set cancellationReason( reason:IUID ):void {
+        _properties.cancellationReason = reason;
     }
 
-    public function dequeueNextTransition():void {
-        const nextTransition:TransitionBinding = _queue.dequeueTransition();
-        _properties.setCurrentTransition( nextTransition );
+    public function dequeueTransition():void {
+        _properties.currentTransitionBinding = _queue.dequeueTransition();
     }
 
     public function reset():void {
         _properties.reset();
     }
-
-
 }
 }

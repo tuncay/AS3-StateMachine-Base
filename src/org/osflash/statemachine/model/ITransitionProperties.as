@@ -3,7 +3,7 @@ package org.osflash.statemachine.model {
 import org.osflash.statemachine.core.*;
 import org.osflash.statemachine.uids.IUID;
 
-public interface ITransitionModelProperties {
+public interface ITransitionProperties {
     function get currentTransitionPhase():IUID;
     function set currentTransitionPhase( value:IUID ):void;
     function get currentState():IState

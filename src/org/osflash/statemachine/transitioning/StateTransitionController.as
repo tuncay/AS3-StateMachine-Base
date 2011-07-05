@@ -2,16 +2,16 @@ package org.osflash.statemachine.transitioning {
 
 import org.osflash.statemachine.logging.log;
 import org.osflash.statemachine.model.IPhaseDispatcher;
-import org.osflash.statemachine.model.IStateTransitionModel;
+import org.osflash.statemachine.model.ITransitionModel;
 import org.osflash.statemachine.uids.IUID;
 
 public class StateTransitionController implements IStateTransitionController {
 
-    private var _model:IStateTransitionModel;
+    private var _model:ITransitionModel;
     private var _transition:IPhaseDispatcher;
     private var _isCurrentlyTransitioning:Boolean;
 
-    public function StateTransitionController( model:IStateTransitionModel, transition:IPhaseDispatcher ) {
+    public function StateTransitionController( model:ITransitionModel, transition:IPhaseDispatcher ) {
         _model = model;
         _transition = transition;
     }
@@ -32,12 +32,12 @@ public class StateTransitionController implements IStateTransitionController {
     }
 
     public function cancelStateTransition( reason:IUID  ):void {
-        _model.addReasonForCancellation( reason );
+        _model.cancellationReason = reason;
     }
 
     private final function prepareAndExecuteNextTransition():void {
-        if ( _model.hasNextTransition ) {
-            _model.dequeueNextTransition();
+        if ( _model.hasTransition ) {
+            _model.dequeueTransition();
             executeTransition();
         }
     }

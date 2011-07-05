@@ -1,10 +1,4 @@
-/**
- * Created by IntelliJ IDEA.
- * User: revisual.co.uk
- * Date: 18/04/11
- * Time: 17:11
- * To change this template use File | Settings | File Templates.
- */
+
 package org.osflash.statemachine.model {
 
 import org.hamcrest.assertThat;

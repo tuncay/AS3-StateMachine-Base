@@ -53,7 +53,7 @@ public class StateTransitionControllerTest implements IResultsRegistry {
         const reason:IUID = new CancellationReasonUID( "testing_one" );
         const payload:Object = "payload_one";
         setUp();
-        stateTransitionController.cancelStateTransition( reason, payload );
+        stateTransitionController.cancelStateTransition( reason );
         assertThatCancelStateTransitionExecutesCorrectly();
     }
 
@@ -85,7 +85,7 @@ public class StateTransitionControllerTest implements IResultsRegistry {
 
     private function assertThatCancelStateTransitionExecutesCorrectly():void {
         assertThat( got, array(
-        equalTo( "IStateTransitionModel.addReasonForCancellation(reason/testing_one,payload_one)" ) ) );
+        equalTo( "IStateTransitionModel.addReasonForCancellation(reason/testing_one)" ) ) );
     }
 
     private function assertThatTransitionExecutesCorrectly():void {

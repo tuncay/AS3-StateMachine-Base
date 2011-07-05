@@ -31,8 +31,8 @@ public class StateTransitionController implements IStateTransitionController {
         }
     }
 
-    public function cancelStateTransition( reason:IUID, payload:Object = null ):void {
-        _model.addReasonForCancellation( reason, payload );
+    public function cancelStateTransition( reason:IUID  ):void {
+        _model.addReasonForCancellation( reason );
     }
 
     private final function prepareAndExecuteNextTransition():void {

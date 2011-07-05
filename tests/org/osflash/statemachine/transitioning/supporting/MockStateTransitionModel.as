@@ -37,8 +37,8 @@ public class MockStateTransitionModel implements IStateTransitionModel {
         _registry.pushResult( "IStateTransitionModel.enqueueTransition(" + transition.toString() + "," + payload.toString() + ")" );
     }
 
-    public function addReasonForCancellation( reason:IUID, payload:Object = null ):void {
-        _registry.pushResult( "IStateTransitionModel.addReasonForCancellation(" + reason.toString() + "," + payload.toString() + ")" );
+    public function addReasonForCancellation( reason:IUID ):void {
+        _registry.pushResult( "IStateTransitionModel.addReasonForCancellation(" + reason.toString() + ")" );
     }
 
     public function dequeueNextTransition():void {

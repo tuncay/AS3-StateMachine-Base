@@ -48,9 +48,9 @@ public class StateMachine implements IFSMController, IFSMProperties {
         }
     }
 
-    public final function cancelStateTransition( reason:IUID, payload:Object = null ):void {
+    public final function cancelStateTransition( reason:IUID  ):void {
         if ( isCancellationFromValidPhase ) {
-            _transitionController.cancelStateTransition( reason, payload );
+            _transitionController.cancelStateTransition( reason );
         } else {
             throwStateTransitionError( StateTransitionError.INVALID_CANCEL_ERROR );
         }

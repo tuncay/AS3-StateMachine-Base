@@ -22,9 +22,8 @@ public class MockStateTransitionController implements IStateTransitionController
         _register.setPayload( new BaseState( getNullUID() ) )
     }
 
-    public function cancelStateTransition( reason:IUID, payload:Object = null ):void {
+    public function cancelStateTransition( reason:IUID  ):void {
         _register.setReason( reason );
-        _register.setPayload( payload );
     }
 
 }

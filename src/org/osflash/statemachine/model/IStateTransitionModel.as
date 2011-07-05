@@ -11,7 +11,7 @@ public interface IStateTransitionModel extends IFSMProperties {
 
     function addTransition( transition:IUID, payload:Object = null ):void;
 
-    function addReasonForCancellation( reason:IUID, payload:Object = null ):void;
+    function addReasonForCancellation( reason:IUID ):void;
 
     function dequeueNextTransition():void
 

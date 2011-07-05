@@ -73,16 +73,8 @@ public class StateMachineTest implements ITransitionRegister {
     [Test]
     public function valid_cancellation_passes_reasonUID_to_transitionController():void {
         setHappyValidators();
-        stateMachine.cancelStateTransition( getNullUID(), {} );
+        stateMachine.cancelStateTransition( getNullUID());
         assertThat( _reasonGot, strictlyEqualTo( getNullUID() ) );
-    }
-
-    [Test]
-    public function valid_cancellation_passes_payload_to_transitionController():void {
-        const expected:Object = {};
-        setHappyValidators();
-        stateMachine.cancelStateTransition( getNullUID(), expected );
-        assertThat( _payloadGot, strictlyEqualTo( expected ) );
     }
 
     [Test]
@@ -93,7 +85,7 @@ public class StateMachineTest implements ITransitionRegister {
         setGrumpyValidators();
 
         const throwFunction:Function = function ():void {
-            stateMachine.cancelStateTransition( getNullUID(), {} );
+            stateMachine.cancelStateTransition( getNullUID());
         };
         assertThat( throwFunction, throws( allOf( instanceOf( StateTransitionError ), hasPropertyWithValue( "message", expectedMessage ) ) ) );
 

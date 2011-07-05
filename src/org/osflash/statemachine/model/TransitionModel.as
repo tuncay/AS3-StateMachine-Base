@@ -63,8 +63,8 @@ public class TransitionModel implements IStateTransitionModel, ITransitionPhaseM
         _queue.enqueueTransition( transition, payload );
     }
 
-    public function addReasonForCancellation( reason:IUID, payload:Object = null ):void {
-        _properties.setCancellationReason( reason, payload );
+    public function addReasonForCancellation( reason:IUID ):void {
+        _properties.cancellationReason = reason, payload;
     }
 
     public function dequeueNextTransition():void {

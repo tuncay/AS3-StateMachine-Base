@@ -52,7 +52,7 @@ public class TransitionModel implements IStateTransitionModel, ITransitionPhaseM
     }
 
     public function setInitialStateAsCurrent():void {
-        _properties.setCurrentState( _stateModel.initialState, true );
+        _properties.setCurrentState( _stateModel.initialState );
     }
 
     public function setTargetStateAsCurrent():void {

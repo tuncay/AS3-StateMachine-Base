@@ -1,11 +1,8 @@
-/**
- * User: revisual.co.uk
- * Date: 01/07/11
- * Time: 15:07
- */
 package org.osflash.statemachine.transitioning {
 
+import org.osflash.statemachine.model.IPhaseModel;
+
 public interface ITransitionPhase {
-    function process( model:Object ):Boolean;
+    function dispatch( model:IPhaseModel ):Boolean;
 }
 }

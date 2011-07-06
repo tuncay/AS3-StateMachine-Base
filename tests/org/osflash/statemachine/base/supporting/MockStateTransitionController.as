@@ -1,6 +1,6 @@
 package org.osflash.statemachine.base.supporting {
 
-import org.osflash.statemachine.model.BaseState;
+import org.osflash.statemachine.base.BaseState;
 import org.osflash.statemachine.transitioning.IStateTransitionController;
 import org.osflash.statemachine.uids.IUID;
 import org.osflash.statemachine.uids.getNullUID;

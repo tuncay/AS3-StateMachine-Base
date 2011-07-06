@@ -12,6 +12,7 @@ import flexunit.framework.Assert;
 import org.hamcrest.assertThat;
 import org.hamcrest.object.equalTo;
 import org.hamcrest.object.strictlyEqualTo;
+import org.osflash.statemachine.base.BaseState;
 import org.osflash.statemachine.uids.IUID;
 import org.osflash.statemachine.uids.StateTransitionUID;
 import org.osflash.statemachine.uids.StateUID;

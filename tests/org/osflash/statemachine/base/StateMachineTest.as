@@ -14,7 +14,7 @@ import org.osflash.statemachine.base.supporting.MockStateTransitionController;
 import org.osflash.statemachine.base.supporting.MockStateTransitionModel;
 import org.osflash.statemachine.core.IFSMProperties;
 import org.osflash.statemachine.errors.StateTransitionError;
-import org.osflash.statemachine.model.BaseState;
+import org.osflash.statemachine.base.BaseState;
 import org.osflash.statemachine.supporting.injectToken;
 import org.osflash.statemachine.transitioning.IStateTransitionController;
 import org.osflash.statemachine.uids.IUID;

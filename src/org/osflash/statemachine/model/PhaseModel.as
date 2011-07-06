@@ -1,0 +1,42 @@
+package org.osflash.statemachine.model {
+
+import org.osflash.statemachine.core.IPayload;
+import org.osflash.statemachine.core.IState;
+import org.osflash.statemachine.uids.IUID;
+
+public class PhaseModel implements IPhaseModel {
+
+    private var _stateModel:IStateModelOwner;
+    private var _properties:ITransitionProperties;
+
+    public final function PhaseModel( stateModel:IStateModelOwner, properties:ITransitionProperties ) {
+        _stateModel = stateModel;
+        _properties = properties;
+    }
+
+    public function set transitionPhase( value:IUID ):void {
+        _properties.currentTransitionPhase = value;
+    }
+
+    public function get payload():IPayload {
+        return _properties.currentPayload;
+    }
+
+    public function get currentState():IState {
+        return _properties.currentState;
+    }
+
+    public function get targetState():IState {
+        return _stateModel.getTargetState( _properties.referringTransition, _properties.currentState );
+    }
+
+    public function get hasTransitionBeenCancelled():Boolean {
+        return _properties.hasTransitionBeenCancelled;
+    }
+
+    public function setTargetStateAsCurrent():void {
+        _properties.currentState = targetState;
+    }
+
+}
+}

@@ -44,7 +44,7 @@ public class StateTransitionController implements IStateTransitionController {
 
     protected final function executeTransition():void {
         _isCurrentlyTransitioning = true;
-        _transition.dispatchPhases( _model );
+        _transition.dispatchPhases(  );
         _isCurrentlyTransitioning = false;
         _model.reset();
         prepareAndExecuteNextTransition();

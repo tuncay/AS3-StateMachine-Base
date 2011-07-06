@@ -8,6 +8,7 @@ import org.hamcrest.core.throws;
 import org.hamcrest.object.hasPropertyWithValue;
 import org.hamcrest.object.instanceOf;
 import org.osflash.statemachine.errors.StateTransitionError;
+import org.osflash.statemachine.model.IPhaseModel;
 import org.osflash.statemachine.transitioning.supporting.GrumpyPhase;
 import org.osflash.statemachine.transitioning.supporting.HappyPhaseFive;
 import org.osflash.statemachine.transitioning.supporting.HappyPhaseFour;
@@ -23,7 +24,7 @@ public class StateTransitionTest implements IPhaseRegister {
 
     [Before]
     public function before():void {
-        stateTransition = new StateTransition();
+        stateTransition = new StateTransition(null);
         phasesGot = [];
     }
 
@@ -36,7 +37,7 @@ public class StateTransitionTest implements IPhaseRegister {
     [Test]
     public function successful_transition_processes_all_phases_in_correct_order():void {
         setHappyPhases();
-        stateTransition.dispatchPhases( this );
+        stateTransition.dispatchPhases(  );
 
         assertThat( phasesGot, array(
         isA( HappyPhaseOne ),
@@ -50,7 +51,7 @@ public class StateTransitionTest implements IPhaseRegister {
     [Test]
     public function cancelled_transition_aborts_all_phases_after_cancellation():void {
         setHappyPhasesPlusOneGrumpyPhase();
-        stateTransition.dispatchPhases( this );
+        stateTransition.dispatchPhases(  );
 
         assertThat( phasesGot, array(
         isA( HappyPhaseOne ),
@@ -65,27 +66,27 @@ public class StateTransitionTest implements IPhaseRegister {
         var expectedMessage:String = StateTransitionError.NO_PHASES_HAVE_BEEN_PUSHED_TO_STATE_TRANSITION;
 
         const throwFunction:Function = function ():void {
-            stateTransition.dispatchPhases( this );
+            stateTransition.dispatchPhases(  );
         };
         assertThat( throwFunction, throws( allOf( instanceOf( StateTransitionError ), hasPropertyWithValue( "message", expectedMessage ) ) ) );
 
     }
 
     public function setHappyPhases():void {
-        stateTransition.pushTransitionPhase( new HappyPhaseOne() );
-        stateTransition.pushTransitionPhase( new HappyPhaseTwo() );
-        stateTransition.pushTransitionPhase( new HappyPhaseThree() );
-        stateTransition.pushTransitionPhase( new HappyPhaseFour() );
-        stateTransition.pushTransitionPhase( new HappyPhaseFive() );
+        stateTransition.pushTransitionPhase( new HappyPhaseOne(this) );
+        stateTransition.pushTransitionPhase( new HappyPhaseTwo(this) );
+        stateTransition.pushTransitionPhase( new HappyPhaseThree(this) );
+        stateTransition.pushTransitionPhase( new HappyPhaseFour(this) );
+        stateTransition.pushTransitionPhase( new HappyPhaseFive(this) );
     }
 
     public function setHappyPhasesPlusOneGrumpyPhase():void {
-        stateTransition.pushTransitionPhase( new HappyPhaseOne() );
-        stateTransition.pushTransitionPhase( new HappyPhaseTwo() );
-        stateTransition.pushTransitionPhase( new GrumpyPhase() );
-        stateTransition.pushTransitionPhase( new HappyPhaseThree() );
-        stateTransition.pushTransitionPhase( new HappyPhaseFour() );
-        stateTransition.pushTransitionPhase( new HappyPhaseFive() );
+        stateTransition.pushTransitionPhase( new HappyPhaseOne(this) );
+        stateTransition.pushTransitionPhase( new HappyPhaseTwo(this) );
+        stateTransition.pushTransitionPhase( new GrumpyPhase(this) );
+        stateTransition.pushTransitionPhase( new HappyPhaseThree(this) );
+        stateTransition.pushTransitionPhase( new HappyPhaseFour(this) );
+        stateTransition.pushTransitionPhase( new HappyPhaseFive(this) );
     }
 
 

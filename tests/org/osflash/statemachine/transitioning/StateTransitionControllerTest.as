@@ -78,7 +78,7 @@ public class StateTransitionControllerTest implements IResultsRegistry {
     private function assertThatTransitionToInitialStateExecutesCorrectly():void {
         assertThat( got, array(
         equalTo( "IStateTransitionModel.setInitialStateAsCurrent()" ),
-        equalTo( "IPhaseDispatcher.dispatchPhases(IStateTransitionModel)" ),
+        equalTo( "IPhaseDispatcher.dispatchPhases()" ),
         equalTo( "IStateTransitionModel.reset()" ),
         equalTo( "IStateTransitionModel.hasNextTransition()" ) ) );
     }
@@ -93,7 +93,7 @@ public class StateTransitionControllerTest implements IResultsRegistry {
         equalTo( "IStateTransitionModel.enqueueTransition(transition/testing_one,payload_one)" ),
         equalTo( "IStateTransitionModel.hasNextTransition()" ),
         equalTo( "IStateTransitionModel.dequeueNextTransition()::transition/testing_one,payload_one" ),
-        equalTo( "IPhaseDispatcher.dispatchPhases(IStateTransitionModel)" ),
+        equalTo( "IPhaseDispatcher.dispatchPhases()" ),
         equalTo( "IStateTransitionModel.reset()" ),
         equalTo( "IStateTransitionModel.hasNextTransition()" ) ) );
     }
@@ -103,15 +103,15 @@ public class StateTransitionControllerTest implements IResultsRegistry {
         equalTo( "IStateTransitionModel.enqueueTransition(transition/testing_three,payload_three)" ),
         equalTo( "IStateTransitionModel.hasNextTransition()" ),
         equalTo( "IStateTransitionModel.dequeueNextTransition()::transition/prequeued_one,payload_one" ),
-        equalTo( "IPhaseDispatcher.dispatchPhases(IStateTransitionModel)" ),
+        equalTo( "IPhaseDispatcher.dispatchPhases()" ),
         equalTo( "IStateTransitionModel.reset()" ),
         equalTo( "IStateTransitionModel.hasNextTransition()" ),
         equalTo( "IStateTransitionModel.dequeueNextTransition()::transition/prequeued_two,payload_two" ),
-        equalTo( "IPhaseDispatcher.dispatchPhases(IStateTransitionModel)" ),
+        equalTo( "IPhaseDispatcher.dispatchPhases()" ),
         equalTo( "IStateTransitionModel.reset()" ),
         equalTo( "IStateTransitionModel.hasNextTransition()" ),
         equalTo( "IStateTransitionModel.dequeueNextTransition()::transition/testing_three,payload_three" ),
-        equalTo( "IPhaseDispatcher.dispatchPhases(IStateTransitionModel)" ),
+        equalTo( "IPhaseDispatcher.dispatchPhases()" ),
         equalTo( "IStateTransitionModel.reset()" ),
         equalTo( "IStateTransitionModel.hasNextTransition()" ) ) );
     }

@@ -12,6 +12,10 @@ public class TransitionBinding {
 
     public function TransitionBinding( transition:IUID, body:Object ) {
         _transition = transition;
+        setBody( body );
+    }
+
+    private function setBody( body:Object ):void {
         if ( body is IPayload ) {
             _payload = IPayload( body );
         } else {

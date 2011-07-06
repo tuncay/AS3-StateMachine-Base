@@ -17,7 +17,7 @@ public class HappyPhaseOne implements ITransitionPhase {
     }
 
     public function dispatch( model:IPhaseModel ):Boolean {
-        _register.setPhase( this, model );
+        _register.setPhase( this );
         return true;
     }
 }

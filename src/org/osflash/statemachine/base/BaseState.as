@@ -1,4 +1,4 @@
-package org.osflash.statemachine.model {
+package org.osflash.statemachine.base {
 
 import org.osflash.statemachine.core.IState;
 import org.osflash.statemachine.uids.IUID;

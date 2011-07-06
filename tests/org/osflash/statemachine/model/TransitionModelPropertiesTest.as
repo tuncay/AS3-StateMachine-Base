@@ -10,9 +10,12 @@ import org.hamcrest.object.isFalse;
 import org.hamcrest.object.isTrue;
 import org.hamcrest.object.nullValue;
 import org.hamcrest.object.strictlyEqualTo;
+import org.osflash.statemachine.base.BaseState;
 import org.osflash.statemachine.core.IState;
+import org.osflash.statemachine.errors.ErrorCodes;
 import org.osflash.statemachine.errors.StateTransitionCancellationError;
 import org.osflash.statemachine.errors.StateTransitionError;
+import org.osflash.statemachine.errors.getErrorMessage;
 import org.osflash.statemachine.supporting.injectToken;
 import org.osflash.statemachine.uids.CancellationReasonUID;
 import org.osflash.statemachine.uids.IUID;
@@ -133,7 +136,7 @@ public class TransitionModelPropertiesTest {
         assertThat( _properties.currentPayload.body, equalTo( "payload_one" ) );
     }
 
-     [Test]
+    [Test]
     public function setTransition_throws_StateTransitionError_if_transition_not_defined_in_currentState():void {
         setUpTransitionModelProperties();
         assertThatUndefinedTransitionInCurrentStateThrowsStateTransitionError();
@@ -150,7 +153,7 @@ public class TransitionModelPropertiesTest {
     }
 
     private function assertThatCancellationReasonThrowsStateTransitionCancellationError( reason:IUID ):void {
-        var expectedMessage:String = StateTransitionCancellationError.NULL_CANCELLATION_REASON;
+        var expectedMessage:String = getErrorMessage( ErrorCodes.NULL_CANCELLATION_REASON );
         expectedMessage = injectToken( expectedMessage, "state", _properties.currentState.uid.toString() );
         expectedMessage = injectToken( expectedMessage, "transition", _properties.referringTransition.toString() );
 
@@ -161,13 +164,13 @@ public class TransitionModelPropertiesTest {
     }
 
     private function assertThatUndefinedTransitionInCurrentStateThrowsStateTransitionError():void {
-        const transition:IUID = new StateTransitionUID( "two");
-        var expectedMessage:String = StateTransitionError.TRANSITION_UNDEFINED_IN_CURRENT_STATE;
+        const transition:IUID = new StateTransitionUID( "two" );
+        var expectedMessage:String = getErrorMessage( ErrorCodes.TRANSITION_UNDEFINED_IN_CURRENT_STATE );
         expectedMessage = injectToken( expectedMessage, "state", _properties.currentState.uid.toString() );
         expectedMessage = injectToken( expectedMessage, "transition", transition.toString() );
 
         const throwFunction:Function = function ():void {
-           _properties.currentTransitionBinding =  new TransitionBinding( transition, "payload_two" ) ;
+            _properties.currentTransitionBinding = new TransitionBinding( transition, "payload_two" );
         };
         assertThat( throwFunction, throws( allOf( instanceOf( StateTransitionError ), hasPropertyWithValue( "message", expectedMessage ) ) ) );
     }

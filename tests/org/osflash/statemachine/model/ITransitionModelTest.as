@@ -5,11 +5,11 @@ import org.hamcrest.object.equalTo;
 import org.hamcrest.object.isFalse;
 import org.hamcrest.object.isTrue;
 import org.hamcrest.object.strictlyEqualTo;
+import org.osflash.statemachine.base.BaseState;
 import org.osflash.statemachine.core.IState;
 import org.osflash.statemachine.model.supporting.MockStateModelOwner;
 import org.osflash.statemachine.model.supporting.MockTransitionProperties;
 import org.osflash.statemachine.uids.CancellationReasonUID;
-import org.osflash.statemachine.uids.IUID;
 import org.osflash.statemachine.uids.StateTransitionUID;
 import org.osflash.statemachine.uids.StateUID;
 import org.osflash.statemachine.uids.flushUIDs;
@@ -19,7 +19,7 @@ public class ITransitionModelTest {
 
     private var transitionModel:ITransitionModel;
     private var properties:ITransitionProperties;
-    private var stateModel:IStateModelOwner;
+    private var stateModel:IStateModel;
     private var initialState:IState;
 
     [Before]
@@ -33,8 +33,9 @@ public class ITransitionModelTest {
     [After]
     public function after():void {
         transitionModel = null;
-        initialState = null;
+        stateModel = null;
         properties = null;
+        initialState = null;
         flushUIDs();
     }
 

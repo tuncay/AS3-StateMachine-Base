@@ -1,15 +1,16 @@
 package org.osflash.statemachine.transitioning {
 
+import org.osflash.statemachine.errors.ErrorCodes;
 import org.osflash.statemachine.errors.StateTransitionError;
-import org.osflash.statemachine.model.IPhaseDispatcher;
+import org.osflash.statemachine.errors.getError;
 import org.osflash.statemachine.model.IPhaseModel;
 
-public class StateTransition implements IPhaseDispatcher {
+public class TransitionPhaseDispatcher implements IPhaseDispatcher {
 
     private var _transitionPhases:Vector.<ITransitionPhase>;
     private var _model:IPhaseModel;
 
-    public function StateTransition( model:IPhaseModel) {
+    public function TransitionPhaseDispatcher( model:IPhaseModel) {
         _model = model;
         initialiseStateTransition();
     }
@@ -24,7 +25,7 @@ public class StateTransition implements IPhaseDispatcher {
 
     public function dispatchPhases(  ):void {
         if ( _transitionPhases == null || _transitionPhases.length == 0 ) {
-            throw new StateTransitionError( StateTransitionError.NO_PHASES_HAVE_BEEN_PUSHED_TO_STATE_TRANSITION );
+            throw getError( ErrorCodes.NO_PHASES_HAVE_BEEN_PUSHED_TO_STATE_TRANSITION);
         }
         var n:int = 0;
         while ( n < _transitionPhases.length ) {

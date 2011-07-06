@@ -1,6 +1,8 @@
 package org.osflash.statemachine.uids {
 
+import org.osflash.statemachine.errors.ErrorCodes;
 import org.osflash.statemachine.errors.UIDError;
+import org.osflash.statemachine.errors.getError;
 
 internal class BaseUID implements IUID {
 
@@ -35,7 +37,7 @@ internal class BaseUID implements IUID {
         if ( _registry == null )
             flushUIDs();
         if ( hasUID( iuid.identifier ) )
-            throw new UIDError( UIDError.NON_UNIQUE_IDENTIFIER + iuid.identifier );
+            throw getError( ErrorCodes.NON_UNIQUE_IDENTIFIER ).injectMsgWith(iuid, "identifier");
         else
             _registry[ iuid.identifier ] = iuid;
 

@@ -5,15 +5,15 @@ import org.osflash.statemachine.uids.IUID;
 
 public interface IStateDecoder {
 
-    function setData( value:Object ):void;
+    function setData( value:IDataValidator ):void;
 
     function decodeState( stateDef:Object ):IState;
 
     function isInitial( stateName:IUID ):Boolean;
 
-    function getStateList():Array;
+    function getStates():Vector.<IState>;
 
-    function destroy():void;
+
 
 }
 }

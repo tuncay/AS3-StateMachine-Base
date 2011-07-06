@@ -1,11 +1,11 @@
 package org.osflash.statemachine.base.supporting {
 
 import org.osflash.statemachine.base.BaseState;
-import org.osflash.statemachine.transitioning.IStateTransitionController;
+import org.osflash.statemachine.transitioning.ITransitionController;
 import org.osflash.statemachine.uids.IUID;
 import org.osflash.statemachine.uids.getNullUID;
 
-public class MockStateTransitionController implements IStateTransitionController {
+public class MockStateTransitionController implements ITransitionController {
 
     private var _register:ITransitionRegister;
 

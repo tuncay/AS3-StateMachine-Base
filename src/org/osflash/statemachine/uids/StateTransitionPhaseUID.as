@@ -1,6 +1,6 @@
 package org.osflash.statemachine.uids {
 
-public class StateTransitionPhaseUID extends BaseUID {
+public final class StateTransitionPhaseUID extends BaseUID {
 
     public static const NONE:StateTransitionPhaseUID = new StateTransitionPhaseUID( "none", 1 );
 
@@ -8,28 +8,20 @@ public class StateTransitionPhaseUID extends BaseUID {
 
     public static const CANCELLED:StateTransitionPhaseUID = new StateTransitionPhaseUID( "cancelled", 4 );
 
-    public static const TYPE:String = "transitionPhase";
+    public static const TYPE:String = "phase";
 
     public function StateTransitionPhaseUID( name:String, index:int = -1 ) {
         super( name, TYPE, index );
 
     }
 
-
     public override function equals( value:Object ):Boolean {
 
         if ( value is int ) {
             return ( value == index );
-        }
-
-        else {
+        }  else {
             return super.equals( value );
         }
-
     }
-
-
 }
-
-
 }

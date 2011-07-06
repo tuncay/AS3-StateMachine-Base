@@ -4,11 +4,11 @@ import org.osflash.statemachine.uids.IUID;
 
 public class TransitionModel implements ITransitionModel {
 
-    private var _stateModel:IStateModelOwner;
+    private var _stateModel:IStateModel;
     private var _queue:TransitionQueue;
     private var _properties:ITransitionProperties;
 
-    public final function TransitionModel( stateModel:IStateModelOwner, properties:ITransitionProperties ) {
+    public final function TransitionModel( stateModel:IStateModel, properties:ITransitionProperties ) {
         _stateModel = stateModel;
         _properties = properties;
         _queue = new TransitionQueue();

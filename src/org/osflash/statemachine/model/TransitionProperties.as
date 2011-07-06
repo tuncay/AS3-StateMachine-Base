@@ -2,8 +2,11 @@ package org.osflash.statemachine.model {
 
 import org.osflash.statemachine.core.IPayload;
 import org.osflash.statemachine.core.IState;
+import org.osflash.statemachine.errors.BaseStateError;
+import org.osflash.statemachine.errors.ErrorCodes;
 import org.osflash.statemachine.errors.StateTransitionCancellationError;
 import org.osflash.statemachine.errors.StateTransitionError;
+import org.osflash.statemachine.errors.getError;
 import org.osflash.statemachine.transitioning.Payload;
 import org.osflash.statemachine.uids.IUID;
 import org.osflash.statemachine.uids.StateTransitionPhaseUID;
@@ -28,7 +31,7 @@ internal class TransitionProperties implements ITransitionProperties {
         _currentState = state;
     }
 
-      public function get currentTransitionPhase():IUID {
+    public function get currentTransitionPhase():IUID {
         return _currentTransitionPhase;
     }
 
@@ -56,10 +59,8 @@ internal class TransitionProperties implements ITransitionProperties {
         if ( reason != null && !reason.isNull ) {
             _cancellationReason = reason;
         } else {
-            const error:StateTransitionCancellationError = new StateTransitionCancellationError( StateTransitionCancellationError.NULL_CANCELLATION_REASON );
-            error.injectMessageWithToken( "transition", referringTransition.toString() );
-            error.injectMessageWithToken( "state", currentState.uid.toString() );
-            throw error;
+            throw getError(ErrorCodes.NULL_CANCELLATION_REASON).injectMsgWith( currentState.uid ).injectMsgWith( referringTransition );
+
         }
     }
 
@@ -68,10 +69,7 @@ internal class TransitionProperties implements ITransitionProperties {
         if ( result ) {
             _currentBinding = binding;
         } else {
-            const error:StateTransitionError = new StateTransitionError( StateTransitionError.TRANSITION_UNDEFINED_IN_CURRENT_STATE );
-            error.injectMessageWithToken( "state", _currentState.uid.toString() );
-            error.injectMessageWithToken( "transition", binding.transition.toString() );
-            throw error;
+            throw getError(ErrorCodes.TRANSITION_UNDEFINED_IN_CURRENT_STATE).injectMsgWith( currentState.uid ).injectMsgWith( binding.transition );
         }
     }
 
@@ -79,6 +77,5 @@ internal class TransitionProperties implements ITransitionProperties {
         currentTransitionPhase = StateTransitionPhaseUID.NONE;
         _cancellationReason = getNullUID();
     }
-
 }
 }

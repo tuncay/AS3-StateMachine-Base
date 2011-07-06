@@ -1,18 +1,20 @@
 package org.osflash.statemachine.model {
 
 import org.osflash.statemachine.core.IState;
-import org.osflash.statemachine.core.IStateModel;
+import org.osflash.statemachine.core.IStateProvider;
+import org.osflash.statemachine.errors.ErrorCodes;
 import org.osflash.statemachine.errors.StateModelError;
+import org.osflash.statemachine.errors.getError;
 import org.osflash.statemachine.uids.IUID;
 
-public class StateModel implements IStateModel, IStateModelOwner {
+public class StateModel implements IStateProvider, IStateModel {
 
     protected var _states:Object = new Object();
     protected var _initial:IState;
 
     public function get initialState():IState {
         if ( _initial == null ) {
-            throw new StateModelError( StateModelError.NO_INITIAL_STATE_DECLARED );
+            throw getError( ErrorCodes.NO_INITIAL_STATE_DECLARED );
         }
         return _initial;
     }
@@ -30,7 +32,8 @@ public class StateModel implements IStateModel, IStateModelOwner {
 
     public function getState( stateID:IUID ):IState {
         if ( !hasState( stateID ) ) {
-            throwStateNotRegisteredError( stateID );
+
+            throw getError( ErrorCodes.STATE_REQUESTED_IS_NOT_REGISTERED ).injectMsgWith( stateID );
         }
         return  IState( _states[ stateID.identifier ] );
     }
@@ -51,37 +54,32 @@ public class StateModel implements IStateModel, IStateModelOwner {
 
     public function getTargetState( transitionUID:IUID, state:IState ):IState {
         if ( !state.hasTrans( transitionUID ) ) {
-            throwTransitionNotDefinedInState( state.uid, transitionUID );
+            throw getError( ErrorCodes.TRANSITION_NOT_DECLARED_IN_STATE ).injectMsgWith( state.uid ).injectMsgWith( transitionUID );
         }
         const targetStateUID:IUID = state.getTarget( transitionUID );
         const targetState:IState = IState( _states[ targetStateUID.identifier ] );
         if ( targetState == null && targetStateUID != null ) {
-            throwTargetMismatchError( state.uid, targetStateUID, transitionUID );
+            throw getError( ErrorCodes.TARGET_DECLARATION_MISMATCH ).injectMsgWith( state.uid ).injectMsgWith( targetStateUID, "target" ).injectMsgWith( transitionUID );
         }
         return targetState;
     }
 
-    private function throwTransitionNotDefinedInState( state:IUID, transition:IUID ):void {
-        const error:StateModelError = new StateModelError( StateModelError.TRANSITION_NOT_DECLARED_IN_STATE );
-        error.injectMessageWithToken( "state", state.identifier );
-        error.injectMessageWithToken( "transition", transition.identifier );
-        throw error;
-    }
+    /* private function throwTransitionNotDefinedInState( state:IUID, transition:IUID ):void {
+     throw getError( ErrorCodes.TRANSITION_NOT_DECLARED_IN_STATE ).injectMsgWith( state ).injectMsgWith( transition );
+     */
+    /*const error:StateModelError = new StateModelError( StateModelError.TRANSITION_NOT_DECLARED_IN_STATE );
+     throw error.injectMsgWith(state).injectMsgWith(transition);*/
+    /*
+     }
 
-    private function throwTargetMismatchError( state:IUID, target:IUID, transition:IUID ):void {
-        const error:StateModelError = new StateModelError( StateModelError.TARGET_DECLARATION_MISMATCH );
-        error.injectMessageWithToken( "state", state.identifier );
-        error.injectMessageWithToken( "target", target.identifier );
-        error.injectMessageWithToken( "transition", transition.identifier );
-        throw error;
-    }
+     private function throwTargetMismatchError( state:IUID, target:IUID, transition:IUID ):void {
+     const error:StateModelError = new StateModelError( StateModelError.TARGET_DECLARATION_MISMATCH );
+     throw error.injectMsgWith( state ).injectMsgWith( target, "target" ).injectMsgWith( transition );
+     }
 
-    private function throwStateNotRegisteredError( state:IUID ):void {
-        const error:StateModelError = new StateModelError( StateModelError.STATE_REQUESTED_IS_NOT_REGISTERED );
-        error.injectMessageWithToken( "state", state.identifier );
-        throw error;
-    }
-
-
+     private function throwStateNotRegisteredError( state:IUID ):void {
+     const error:StateModelError = new StateModelError( StateModelError.STATE_REQUESTED_IS_NOT_REGISTERED );
+     throw error.injectMsgWith( state );
+     }*/
 }
 }

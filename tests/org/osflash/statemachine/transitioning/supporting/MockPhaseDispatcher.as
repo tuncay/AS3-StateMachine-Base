@@ -5,7 +5,7 @@
  */
 package org.osflash.statemachine.transitioning.supporting {
 
-import org.osflash.statemachine.model.IPhaseDispatcher;
+import org.osflash.statemachine.transitioning.IPhaseDispatcher;
 
 public class MockPhaseDispatcher implements IPhaseDispatcher {
 

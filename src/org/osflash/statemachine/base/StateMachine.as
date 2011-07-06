@@ -2,19 +2,21 @@ package org.osflash.statemachine.base {
 
 import org.osflash.statemachine.core.IFSMController;
 import org.osflash.statemachine.core.IFSMProperties;
+import org.osflash.statemachine.errors.ErrorCodes;
 import org.osflash.statemachine.errors.StateTransitionError;
-import org.osflash.statemachine.transitioning.IStateTransitionController;
+import org.osflash.statemachine.errors.getError;
+import org.osflash.statemachine.transitioning.ITransitionController;
 import org.osflash.statemachine.transitioning.ITransitionValidator;
 import org.osflash.statemachine.uids.IUID;
 
 public class StateMachine implements IFSMController, IFSMProperties {
 
     private var _transitionModel:IFSMProperties;
-    private var _transitionController:IStateTransitionController;
+    private var _transitionController:ITransitionController;
     private var _transitionValidator:ITransitionValidator;
     private var _cancellationValidator:ITransitionValidator;
 
-    public function StateMachine( model:IFSMProperties, controller:IStateTransitionController ) {
+    public function StateMachine( model:IFSMProperties, controller:ITransitionController ) {
         _transitionModel = model;
         _transitionController = controller;
     }
@@ -44,7 +46,8 @@ public class StateMachine implements IFSMController, IFSMProperties {
         if ( isTransitionFromValidPhase ) {
             _transitionController.transition( transition, payload );
         } else {
-            throwStateTransitionError( StateTransitionError.INVALID_TRANSITION_ERROR );
+
+        throw getError(ErrorCodes.INVALID_TRANSITION).injectMsgWith( _transitionModel.transitionPhase);
         }
     }
 
@@ -52,14 +55,7 @@ public class StateMachine implements IFSMController, IFSMProperties {
         if ( isCancellationFromValidPhase ) {
             _transitionController.cancelStateTransition( reason );
         } else {
-            throwStateTransitionError( StateTransitionError.INVALID_CANCEL_ERROR );
-        }
-    }
-
-    private function throwStateTransitionError( msg:String ):void {
-        const error:StateTransitionError = new StateTransitionError( msg );
-        error.injectMessageWithToken( "phase", _transitionModel.transitionPhase.toString() );
-        throw error;
+            throw getError(ErrorCodes.INVALID_CANCEL).injectMsgWith( _transitionModel.transitionPhase);        }
     }
 
     private final function get isTransitionFromValidPhase():Boolean {
@@ -69,6 +65,5 @@ public class StateMachine implements IFSMController, IFSMProperties {
     private final function get isCancellationFromValidPhase():Boolean {
         return (_cancellationValidator == null) ? false : _cancellationValidator.validate( _transitionModel );
     }
-
 }
 }

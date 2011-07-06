@@ -6,7 +6,10 @@ import org.hamcrest.core.throws;
 import org.hamcrest.object.equalTo;
 import org.hamcrest.object.hasPropertyWithValue;
 import org.hamcrest.object.instanceOf;
+import org.osflash.statemachine.errors.ErrorCodes;
 import org.osflash.statemachine.errors.UIDError;
+import org.osflash.statemachine.errors.getErrorMessage;
+import org.osflash.statemachine.supporting.injectToken;
 
 public class IUIDBaseTests {
 
@@ -103,7 +106,8 @@ public class IUIDBaseTests {
     [Test]
     public function creating_none_unique_IUID_throws_error():void {
         setUp( id, type, index );
-        const expectedMessage:String = UIDError.NON_UNIQUE_IDENTIFIER + subject.identifier;
+        var expectedMessage:String = getErrorMessage(ErrorCodes.NON_UNIQUE_IDENTIFIER);
+        expectedMessage = injectToken( expectedMessage, "identifier", subject.identifier)
         const f:Function = function ():void {
             new BaseUID( id, subject.type );
         };

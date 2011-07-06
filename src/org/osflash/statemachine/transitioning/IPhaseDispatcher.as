@@ -1,5 +1,5 @@
 
-package org.osflash.statemachine.model {
+package org.osflash.statemachine.transitioning {
 
 public interface IPhaseDispatcher {
     function dispatchPhases(  ):void;

@@ -5,7 +5,7 @@
  */
 package org.osflash.statemachine.uids {
 
-public class StateProcessUID extends BaseUID {
+public final class StateProcessUID extends BaseUID {
 
     public static const TYPE:String = "process";
 

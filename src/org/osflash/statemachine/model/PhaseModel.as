@@ -6,10 +6,10 @@ import org.osflash.statemachine.uids.IUID;
 
 public class PhaseModel implements IPhaseModel {
 
-    private var _stateModel:IStateModelOwner;
+    private var _stateModel:IStateModel;
     private var _properties:ITransitionProperties;
 
-    public final function PhaseModel( stateModel:IStateModelOwner, properties:ITransitionProperties ) {
+    public final function PhaseModel( stateModel:IStateModel, properties:ITransitionProperties ) {
         _stateModel = stateModel;
         _properties = properties;
     }
@@ -37,6 +37,5 @@ public class PhaseModel implements IPhaseModel {
     public function setTargetStateAsCurrent():void {
         _properties.currentState = targetState;
     }
-
 }
 }

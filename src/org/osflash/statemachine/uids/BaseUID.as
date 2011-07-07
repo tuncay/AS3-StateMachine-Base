@@ -1,20 +1,13 @@
 package org.osflash.statemachine.uids {
 
-import org.osflash.statemachine.errors.ErrorCodes;
-import org.osflash.statemachine.errors.UIDError;
-import org.osflash.statemachine.errors.getError;
-
 internal class BaseUID implements IUID {
 
-    internal static const NULL_UID:IUID = new BaseUID( null, null );
-
-    private static var _registry:Array;
     public static var delimiter:String = "/";
 
     private var _id:String;
     private var _type:String;
-
     private var _index:int;
+    private var _identifier:String;
 
     public function BaseUID( id:String, type:String, index:int = -1 ) {
         _id = id;
@@ -23,32 +16,12 @@ internal class BaseUID implements IUID {
         registerIUID( this );
     }
 
-    internal static function flushUIDs():void {
-        _registry = [];
-    }
-
-    internal static function getUIDFromIdentifier( name:String ):IUID {
-        if ( hasUID( name ) )
-            return IUID( _registry[ name ] );
-        return NULL_UID;
-    }
-
     private function registerIUID( iuid:IUID ):void {
-        if ( _registry == null )
-            flushUIDs();
-        if ( hasUID( iuid.identifier ) )
-            throw getError( ErrorCodes.NON_UNIQUE_IDENTIFIER ).injectMsgWith(iuid, "identifier");
-        else
-            _registry[ iuid.identifier ] = iuid;
-
-    }
-
-    private static function hasUID( name:String ):Boolean {
-        return (_registry[ name ] != null );
+        UIDRegistry.registerIUID( iuid );
     }
 
     public function get identifier():String {
-        return _type + delimiter + _id;
+        return _identifier || ( _identifier =_type + delimiter + _id );
     }
 
     public function get type():String {
@@ -68,7 +41,6 @@ internal class BaseUID implements IUID {
     }
 
     public function equals( value:Object ):Boolean {
-
         if ( value is IUID ) {
             return ( IUID( value ).identifier == this.identifier );
         }

@@ -6,7 +6,7 @@
 package org.osflash.statemachine.uids {
 
 public function getUIDFromIdentifier( id:String ):IUID {
-    return BaseUID.getUIDFromIdentifier( id );
+    return UIDRegistry.getUIDFromIdentifier( id );
 }
 
 }

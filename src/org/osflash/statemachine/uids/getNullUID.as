@@ -6,7 +6,7 @@
 package org.osflash.statemachine.uids {
 
 public function getNullUID():IUID {
-    return BaseUID.NULL_UID;
+    return UIDRegistry.NULL_UID;
 }
 
 }

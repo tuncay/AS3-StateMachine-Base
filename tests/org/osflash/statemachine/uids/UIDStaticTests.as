@@ -24,24 +24,24 @@ public class UIDStaticTests {
     [After]
     public function after():void {
 
-        BaseUID.flushUIDs();
+        flushUIDs();
 
     }
 
     [Test]
     public function UID_static_const_NULL_has_isNull_returning_true():void {
-        assertThat( BaseUID.NULL_UID.isNull, equalTo( true ) );
+        assertThat( getNullUID().isNull, equalTo( true ) );
     }
 
     [Test]
     public function getIUIDFromIdentifier_returns_corresponding_IUID():void {
         setUp( id, type );
-        assertThat( BaseUID.getUIDFromIdentifier( uid.identifier ), sameInstance( uid ) );
+        assertThat( getUIDFromIdentifier( uid.identifier ), sameInstance( uid ) );
     }
 
     [Test]
     public function getIBIDFromIdentifier_returns_NULL_IUID_if_none_registered():void {
-        assertThat( BaseUID.getUIDFromIdentifier( "none/registered" ), sameInstance( BaseUID.NULL_UID ) );
+        assertThat( getUIDFromIdentifier( "none/registered" ), sameInstance( getNullUID()) );
     }
 
 

@@ -9,7 +9,7 @@ import org.hamcrest.object.instanceOf;
 import org.osflash.statemachine.errors.ErrorCodes;
 import org.osflash.statemachine.errors.UIDError;
 import org.osflash.statemachine.errors.getErrorMessage;
-import org.osflash.statemachine.supporting.injectToken;
+import org.osflash.statemachine.supporting.injectThis;
 
 public class IUIDBaseTests {
 
@@ -33,7 +33,7 @@ public class IUIDBaseTests {
     [After]
     public function after():void {
 
-        BaseUID.flushUIDs();
+        flushUIDs();
 
     }
 
@@ -107,7 +107,7 @@ public class IUIDBaseTests {
     public function creating_none_unique_IUID_throws_error():void {
         setUp( id, type, index );
         var expectedMessage:String = getErrorMessage(ErrorCodes.NON_UNIQUE_IDENTIFIER);
-        expectedMessage = injectToken( expectedMessage, "identifier", subject.identifier)
+        expectedMessage = injectThis( expectedMessage).finallyWith( "identifier", subject.identifier);
         const f:Function = function ():void {
             new BaseUID( id, subject.type );
         };

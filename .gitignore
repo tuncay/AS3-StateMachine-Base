@@ -5,6 +5,7 @@
 /bin-release/*
 /out/*
 libs/*
+testlibs/*
 bin/*
 obj/*
 .idea/*

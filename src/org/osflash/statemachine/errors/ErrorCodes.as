@@ -40,7 +40,7 @@ public class ErrorCodes {
 
         errorsBindings = new <Binding>[
             new Binding( StateDecodingError, "No FSM data has been defined, or the value passed is  null" ),
-            new Binding( StateDecodingError, "A state with the name [${state}] has already been declared" ),
+            new Binding( StateDecodingError, "Duplicate state(s) with the name(s) [${state}] have been found" ),
             new Binding( StateDecodingError, "A transition with the name [${transition}] has already been declared" ),
             new Binding( StateDecodingError, "The initial state attribute has not been declared" ),
             new Binding( StateDecodingError, "The initial state attribute refers to a state that is not declared" ),

@@ -1,33 +1,37 @@
-/**
- * User: revisual.co.uk
- * Date: 02/07/11
- * Time: 22:28
- */
 package org.osflash.statemachine.base.supporting {
 
 import org.osflash.statemachine.core.IFSMProperties;
 import org.osflash.statemachine.uids.IUID;
-import org.osflash.statemachine.uids.StateTransitionPhaseUID;
 
 public class MockStateTransitionModel implements IFSMProperties {
 
-    private var _register:ITransitionRegister;
+    private var _currentState:IUID;
+    private var _transition:IUID;
+    private var _phase:IUID;
 
-    public function MockStateTransitionModel( register:ITransitionRegister ) {
-        _register = register;
+
+    public function set transitionPhase( phase:IUID ):void {
+        _phase = phase;
     }
 
     public function get transitionPhase():IUID {
-        return StateTransitionPhaseUID.NONE;
+        return _phase;
     }
 
-
     public function get currentStateUID():IUID {
-        return null;
+        return _currentState;
+    }
+
+    public function set currentStateUID( value:IUID ):void {
+        _currentState = value;
     }
 
     public function get referringTransition():IUID {
-        return null;
+        return _transition;
+    }
+
+    public function set referringTransition( value:IUID ):void {
+        _transition = value;
     }
 }
 }

@@ -3,7 +3,7 @@
  * Date: 04/07/11
  * Time: 14:55
  */
-package org.osflash.statemachine.transitioning.supporting {
+package org.osflash.statemachine.supporting {
 
 public interface IResultsRegistry {
     function pushResult( value:Object ):void;

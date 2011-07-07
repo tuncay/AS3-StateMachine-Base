@@ -45,16 +45,16 @@ public class StateMachine implements IFSMController, IFSMProperties {
         if ( isTransitionFromValidPhase ) {
             _transitionController.transition( transition, payload );
         } else {
-
-        throw getError(ErrorCodes.INVALID_TRANSITION).injectMsgWith( _transitionModel.transitionPhase);
+            throw getError( ErrorCodes.INVALID_TRANSITION ).injectMsgWith( _transitionModel.transitionPhase );
         }
     }
 
-    public final function cancelStateTransition( reason:IUID  ):void {
+    public final function cancelStateTransition( reason:IUID ):void {
         if ( isCancellationFromValidPhase ) {
             _transitionController.cancelStateTransition( reason );
         } else {
-            throw getError(ErrorCodes.INVALID_CANCEL).injectMsgWith( _transitionModel.transitionPhase);        }
+            throw getError( ErrorCodes.INVALID_CANCEL ).injectMsgWith( _transitionModel.transitionPhase );
+        }
     }
 
     private final function get isTransitionFromValidPhase():Boolean {

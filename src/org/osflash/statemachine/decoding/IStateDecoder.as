@@ -13,6 +13,8 @@ public interface IStateDecoder {
 
     function getStates():Vector.<IState>;
 
+    function decodeTransitionForState( state:IState, stateDef:Object ):IState
+
 
 
 }

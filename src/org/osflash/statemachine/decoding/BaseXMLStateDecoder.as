@@ -26,7 +26,7 @@ public class BaseXMLStateDecoder implements IStateDecoder {
         for ( var i:int; i < stateDefs.length(); i++ ) {
             const stateDef:XML = stateDefs[i];
             const state:IState = decodeState( stateDef );
-            decodeTransitions( state, stateDef );
+            decodeTransitionForState( state, stateDef );
             states.push( state );
         }
         return states;
@@ -41,12 +41,13 @@ public class BaseXMLStateDecoder implements IStateDecoder {
         return ( stateUID.equals( data.@initial.toString() ) );
     }
 
-    protected function decodeTransitions( state:IState, stateDef:Object ):void {
+    public function decodeTransitionForState( state:IState, stateDef:Object ):IState {
         var transitions:XMLList = stateDef..transition as XMLList;
         for ( var i:int; i < transitions.length(); i++ ) {
             var transDef:XML = transitions[i];
             defineTransition( state, transDef );
         }
+        return state;
     }
 
     private function defineTransition( state:IState, transDef:XML ):void {

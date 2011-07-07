@@ -5,6 +5,7 @@ import org.hamcrest.core.allOf;
 import org.hamcrest.object.equalTo;
 import org.hamcrest.object.hasPropertyChain;
 import org.hamcrest.object.isFalse;
+import org.hamcrest.object.isTrue;
 import org.hamcrest.object.nullValue;
 import org.hamcrest.object.strictlyEqualTo;
 import org.osflash.statemachine.uids.StateTransitionUID;
@@ -32,30 +33,35 @@ public class TransitionQueueTest {
     }
 
     [Test]
-    public function calling_getNext_when_empty_returns_null():void {
+    public function calling_hasNext_when_enqueued_returns_true():void {
+         enqueueSingleItem();
+        assertThat( transitionQueue.hasNext, isTrue() );
+    }
+
+    [Test]
+    public function dequeueTransition_when_empty_returns_null():void {
         assertThat( transitionQueue.dequeueTransition(), nullValue() );
     }
 
     [Test]
     public function dequeuing_returns_TransitionBinding_with_enqueued_transitionUID_and_IPayload():void {
         enqueueSingleItem();
-        assertThat( transitionQueue.dequeueTransition(),
-        allOf(
-        hasPropertyChain( "transition.identifier", strictlyEqualTo( "transition/testing_one" ) ),
-        hasPropertyChain( "payload.body", strictlyEqualTo( "body_one" )
-        ) ) );
+        const expected:String = "transition/testing_one:body_one";
+        const got:String = dequeueAndToString();
+        assertThat( got, equalTo( expected ) );
     }
 
     [Test]
     public function queue_is_last_on_last_off():void {
         enqueueThreeItems();
         dequeueTwice();
+        const expected:String = "transition/testing_three:body_three";
+        const got:String = dequeueAndToString();
+        assertThat( got, equalTo( expected ) );
+    }
 
-        assertThat( transitionQueue.dequeueTransition(),
-        allOf(
-        hasPropertyChain( "transition.identifier", equalTo( "transition/testing_three" ) ),
-        hasPropertyChain( "payload.body", strictlyEqualTo( "body_three" )
-        ) ) );
+    private function dequeueAndToString():String {
+        return transitionQueue.dequeueTransition().toString();
     }
 
     private function enqueueSingleItem():void {
@@ -68,7 +74,7 @@ public class TransitionQueueTest {
         transitionQueue.enqueueTransition( new StateTransitionUID( "testing_three" ), "body_three" );
     }
 
-     private function dequeueTwice():void {
+    private function dequeueTwice():void {
         transitionQueue.dequeueTransition();
         transitionQueue.dequeueTransition();
     }

@@ -3,20 +3,20 @@ package org.osflash.statemachine.transitioning.supporting {
 import org.osflash.statemachine.model.IPhaseModel;
 import org.osflash.statemachine.transitioning.ITransitionPhase;
 
-public class GrumpyPhase implements ITransitionPhase {
+public class HappyPhase implements ITransitionPhase {
 
     private var _registry:IResultsRegister;
     private var _model:IPhaseModel;
     private var _logCode:int;
      private var _count:int = 1;
 
-    public function GrumpyPhase( registry:IResultsRegister ) {
+    public function HappyPhase( registry:IResultsRegister ) {
         _registry = registry;
         _logCode = -1;
     }
 
     public function dispatch():Boolean {
-        var results:String = "[" + _count++ + "]GP:";
+        var results:String = "[" + _count++ + "]HP:";
         if ( _model != null ) {
             results += "M:";
         }
@@ -24,7 +24,7 @@ public class GrumpyPhase implements ITransitionPhase {
             results += "LC(" + _logCode.toString() + ")"
         }
         _registry.pushResult( results );
-        return false;
+        return true;
     }
 
     public function set model( value:IPhaseModel ):void {

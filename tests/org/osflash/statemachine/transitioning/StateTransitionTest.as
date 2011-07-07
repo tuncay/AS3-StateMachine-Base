@@ -1,97 +1,88 @@
 package org.osflash.statemachine.transitioning {
 
 import org.hamcrest.assertThat;
-import org.hamcrest.collection.array;
 import org.hamcrest.core.allOf;
-import org.hamcrest.core.isA;
 import org.hamcrest.core.throws;
+import org.hamcrest.object.equalTo;
 import org.hamcrest.object.hasPropertyWithValue;
 import org.hamcrest.object.instanceOf;
 import org.osflash.statemachine.errors.ErrorCodes;
 import org.osflash.statemachine.errors.StateTransitionError;
 import org.osflash.statemachine.errors.getErrorMessage;
-import org.osflash.statemachine.model.IPhaseModel;
+import org.osflash.statemachine.supporting.injectThis;
 import org.osflash.statemachine.transitioning.supporting.GrumpyPhase;
-import org.osflash.statemachine.transitioning.supporting.HappyPhaseFive;
-import org.osflash.statemachine.transitioning.supporting.HappyPhaseFour;
-import org.osflash.statemachine.transitioning.supporting.HappyPhaseOne;
-import org.osflash.statemachine.transitioning.supporting.HappyPhaseThree;
-import org.osflash.statemachine.transitioning.supporting.HappyPhaseTwo;
-import org.osflash.statemachine.transitioning.supporting.IPhaseRegister;
+import org.osflash.statemachine.transitioning.supporting.HappyPhase;
+import org.osflash.statemachine.transitioning.supporting.IResultsRegister;
+import org.osflash.statemachine.transitioning.supporting.MockPhaseModel;
 
-public class StateTransitionTest implements IPhaseRegister {
+public class StateTransitionTest implements IResultsRegister {
 
-    private var stateTransition:TransitionPhaseDispatcher;
-    private var phasesGot:Array;
+    private var _stateTransition:TransitionPhaseDispatcher;
+    private var _results:Array;
+    private var _logCode:int;
+
 
     [Before]
     public function before():void {
-        stateTransition = new TransitionPhaseDispatcher(null);
-        phasesGot = [];
+        _logCode = 0;
+        _stateTransition = new TransitionPhaseDispatcher( new MockPhaseModel(), _logCode );
+        _results = [];
     }
 
     [After]
     public function tearDown():void {
-        stateTransition = null;
-        phasesGot = null
+        _stateTransition = null;
+        _results = null
     }
 
     [Test]
     public function successful_transition_processes_all_phases_in_correct_order():void {
-        setHappyPhases();
-        stateTransition.dispatchPhases(  );
-
-        assertThat( phasesGot, array(
-        isA( HappyPhaseOne ),
-        isA( HappyPhaseTwo ),
-        isA( HappyPhaseThree ),
-        isA( HappyPhaseFour ),
-        isA( HappyPhaseFive ) ) );
-
+        var expectedResults:String = "[1]HP:M:LC(${logCode}),[2]HP:M:LC(${logCode}),[3]HP:M:LC(${logCode}),[4]HP:M:LC(${logCode}),[5]HP:M:LC(${logCode})";
+        expectedResults =  injectThis( expectedResults ).finallyWith("logCode", _logCode);
+        setFiveHappyPhasesAndDispatch();
+        assertThat( _results.join( "," ), equalTo( expectedResults ) );
     }
 
     [Test]
     public function cancelled_transition_aborts_all_phases_after_cancellation():void {
-        setHappyPhasesPlusOneGrumpyPhase();
-        stateTransition.dispatchPhases(  );
-
-        assertThat( phasesGot, array(
-        isA( HappyPhaseOne ),
-        isA( HappyPhaseTwo ),
-        isA( GrumpyPhase ) ) );
-
+        var expectedResults:String = "[1]HP:M:LC(${logCode}),[2]HP:M:LC(${logCode}),[1]GP:M:LC(${logCode})";
+        expectedResults = injectThis( expectedResults ).finallyWith("logCode", _logCode);
+        setFiveHappyPhasesPlusOneGrumpyPhaseAndDispatch();
+        assertThat( _results.join( "," ), equalTo( expectedResults ) );
     }
 
     [Test]
     public function when_no_phases_pushed_throws_StateTransitionError():void {
-        var expectedMessage:String = getErrorMessage(ErrorCodes.NO_PHASES_HAVE_BEEN_PUSHED_TO_STATE_TRANSITION);
-        const throwFunction:Function = function ():void {
-            stateTransition.dispatchPhases(  );
-        };
+        var expectedMessage:String = getErrorMessage( ErrorCodes.NO_PHASES_HAVE_BEEN_PUSHED_TO_STATE_TRANSITION );
+        const throwFunction:Function = function ():void { _stateTransition.dispatchPhases(); };
         assertThat( throwFunction, throws( allOf( instanceOf( StateTransitionError ), hasPropertyWithValue( "message", expectedMessage ) ) ) );
 
     }
 
-    public function setHappyPhases():void {
-        stateTransition.pushTransitionPhase( new HappyPhaseOne(this) );
-        stateTransition.pushTransitionPhase( new HappyPhaseTwo(this) );
-        stateTransition.pushTransitionPhase( new HappyPhaseThree(this) );
-        stateTransition.pushTransitionPhase( new HappyPhaseFour(this) );
-        stateTransition.pushTransitionPhase( new HappyPhaseFive(this) );
+    public function setFiveHappyPhasesAndDispatch():void {
+        const happyPhase:ITransitionPhase = new HappyPhase( this );
+        _stateTransition.pushTransitionPhase( happyPhase );
+        _stateTransition.pushTransitionPhase( happyPhase );
+        _stateTransition.pushTransitionPhase( happyPhase );
+        _stateTransition.pushTransitionPhase( happyPhase );
+        _stateTransition.pushTransitionPhase( happyPhase );
+        _stateTransition.dispatchPhases();
     }
 
-    public function setHappyPhasesPlusOneGrumpyPhase():void {
-        stateTransition.pushTransitionPhase( new HappyPhaseOne(this) );
-        stateTransition.pushTransitionPhase( new HappyPhaseTwo(this) );
-        stateTransition.pushTransitionPhase( new GrumpyPhase(this) );
-        stateTransition.pushTransitionPhase( new HappyPhaseThree(this) );
-        stateTransition.pushTransitionPhase( new HappyPhaseFour(this) );
-        stateTransition.pushTransitionPhase( new HappyPhaseFive(this) );
+    public function setFiveHappyPhasesPlusOneGrumpyPhaseAndDispatch():void {
+        const happyPhase:ITransitionPhase = new HappyPhase( this );
+        const gumpyPhase:ITransitionPhase = new GrumpyPhase( this );
+        _stateTransition.pushTransitionPhase( happyPhase );
+        _stateTransition.pushTransitionPhase( happyPhase );
+        _stateTransition.pushTransitionPhase( gumpyPhase );
+        _stateTransition.pushTransitionPhase( happyPhase );
+        _stateTransition.pushTransitionPhase( happyPhase );
+        _stateTransition.pushTransitionPhase( happyPhase );
+        _stateTransition.dispatchPhases();
     }
 
-
-    public function setPhase( phase:ITransitionPhase ):void {
-        phasesGot.push( phase );
+    public function pushResult( result:Object ):void {
+        _results.push( result );
     }
 }
 }

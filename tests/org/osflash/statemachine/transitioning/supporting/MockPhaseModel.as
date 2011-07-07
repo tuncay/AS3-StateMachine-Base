@@ -5,8 +5,35 @@
  */
 package org.osflash.statemachine.transitioning.supporting {
 
-public class MockPhaseModel {
+import org.osflash.statemachine.core.IPayload;
+import org.osflash.statemachine.core.IState;
+import org.osflash.statemachine.model.IPhaseModel;
+import org.osflash.statemachine.uids.IUID;
+
+public class MockPhaseModel implements IPhaseModel {
     public function MockPhaseModel() {
+    }
+
+    public function get currentState():IState {
+        return null;
+    }
+
+    public function get targetState():IState {
+        return null;
+    }
+
+    public function get hasTransitionBeenCancelled():Boolean {
+        return false;
+    }
+
+    public function set transitionPhase( phase:IUID ):void {
+    }
+
+    public function get payload():IPayload {
+        return null;
+    }
+
+    public function setTargetStateAsCurrent():void {
     }
 }
 }

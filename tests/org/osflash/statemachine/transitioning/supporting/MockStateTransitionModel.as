@@ -7,6 +7,7 @@ package org.osflash.statemachine.transitioning.supporting {
 
 import org.osflash.statemachine.core.IState;
 import org.osflash.statemachine.model.ITransitionModel;
+import org.osflash.statemachine.supporting.IResultsRegistry;
 import org.osflash.statemachine.uids.IUID;
 
 public class MockStateTransitionModel implements ITransitionModel {

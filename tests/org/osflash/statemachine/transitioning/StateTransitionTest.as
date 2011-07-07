@@ -9,13 +9,13 @@ import org.hamcrest.object.instanceOf;
 import org.osflash.statemachine.errors.ErrorCodes;
 import org.osflash.statemachine.errors.StateTransitionError;
 import org.osflash.statemachine.errors.getErrorMessage;
+import org.osflash.statemachine.supporting.IResultsRegistry;
 import org.osflash.statemachine.supporting.injectThis;
 import org.osflash.statemachine.transitioning.supporting.GrumpyPhase;
 import org.osflash.statemachine.transitioning.supporting.HappyPhase;
-import org.osflash.statemachine.transitioning.supporting.IResultsRegister;
 import org.osflash.statemachine.transitioning.supporting.MockPhaseModel;
 
-public class StateTransitionTest implements IResultsRegister {
+public class StateTransitionTest implements IResultsRegistry {
 
     private var _stateTransition:TransitionPhaseDispatcher;
     private var _results:Array;

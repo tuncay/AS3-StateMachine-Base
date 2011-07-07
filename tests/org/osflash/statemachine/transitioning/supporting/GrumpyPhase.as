@@ -1,16 +1,17 @@
 package org.osflash.statemachine.transitioning.supporting {
 
 import org.osflash.statemachine.model.IPhaseModel;
+import org.osflash.statemachine.supporting.IResultsRegistry;
 import org.osflash.statemachine.transitioning.ITransitionPhase;
 
 public class GrumpyPhase implements ITransitionPhase {
 
-    private var _registry:IResultsRegister;
+    private var _registry:IResultsRegistry;
     private var _model:IPhaseModel;
     private var _logCode:int;
      private var _count:int = 1;
 
-    public function GrumpyPhase( registry:IResultsRegister ) {
+    public function GrumpyPhase( registry:IResultsRegistry ) {
         _registry = registry;
         _logCode = -1;
     }

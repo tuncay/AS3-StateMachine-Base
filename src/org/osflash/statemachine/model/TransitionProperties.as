@@ -6,7 +6,7 @@ import org.osflash.statemachine.errors.ErrorCodes;
 import org.osflash.statemachine.errors.getError;
 import org.osflash.statemachine.transitioning.Payload;
 import org.osflash.statemachine.uids.IUID;
-import org.osflash.statemachine.uids.StateTransitionPhaseUID;
+import org.osflash.statemachine.uids.TransitionPhaseUID;
 import org.osflash.statemachine.uids.getNullUID;
 
 internal class TransitionProperties implements ITransitionProperties {
@@ -70,7 +70,7 @@ internal class TransitionProperties implements ITransitionProperties {
     }
 
     public function reset():void {
-        currentTransitionPhase = StateTransitionPhaseUID.NONE;
+        currentTransitionPhase = TransitionPhaseUID.NONE;
         _cancellationReason = getNullUID();
     }
 }

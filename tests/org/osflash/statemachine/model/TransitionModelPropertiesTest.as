@@ -19,7 +19,7 @@ import org.osflash.statemachine.errors.getErrorMessage;
 import org.osflash.statemachine.supporting.injectThis;
 import org.osflash.statemachine.uids.CancellationReasonUID;
 import org.osflash.statemachine.uids.IUID;
-import org.osflash.statemachine.uids.StateTransitionPhaseUID;
+import org.osflash.statemachine.uids.TransitionPhaseUID;
 import org.osflash.statemachine.uids.StateTransitionUID;
 import org.osflash.statemachine.uids.StateUID;
 import org.osflash.statemachine.uids.flushUIDs;
@@ -66,7 +66,7 @@ public class TransitionModelPropertiesTest {
 
     [Test]
     public function default_currentTransitionPhase_value_is_NONE():void {
-        assertThat( _properties.currentTransitionPhase, strictlyEqualTo( StateTransitionPhaseUID.NONE ) );
+        assertThat( _properties.currentTransitionPhase, strictlyEqualTo( TransitionPhaseUID.NONE ) );
     }
 
     [Test]
@@ -114,7 +114,7 @@ public class TransitionModelPropertiesTest {
     public function reset_sets_currentTransitionPhase_to_NONE():void {
         setUpTransitionModelProperties();
         _properties.reset();
-        assertThat( _properties.currentTransitionPhase, strictlyEqualTo( StateTransitionPhaseUID.NONE ) );
+        assertThat( _properties.currentTransitionPhase, strictlyEqualTo( TransitionPhaseUID.NONE ) );
     }
 
     [Test]
@@ -147,7 +147,7 @@ public class TransitionModelPropertiesTest {
         const transition:IUID = new StateTransitionUID( "one" );
         _state.defineTransition( transition, _state.uid );
         _properties.currentState = _state;
-        _properties.currentTransitionPhase = new StateTransitionPhaseUID( "one" );
+        _properties.currentTransitionPhase = new TransitionPhaseUID( "one" );
         _properties.cancellationReason = new CancellationReasonUID( "one" );
         _properties.currentTransitionBinding = new TransitionBinding( transition, "payload_one" );
     }

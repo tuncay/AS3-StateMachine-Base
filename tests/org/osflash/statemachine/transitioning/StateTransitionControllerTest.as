@@ -4,7 +4,7 @@ import org.hamcrest.assertThat;
 import org.hamcrest.collection.array;
 import org.hamcrest.object.equalTo;
 import org.osflash.statemachine.model.ITransitionModel;
-import org.osflash.statemachine.transitioning.supporting.IResultsRegistry;
+import org.osflash.statemachine.supporting.IResultsRegistry;
 import org.osflash.statemachine.transitioning.supporting.MockPhaseDispatcher;
 import org.osflash.statemachine.transitioning.supporting.MockStateTransitionModel;
 import org.osflash.statemachine.uids.CancellationReasonUID;

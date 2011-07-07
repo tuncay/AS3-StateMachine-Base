@@ -25,31 +25,31 @@ public class MockStateTransitionModel implements ITransitionModel {
     }
 
     public function get hasTransition():Boolean {
-        _registry.pushResult( "IStateTransitionModel.hasNextTransition()" );
+        _registry.pushResult( "ISTM.hNT" );
         return (_transitions.length != 0);
     }
 
     public function setInitialStateAsCurrent():void {
-        _registry.pushResult( "IStateTransitionModel.setInitialStateAsCurrent()" );
+        _registry.pushResult( "ISTM.sISAC" );
     }
 
     public function addTransition( transition:IUID, payload:Object = null ):void {
         _transitions.push( {transition:transition, payload:payload} );
-        _registry.pushResult( "IStateTransitionModel.enqueueTransition(" + transition.toString() + "," + payload.toString() + ")" );
+        _registry.pushResult( "ISTM.eT:" + transition.toString() + ":" + payload.toString() );
     }
 
     public function set cancellationReason( reason:IUID ):void {
-        _registry.pushResult( "IStateTransitionModel.addReasonForCancellation(" + reason.toString() + ")" );
+        _registry.pushResult( "ISTM.aRFC:" + reason.toString() );
     }
 
     public function dequeueTransition():void {
         const o:Object = _transitions.shift();
-        _registry.pushResult( "IStateTransitionModel.dequeueNextTransition()::" + o.transition.toString() + "," + o.payload.toString() );
+        _registry.pushResult( "ISTM.dNT:" + o.transition.toString() + ":" + o.payload.toString() );
 
     }
 
     public function reset():void {
-        _registry.pushResult( "IStateTransitionModel.reset()" );
+        _registry.pushResult( "ISTM.r" );
     }
 
     public function get currentStateUID():IUID {

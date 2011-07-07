@@ -1,8 +1,3 @@
-/**
- * User: revisual.co.uk
- * Date: 04/07/11
- * Time: 14:21
- */
 package org.osflash.statemachine.transitioning.supporting {
 
 import org.osflash.statemachine.supporting.IResultsRegistry;
@@ -18,7 +13,7 @@ public class MockPhaseDispatcher implements IPhaseDispatcher {
 
     public function dispatchPhases(  ):void {
 
-        _registry.pushResult( "IPhaseDispatcher.dispatchPhases()" );
+        _registry.pushResult( "IPD.dP" );
 
     }
 }

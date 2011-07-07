@@ -11,9 +11,9 @@ import org.osflash.statemachine.uids.IUID;
 import org.osflash.statemachine.uids.StateTransitionUID;
 import org.osflash.statemachine.uids.flushUIDs;
 
-public class StateTransitionControllerTest implements IResultsRegistry {
+public class TransitionControllerTest implements IResultsRegistry {
 
-    private var _stateTransitionController:StateTransitionController;
+    private var _stateTransitionController:TransitionController;
 
     private var _results:Array;
     private var _reason:IUID;
@@ -74,7 +74,7 @@ public class StateTransitionControllerTest implements IResultsRegistry {
 
     public function initTestSubject( transitions:Array = null ):void {
         const transitionModel:ITransitionModel = new MockStateTransitionModel( this, transitions );
-        _stateTransitionController = new StateTransitionController( transitionModel, new MockPhaseDispatcher( this ) );
+        _stateTransitionController = new TransitionController( transitionModel, new MockPhaseDispatcher( this ) );
         _results = [];
 
     }

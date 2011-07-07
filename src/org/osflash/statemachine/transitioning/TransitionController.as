@@ -4,13 +4,13 @@ import org.osflash.statemachine.logging.log;
 import org.osflash.statemachine.model.ITransitionModel;
 import org.osflash.statemachine.uids.IUID;
 
-public class StateTransitionController implements ITransitionController {
+public class TransitionController implements ITransitionController {
 
     private var _model:ITransitionModel;
     private var _transition:IPhaseDispatcher;
     private var _isCurrentlyTransitioning:Boolean;
 
-    public function StateTransitionController( model:ITransitionModel, transition:IPhaseDispatcher ) {
+    public function TransitionController( model:ITransitionModel, transition:IPhaseDispatcher ) {
         _model = model;
         _transition = transition;
     }

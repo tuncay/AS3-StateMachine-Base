@@ -15,7 +15,7 @@ import org.osflash.statemachine.transitioning.supporting.GrumpyPhase;
 import org.osflash.statemachine.transitioning.supporting.HappyPhase;
 import org.osflash.statemachine.transitioning.supporting.MockPhaseModel;
 
-public class StateTransitionTest implements IResultsRegistry {
+public class TransitionPhaseDispatcherTest implements IResultsRegistry {
 
     private var _stateTransition:TransitionPhaseDispatcher;
     private var _results:Array;

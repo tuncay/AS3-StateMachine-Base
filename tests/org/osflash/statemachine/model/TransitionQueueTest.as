@@ -34,7 +34,7 @@ public class TransitionQueueTest {
 
     [Test]
     public function calling_hasNext_when_enqueued_returns_true():void {
-         enqueueSingleItem();
+        enqueueSingleItem();
         assertThat( transitionQueue.hasNext, isTrue() );
     }
 

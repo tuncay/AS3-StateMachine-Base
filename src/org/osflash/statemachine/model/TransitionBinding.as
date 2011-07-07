@@ -30,5 +30,11 @@ public class TransitionBinding {
     public function get payload():IPayload {
         return _payload;
     }
+
+    public function toString():String{
+        return transition.toString() + ":" + _payload.body.toString();
+    }
 }
+
+
 }

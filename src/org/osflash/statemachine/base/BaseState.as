@@ -41,6 +41,10 @@ public class BaseState implements IState {
         return (returnUID == null ) ? getNullUID() : returnUID;
     }
 
+    public function toString():String{
+        return uid.identifier;
+    }
+
     public function dispose():void {
         _transitions = null;
     }

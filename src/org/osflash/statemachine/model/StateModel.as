@@ -3,7 +3,6 @@ package org.osflash.statemachine.model {
 import org.osflash.statemachine.core.IState;
 import org.osflash.statemachine.core.IStateProvider;
 import org.osflash.statemachine.errors.ErrorCodes;
-import org.osflash.statemachine.errors.StateModelError;
 import org.osflash.statemachine.errors.getError;
 import org.osflash.statemachine.uids.IUID;
 

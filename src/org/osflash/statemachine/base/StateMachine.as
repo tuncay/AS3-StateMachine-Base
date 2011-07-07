@@ -3,7 +3,6 @@ package org.osflash.statemachine.base {
 import org.osflash.statemachine.core.IFSMController;
 import org.osflash.statemachine.core.IFSMProperties;
 import org.osflash.statemachine.errors.ErrorCodes;
-import org.osflash.statemachine.errors.StateTransitionError;
 import org.osflash.statemachine.errors.getError;
 import org.osflash.statemachine.transitioning.ITransitionController;
 import org.osflash.statemachine.transitioning.ITransitionValidator;

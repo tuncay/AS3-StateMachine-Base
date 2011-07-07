@@ -2,10 +2,7 @@ package org.osflash.statemachine.model {
 
 import org.osflash.statemachine.core.IPayload;
 import org.osflash.statemachine.core.IState;
-import org.osflash.statemachine.errors.BaseStateError;
 import org.osflash.statemachine.errors.ErrorCodes;
-import org.osflash.statemachine.errors.StateTransitionCancellationError;
-import org.osflash.statemachine.errors.StateTransitionError;
 import org.osflash.statemachine.errors.getError;
 import org.osflash.statemachine.transitioning.Payload;
 import org.osflash.statemachine.uids.IUID;
@@ -59,8 +56,7 @@ internal class TransitionProperties implements ITransitionProperties {
         if ( reason != null && !reason.isNull ) {
             _cancellationReason = reason;
         } else {
-            throw getError(ErrorCodes.NULL_CANCELLATION_REASON).injectMsgWith( currentState.uid ).injectMsgWith( referringTransition );
-
+            throw getError( ErrorCodes.NULL_CANCELLATION_REASON ).injectMsgWith( currentState.uid ).injectMsgWith( referringTransition );
         }
     }
 

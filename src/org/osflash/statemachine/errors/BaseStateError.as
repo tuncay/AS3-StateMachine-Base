@@ -2,7 +2,6 @@ package org.osflash.statemachine.errors {
 
 import org.osflash.statemachine.uids.IUID;
 
-
 public class BaseStateError extends Error {
 
     public function BaseStateError( msg:String ) {

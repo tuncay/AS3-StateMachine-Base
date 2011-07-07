@@ -16,12 +16,14 @@ import org.osflash.statemachine.core.IPayload;
 public class PayloadTest {
 
     private var _payload:IPayload;
-    private var _body:Object;
+    private var _bodyOne:Object;
+    private var _bodyTwo:Object;
 
 
     [Before]
     public function before():void {
-        _body = "payload_one";
+        _bodyOne = "payload_one";
+        _bodyTwo = "payload_two";
     }
 
     public function initTestSubject( body:Object ):void {
@@ -31,18 +33,20 @@ public class PayloadTest {
     [After]
     public function tearDown():void {
         _payload = null;
+        _bodyOne = null;
+        _bodyTwo = null;
     }
 
     [Test]
     public function body_passed_in_constructor_is_assigned_to_body_property():void {
-        initTestSubject( _body );
-        assertThat( _payload.body, strictlyEqualTo( _body ) );
+        initTestSubject( _bodyOne );
+        assertThat( _payload.body, strictlyEqualTo( _bodyOne ) );
     }
 
     [Test]
     public function body_of_IPayload_passed_in_constructor_is_assigned_to_body_property():void {
-        initTestSubject( new Payload( _body ) );
-        assertThat( _payload.body, strictlyEqualTo( _body ) );
+        initTestSubject( new Payload( _bodyOne ) );
+        assertThat( _payload.body, strictlyEqualTo( _bodyOne ) );
     }
 
     [Test]
@@ -53,42 +57,40 @@ public class PayloadTest {
 
     [Test]
     public function if_body_is_set_isNull_returns_false():void {
-        initTestSubject( _body );
+        initTestSubject( _bodyOne );
         assertThat( _payload.isNull, isFalse() );
     }
 
     [Test]
     public function test_equal_against_strictlyEqual_body_instance__returns_true():void {
-        initTestSubject( _body );
-        assertThat( _payload.equals( _body ), isTrue() );
+        initTestSubject( _bodyOne );
+        assertThat( _payload.equals( _bodyOne ), isTrue() );
     }
 
     [Test]
     public function test_equal_against_self__returns_true():void {
-        initTestSubject( _body );
+        initTestSubject( _bodyOne );
         assertThat( _payload.equals( _payload ), isTrue() );
     }
 
     [Test]
     public function test_equal_against_Payload_with_strictlyEqual_body_instance__returns_true():void {
-        const payload2:IPayload = new Payload( _body );
-        initTestSubject( _body );
+        const payload2:IPayload = new Payload( _bodyOne );
+        initTestSubject( _bodyOne );
         assertThat( _payload.equals( payload2 ), isTrue() );
     }
 
     [Test]
     public function test_equal_against_Payload_with_non_equal_body_instance__returns_false():void {
-        const body2:Object = "payload_two";
-        const payload2:IPayload = new Payload( body2 );
-        initTestSubject( _body );
+        const payload2:IPayload = new Payload( _bodyTwo );
+        initTestSubject( _bodyOne );
         assertThat( _payload.equals( payload2 ), isFalse() );
     }
 
     [Test]
     public function test_equal_against_non_equal_body_instance__returns_false():void {
-        const body2:Object = "payload_two";
-        initTestSubject( _body );
-        assertThat( _payload.equals( body2 ), isFalse() );
+        initTestSubject( _bodyOne );
+        assertThat( _payload.equals( _bodyTwo ), isFalse() );
     }
 
 

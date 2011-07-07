@@ -16,7 +16,7 @@ import org.osflash.statemachine.core.IFSMProperties;
 import org.osflash.statemachine.errors.ErrorCodes;
 import org.osflash.statemachine.errors.StateTransitionError;
 import org.osflash.statemachine.errors.getErrorMessage;
-import org.osflash.statemachine.supporting.injectToken;
+import org.osflash.statemachine.supporting.injectThis;
 import org.osflash.statemachine.transitioning.ITransitionController;
 import org.osflash.statemachine.uids.IUID;
 import org.osflash.statemachine.uids.StateTransitionPhaseUID;
@@ -62,7 +62,8 @@ public class StateMachineTest implements ITransitionRegister {
     public function invalid_transition_throws_StateTransitionError():void {
 
         var expectedMessage:String = getErrorMessage( ErrorCodes.INVALID_TRANSITION );
-        expectedMessage = injectToken( expectedMessage, "phase", StateTransitionPhaseUID.NONE.toString() );
+        expectedMessage = injectThis( expectedMessage ).withThis( "phase", StateTransitionPhaseUID.NONE.toString() ).result;
+
         setGrumpyValidators();
 
         const throwFunction:Function = function ():void {
@@ -82,7 +83,7 @@ public class StateMachineTest implements ITransitionRegister {
     [Test]
     public function invalid_cancellation_throws_StateTransitionError():void {
         var expectedMessage:String = getErrorMessage( ErrorCodes.INVALID_CANCEL );
-        expectedMessage = injectToken( expectedMessage, "phase", StateTransitionPhaseUID.NONE.toString() );
+        expectedMessage = injectThis( expectedMessage).finallyWith( "phase", StateTransitionPhaseUID.NONE.toString() );
         setGrumpyValidators();
 
         const throwFunction:Function = function ():void {

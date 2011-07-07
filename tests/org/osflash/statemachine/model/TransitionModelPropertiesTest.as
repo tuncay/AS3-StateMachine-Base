@@ -16,7 +16,7 @@ import org.osflash.statemachine.errors.ErrorCodes;
 import org.osflash.statemachine.errors.StateTransitionCancellationError;
 import org.osflash.statemachine.errors.StateTransitionError;
 import org.osflash.statemachine.errors.getErrorMessage;
-import org.osflash.statemachine.supporting.injectToken;
+import org.osflash.statemachine.supporting.injectThis;
 import org.osflash.statemachine.uids.CancellationReasonUID;
 import org.osflash.statemachine.uids.IUID;
 import org.osflash.statemachine.uids.StateTransitionPhaseUID;
@@ -154,8 +154,9 @@ public class TransitionModelPropertiesTest {
 
     private function assertThatCancellationReasonThrowsStateTransitionCancellationError( reason:IUID ):void {
         var expectedMessage:String = getErrorMessage( ErrorCodes.NULL_CANCELLATION_REASON );
-        expectedMessage = injectToken( expectedMessage, "state", _properties.currentState.uid.toString() );
-        expectedMessage = injectToken( expectedMessage, "transition", _properties.referringTransition.toString() );
+        expectedMessage = injectThis( expectedMessage )
+                          .withThis( "state", _properties.currentState.uid )
+                          .finallyWith( "transition", _properties.referringTransition );
 
         const throwFunction:Function = function ():void {
             _properties.cancellationReason = reason;
@@ -166,8 +167,9 @@ public class TransitionModelPropertiesTest {
     private function assertThatUndefinedTransitionInCurrentStateThrowsStateTransitionError():void {
         const transition:IUID = new StateTransitionUID( "two" );
         var expectedMessage:String = getErrorMessage( ErrorCodes.TRANSITION_UNDEFINED_IN_CURRENT_STATE );
-        expectedMessage = injectToken( expectedMessage, "state", _properties.currentState.uid.toString() );
-        expectedMessage = injectToken( expectedMessage, "transition", transition.toString() );
+        expectedMessage = injectThis( expectedMessage )
+                          .withThis( "state", _properties.currentState.uid )
+                          .finallyWith( "transition", transition.toString() );
 
         const throwFunction:Function = function ():void {
             _properties.currentTransitionBinding = new TransitionBinding( transition, "payload_two" );

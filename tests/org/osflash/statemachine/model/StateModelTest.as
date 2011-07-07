@@ -1,4 +1,3 @@
-
 package org.osflash.statemachine.model {
 
 import org.hamcrest.assertThat;
@@ -16,7 +15,7 @@ import org.osflash.statemachine.core.IState;
 import org.osflash.statemachine.errors.ErrorCodes;
 import org.osflash.statemachine.errors.StateModelError;
 import org.osflash.statemachine.errors.getErrorMessage;
-import org.osflash.statemachine.supporting.injectToken;
+import org.osflash.statemachine.supporting.injectThis;
 import org.osflash.statemachine.uids.IUID;
 import org.osflash.statemachine.uids.StateTransitionUID;
 import org.osflash.statemachine.uids.StateUID;
@@ -100,7 +99,7 @@ public class StateModelTest {
 
     [Test]
     public function when_no_states_have_been_registered_initialState_throws_StateModelError():void {
-        const expectedMessage:String = getErrorMessage(ErrorCodes.NO_INITIAL_STATE_DECLARED);
+        const expectedMessage:String = getErrorMessage( ErrorCodes.NO_INITIAL_STATE_DECLARED );
         const throwFunction:Function = function ():void {
             stateModel.initialState;
         };
@@ -114,10 +113,11 @@ public class StateModelTest {
 
     [Test ]
     public function when_no_states_have_been_registered_getTargetState_throws_StateModelError():void {
-        var expectedMessage:String = getErrorMessage(ErrorCodes.TARGET_DECLARATION_MISMATCH);
-        expectedMessage = injectToken( expectedMessage, "state", saving.uid.toString() );
-        expectedMessage = injectToken( expectedMessage, "transition", startUID.toString() );
-        expectedMessage = injectToken( expectedMessage, "target", starting.uid.toString() );
+        var expectedMessage:String = getErrorMessage( ErrorCodes.TARGET_DECLARATION_MISMATCH );
+        expectedMessage = injectThis( expectedMessage )
+                          .withThis( "state", saving.uid )
+                          .withThis( "transition", startUID )
+                          .finallyWith( "target", starting );
 
         const throwFunction:Function = function ():void {
             stateModel.getTargetState( startUID, saving );
@@ -128,9 +128,10 @@ public class StateModelTest {
 
     [Test]
     public function if_transition_is_not_defined_in_source_state_throws_StateModelError():void {
-         var expectedMessage:String = getErrorMessage(ErrorCodes.TRANSITION_NOT_DECLARED_IN_STATE);
-        expectedMessage = injectToken( expectedMessage, "state", saving.uid.toString() );
-        expectedMessage = injectToken( expectedMessage, "transition", saveUID.toString() );
+        var expectedMessage:String = getErrorMessage( ErrorCodes.TRANSITION_NOT_DECLARED_IN_STATE );
+        expectedMessage = injectThis( expectedMessage )
+                          .withThis( "state", saving.uid )
+                          .finallyWith( "transition", saveUID );
 
         const throwFunction:Function = function ():void {
             stateModel.getTargetState( saveUID, saving );
@@ -140,8 +141,9 @@ public class StateModelTest {
 
     [Test]
     public function when_no_states_have_been_registered_getState_throws_StateModelError():void {
-         var expectedMessage:String = getErrorMessage(ErrorCodes.STATE_REQUESTED_IS_NOT_REGISTERED);
-        expectedMessage = injectToken( expectedMessage, "state", saving.uid.toString() );
+        var expectedMessage:String = getErrorMessage( ErrorCodes.STATE_REQUESTED_IS_NOT_REGISTERED );
+        expectedMessage = injectThis( expectedMessage )
+                          .finallyWith( "state", saving.uid );
 
         const throwFunction:Function = function ():void {
             stateModel.getState( saving.uid );

@@ -7,7 +7,7 @@ import org.hamcrest.object.isTrue;
 import org.hamcrest.object.strictlyEqualTo;
 import org.osflash.statemachine.base.BaseState;
 import org.osflash.statemachine.core.IState;
-import org.osflash.statemachine.model.supporting.MockStateModelOwner;
+import org.osflash.statemachine.model.supporting.MockStateModel;
 import org.osflash.statemachine.model.supporting.MockTransitionProperties;
 import org.osflash.statemachine.uids.CancellationReasonUID;
 import org.osflash.statemachine.uids.IUID;
@@ -36,7 +36,7 @@ public class ITransitionModelTest {
 
     private function initTestSubject():void {
         _initialState = new BaseState( new StateUID( "initial" ) );
-        _stateModel = new MockStateModelOwner( _initialState );
+        _stateModel = new MockStateModel( _initialState  );
         _properties = new MockTransitionProperties();
         _transitionModel = new TransitionModel( _stateModel, _properties );
     }
@@ -113,7 +113,6 @@ public class ITransitionModelTest {
     private function reset():void {
         _transitionModel.reset();
     }
-
 
     private function disposeProps():void {
         _transitionModel = null;

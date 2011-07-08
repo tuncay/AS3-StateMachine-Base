@@ -3,15 +3,18 @@ package org.osflash.statemachine.model.supporting {
 import org.osflash.statemachine.core.IState;
 import org.osflash.statemachine.model.IStateModel;
 import org.osflash.statemachine.model.TransitionBinding;
+import org.osflash.statemachine.supporting.IResultsRegistry;
 import org.osflash.statemachine.uids.IUID;
 
-public class MockStateModelOwner implements IStateModel {
+public class MockStateModel implements IStateModel {
 
     private var _initialState:IState;
-    private var _registry:IBindingRegistry;
+    private var _targetState:IState;
+    private var _registry:IResultsRegistry;
 
-    public function MockStateModelOwner( initialState:IState, registry:IBindingRegistry = null) {
+    public function MockStateModel( initialState:IState, targetState:IState = null,  registry:IResultsRegistry = null) {
         _initialState = initialState;
+        _targetState = targetState;
         _registry = registry;
     }
 
@@ -32,8 +35,8 @@ public class MockStateModelOwner implements IStateModel {
     }
 
     public function getTargetState( transitionUID:IUID, state:IState ):IState {
-         _registry.setBinding( new TransitionBinding(transitionUID, state) );
-        return null;
+         _registry.pushResult( new TransitionBinding(transitionUID, state) );
+        return _targetState;
     }
 
     public function dispose():void {

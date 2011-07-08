@@ -8,14 +8,14 @@ public class StateElementsHaveNameAttributes implements IDataValidator{
 
     private var _data:XML;
 
-    public function StateElementsHaveNameAttributes( data:XML) {
-        _data = data;
-    }
-
     public function validate():Object {
         const states:XMLList = _data..state.(!hasOwnProperty( "@name" ) );
         if ( states.length() == 0 )  return _data;
-        throw getError( ErrorCodes.STATE_NAME_ATTRIBUTE_NOT_DECLARED ).injectMsgWith( states.length.toString(), "quantity" );
+        throw getError( ErrorCodes.STATE_NAME_ATTRIBUTE_NOT_DECLARED ).injectMsgWith( states.length().toString(), "quantity" );
+    }
+
+    public function set data( value:Object ):void {
+        _data = XML(value);
     }
 }
 }

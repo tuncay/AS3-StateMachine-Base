@@ -8,10 +8,6 @@ public class StateNamesAreUnique implements IDataValidator {
 
     private var _data:XML;
 
-    public function StateNamesAreUnique( data:XML ) {
-        _data = data;
-    }
-
     public function validate():Object {
         const states:XMLList = retrieveAllStateNameAttributes();
         var errors:Vector.<String> = new <String>[];
@@ -24,14 +20,17 @@ public class StateNamesAreUnique implements IDataValidator {
     }
 
     private function retrieveAllStateNameAttributes():XMLList {
-        return _data..state.(hasOwnProperty( "@name" ) ).@name;
+        return _data.state.(hasOwnProperty( "@name" ) ).@name;
     }
 
 
-    private function retrieveNumberOfStateElementsWithName( name:String ):int {
-        return _data..state.( hasOwnProperty( "@name" ) && @name == name).length();
+    private function retrieveNumberOfStateElementsWithName( id:String ):int {
+        return _data.state.( hasOwnProperty( "@name" ) && @name == id).length();
     }
 
 
+    public function set data( value:Object ):void {
+        _data = XML( value );
+    }
 }
 }

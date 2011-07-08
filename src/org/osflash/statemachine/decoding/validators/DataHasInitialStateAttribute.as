@@ -4,12 +4,12 @@ import org.osflash.statemachine.decoding.IDataValidator;
 import org.osflash.statemachine.errors.ErrorCodes;
 import org.osflash.statemachine.errors.getError;
 
-public class DataHasInitialStateAttribute implements IDataValidator{
+public class DataHasInitialStateAttribute implements IDataValidator {
 
     private var _data:XML;
 
-    public function DataHasInitialStateAttribute( data:XML) {
-        _data = data;
+    public function set data( value:Object ):void {
+        _data = XML(value);
     }
 
     public function validate():Object {

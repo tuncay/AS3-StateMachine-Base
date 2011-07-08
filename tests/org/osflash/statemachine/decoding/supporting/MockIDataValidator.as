@@ -9,18 +9,18 @@ public class MockIDataValidator implements IDataValidator {
     private var _data:Object;
     private var _count:int;
 
-    public function MockIDataValidator(registry:IResultsRegistry) {
+    public function MockIDataValidator(registry:IResultsRegistry, count:int) {
         _registry = registry;
-        _count = 0;
+        _count = count;
     }
 
     public function set data( value:Object ):void {
-         _registry.pushResult( "[" + _count++ + "]MIDV.d:" + value.toString() );
+         _registry.pushResult( "[" + _count + "]MIDV.d:" + value.toString() );
         _data = value;
     }
 
     public function validate():Object {
-         _registry.pushResult( "[" + _count++ + "]MIDV.v" );
+         _registry.pushResult( "[" + _count + "]MIDV.v" );
         return _data;
     }
 }

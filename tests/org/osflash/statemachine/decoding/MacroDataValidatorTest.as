@@ -27,8 +27,8 @@ public class MacroDataValidatorTest implements IResultsRegistry {
     }
 
     [Test]
-    public function calling_validate_calls_all_childrens_validate_methods():void {
-        const expected:String = "[0]MIDV.d:testing,[1]MIDV.d:testing,[2]MIDV.d:testing,[3]MIDV.v,[4]MIDV.v,[5]MIDV.v";
+    public function calling_validate_calls_all_childrens_validate_methods_in_correct_order():void {
+        const expected:String = "[1]MIDV.d:testing,[2]MIDV.d:testing,[3]MIDV.d:testing,[1]MIDV.v,[2]MIDV.v,[3]MIDV.v";
         callValidateOnTestSubject();
         assertThat( got, equalTo( expected ) );
     }
@@ -52,10 +52,9 @@ public class MacroDataValidatorTest implements IResultsRegistry {
     }
 
     private function addValidatorsToTestSubject():void {
-        const validator:IDataValidator = new MockIDataValidator( this );
-        _macroDataValidator.addValidator( validator );
-        _macroDataValidator.addValidator( validator );
-        _macroDataValidator.addValidator( validator );
+        _macroDataValidator.addValidator( new MockIDataValidator( this, 1 ) );
+        _macroDataValidator.addValidator( new MockIDataValidator( this, 2 ) );
+        _macroDataValidator.addValidator( new MockIDataValidator( this, 3 ) );
     }
 
     public function get got():String {

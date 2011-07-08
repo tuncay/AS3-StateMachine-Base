@@ -9,15 +9,16 @@ public class GrumpyPhase implements ITransitionPhase {
     private var _registry:IResultsRegistry;
     private var _model:IPhaseModel;
     private var _logCode:int;
-     private var _count:int = 1;
+     private var _count:int;
 
-    public function GrumpyPhase( registry:IResultsRegistry ) {
+    public function GrumpyPhase( registry:IResultsRegistry, count:int ) {
         _registry = registry;
         _logCode = -1;
+        _count = count;
     }
 
     public function dispatch():Boolean {
-        var results:String = "[" + _count++ + "]GP:";
+        var results:String = "[" + _count + "]GP:";
         if ( _model != null ) {
             results += "M:";
         }

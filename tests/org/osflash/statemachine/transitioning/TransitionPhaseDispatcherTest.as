@@ -36,7 +36,8 @@ public class TransitionPhaseDispatcherTest implements IResultsRegistry {
 
     [Test]
     public function successful_transition_processes_all_phases_in_correct_order():void {
-        var expectedResults:String = "[1]HP:M:LC(${logCode}),[2]HP:M:LC(${logCode}),[3]HP:M:LC(${logCode}),[4]HP:M:LC(${logCode}),[5]HP:M:LC(${logCode})";
+        var expectedResults:String = "[1]HP:M:LC(${logCode}),[2]HP:M:LC(${logCode}),[3]HP:M:LC(${logCode})," +
+                                     "[4]HP:M:LC(${logCode}),[5]HP:M:LC(${logCode})";
         expectedResults =  injectThis( expectedResults ).finallyWith("logCode", _logCode);
         setFiveHappyPhasesAndDispatch();
         assertThat( got, equalTo( expectedResults ) );
@@ -44,7 +45,7 @@ public class TransitionPhaseDispatcherTest implements IResultsRegistry {
 
     [Test]
     public function cancelled_transition_aborts_all_phases_after_cancellation():void {
-        var expectedResults:String = "[1]HP:M:LC(${logCode}),[2]HP:M:LC(${logCode}),[1]GP:M:LC(${logCode})";
+        var expectedResults:String = "[1]HP:M:LC(${logCode}),[2]HP:M:LC(${logCode}),[3]GP:M:LC(${logCode})";
         expectedResults = injectThis( expectedResults ).finallyWith("logCode", _logCode);
         setFiveHappyPhasesPlusOneGrumpyPhaseAndDispatch();
         assertThat( got, equalTo( expectedResults ) );
@@ -59,24 +60,21 @@ public class TransitionPhaseDispatcherTest implements IResultsRegistry {
     }
 
     public function setFiveHappyPhasesAndDispatch():void {
-        const happyPhase:ITransitionPhase = new HappyPhase( this );
-        _stateTransition.pushTransitionPhase( happyPhase );
-        _stateTransition.pushTransitionPhase( happyPhase );
-        _stateTransition.pushTransitionPhase( happyPhase );
-        _stateTransition.pushTransitionPhase( happyPhase );
-        _stateTransition.pushTransitionPhase( happyPhase );
+        _stateTransition.pushTransitionPhase( new HappyPhase( this, 1 ) );
+        _stateTransition.pushTransitionPhase( new HappyPhase( this, 2 ) );
+        _stateTransition.pushTransitionPhase( new HappyPhase( this, 3 ) );
+        _stateTransition.pushTransitionPhase( new HappyPhase( this, 4 ) );
+        _stateTransition.pushTransitionPhase( new HappyPhase( this, 5 ) );
         _stateTransition.dispatchPhases();
     }
 
     public function setFiveHappyPhasesPlusOneGrumpyPhaseAndDispatch():void {
-        const happyPhase:ITransitionPhase = new HappyPhase( this );
-        const gumpyPhase:ITransitionPhase = new GrumpyPhase( this );
-        _stateTransition.pushTransitionPhase( happyPhase );
-        _stateTransition.pushTransitionPhase( happyPhase );
-        _stateTransition.pushTransitionPhase( gumpyPhase );
-        _stateTransition.pushTransitionPhase( happyPhase );
-        _stateTransition.pushTransitionPhase( happyPhase );
-        _stateTransition.pushTransitionPhase( happyPhase );
+        _stateTransition.pushTransitionPhase( new HappyPhase( this, 1 ) );
+        _stateTransition.pushTransitionPhase( new HappyPhase( this , 2) );
+        _stateTransition.pushTransitionPhase(  new GrumpyPhase( this, 3 ) );
+        _stateTransition.pushTransitionPhase( new HappyPhase( this, 4 ) );
+        _stateTransition.pushTransitionPhase( new HappyPhase( this, 5 ) );
+        _stateTransition.pushTransitionPhase( new HappyPhase( this, 6 ) );
         _stateTransition.dispatchPhases();
     }
 

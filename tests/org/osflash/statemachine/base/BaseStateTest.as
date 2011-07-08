@@ -5,7 +5,7 @@
  * Time: 13:35
  * To change this template use File | Settings | File Templates.
  */
-package org.osflash.statemachine.model {
+package org.osflash.statemachine.base {
 
 import flexunit.framework.Assert;
 

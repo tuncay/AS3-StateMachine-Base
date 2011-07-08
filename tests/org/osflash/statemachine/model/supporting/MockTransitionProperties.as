@@ -12,15 +12,17 @@ public class MockTransitionProperties implements ITransitionProperties {
     private var _binding:TransitionBinding;
     private var _currentState:IState;
     private var _cancellationReason:IUID;
+    private var _currentTransitionPhase:IUID;
 
     public function MockTransitionProperties() {
     }
 
     public function get currentTransitionPhase():IUID {
-        return null;
+        return _currentTransitionPhase;
     }
 
     public function set currentTransitionPhase( value:IUID ):void {
+        _currentTransitionPhase = value;
     }
 
     public function get currentState():IState {

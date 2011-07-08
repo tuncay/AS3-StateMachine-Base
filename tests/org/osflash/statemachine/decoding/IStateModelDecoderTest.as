@@ -31,27 +31,9 @@ public class IStateModelDecoderTest implements IResultsRegistry {
         initProps();
     }
 
-    private function initProps():void {
-        _results = [];
-        _states = new <IState> [
-            new BaseState( new StateUID( "one" ) ),
-            new BaseState( new StateUID( "two" ) ),
-            new BaseState( new StateUID( "three" ) )
-        ];
-        _stateDecoder = new MockIStateDecoder( _states, this );
-        _stateModel = new MockIStateModel( this );
-    }
-
-    private function initTestSubject( decoder:IStateDecoder ):void {
-        _stateModelDecoder = new StateModelDecoder( decoder );
-    }
-
     [After]
     public function after():void {
-        _results = null;
-        _states = null;
-        _stateDecoder = null;
-        _stateModelDecoder = null;
+        disposeProps();
         flushUIDs();
     }
 
@@ -69,7 +51,7 @@ public class IStateModelDecoderTest implements IResultsRegistry {
         assertThat( injectNullIStateModel, throws( allOf( instanceOf( StateDecodingError ), hasPropertyWithValue( "message", expectedMessage ) ) ) );
     }
 
-   [Test]
+    [Test]
     public function injecting_calls_isInitial_on_IStateDecoder_then_registerState_onIStateModel():void {
         const expected:String = "MISD.iI:state/one,MISM.rS:state/one:false," +
                                 "MISD.iI:state/two,MISM.rS:state/two:false," +
@@ -87,6 +69,28 @@ public class IStateModelDecoderTest implements IResultsRegistry {
         _stateModelDecoder.inject( null );
     }
 
+    private function initProps():void {
+        _results = [];
+        _states = new <IState> [
+            new BaseState( new StateUID( "one" ) ),
+            new BaseState( new StateUID( "two" ) ),
+            new BaseState( new StateUID( "three" ) )
+        ];
+        _stateDecoder = new MockIStateDecoder( _states, this );
+        _stateModel = new MockIStateModel( this );
+    }
+
+    private function initTestSubject( decoder:IStateDecoder ):void {
+        _stateModelDecoder = new StateModelDecoder( decoder );
+    }
+
+    private function disposeProps():void {
+        _results = null;
+        _states = null;
+        _stateDecoder = null;
+        _stateModelDecoder = null;
+    }
+
     public function get got():String {
         return _results.join( "," );
     }
@@ -94,5 +98,7 @@ public class IStateModelDecoderTest implements IResultsRegistry {
     public function pushResult( value:Object ):void {
         _results.push( value );
     }
+
+
 }
 }

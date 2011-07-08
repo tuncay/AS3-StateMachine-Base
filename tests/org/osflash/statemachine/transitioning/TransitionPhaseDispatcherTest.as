@@ -21,7 +21,6 @@ public class TransitionPhaseDispatcherTest implements IResultsRegistry {
     private var _results:Array;
     private var _logCode:int;
 
-
     [Before]
     public function before():void {
         _logCode = 0;
@@ -40,7 +39,7 @@ public class TransitionPhaseDispatcherTest implements IResultsRegistry {
         var expectedResults:String = "[1]HP:M:LC(${logCode}),[2]HP:M:LC(${logCode}),[3]HP:M:LC(${logCode}),[4]HP:M:LC(${logCode}),[5]HP:M:LC(${logCode})";
         expectedResults =  injectThis( expectedResults ).finallyWith("logCode", _logCode);
         setFiveHappyPhasesAndDispatch();
-        assertThat( _results.join( "," ), equalTo( expectedResults ) );
+        assertThat( got, equalTo( expectedResults ) );
     }
 
     [Test]
@@ -48,7 +47,7 @@ public class TransitionPhaseDispatcherTest implements IResultsRegistry {
         var expectedResults:String = "[1]HP:M:LC(${logCode}),[2]HP:M:LC(${logCode}),[1]GP:M:LC(${logCode})";
         expectedResults = injectThis( expectedResults ).finallyWith("logCode", _logCode);
         setFiveHappyPhasesPlusOneGrumpyPhaseAndDispatch();
-        assertThat( _results.join( "," ), equalTo( expectedResults ) );
+        assertThat( got, equalTo( expectedResults ) );
     }
 
     [Test]
@@ -83,6 +82,10 @@ public class TransitionPhaseDispatcherTest implements IResultsRegistry {
 
     public function pushResult( result:Object ):void {
         _results.push( result );
+    }
+
+    public function get got():String {
+        return _results.join(",");
     }
 }
 }

@@ -53,7 +53,7 @@ public class StateMachineTest implements IResultsRegistry {
         var expectedResults:String = injectThis( "TC:T(${transition}):PL(${payload})" ).withThis( "transition", _transitionUID ).finallyWith( "payload", _payload );
         setHappyValidators();
         executeTransition();
-        assertThat( resultsGot, equalTo( expectedResults ) );
+        assertThat( got, equalTo( expectedResults ) );
     }
 
     [Test]
@@ -61,7 +61,7 @@ public class StateMachineTest implements IResultsRegistry {
         var expectedResults:String = injectThis( "TC:R(${reason})" ).finallyWith( "reason", _reasonUID );
         setHappyValidators();
         cancelTransition();
-        assertThat( resultsGot, equalTo( expectedResults ) );
+        assertThat( got, equalTo( expectedResults ) );
     }
 
     [Test]
@@ -80,7 +80,7 @@ public class StateMachineTest implements IResultsRegistry {
     public function transitionToInitialState_calls_transitionToInitialState_on_transitionController():void {
         var expectedResults:String = "TC:T2IS";
         _stateMachine.transitionToInitialState();
-        assertThat( resultsGot, equalTo( expectedResults ) );
+        assertThat( got, equalTo( expectedResults ) );
     }
 
     [Test]
@@ -160,7 +160,7 @@ public class StateMachineTest implements IResultsRegistry {
         _results.push( value );
     }
 
-    private function get resultsGot():String {
+    public function get got():String {
         return _results.join( "," );
     }
 }

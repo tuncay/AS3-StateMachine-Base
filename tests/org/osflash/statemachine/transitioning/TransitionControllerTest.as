@@ -100,7 +100,7 @@ public class TransitionControllerTest implements IResultsRegistry {
         _results.push( value );
     }
 
-    private function get got():String {
+    public function get got():String {
         return _results.join( "," );
     }
 }

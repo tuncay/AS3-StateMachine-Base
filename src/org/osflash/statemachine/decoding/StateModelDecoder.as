@@ -1,14 +1,12 @@
-
 package org.osflash.statemachine.decoding {
 
 import org.osflash.statemachine.core.IState;
-import org.osflash.statemachine.errors.StateDecodingError;
+import org.osflash.statemachine.errors.ErrorCodes;
+import org.osflash.statemachine.errors.getError;
 import org.osflash.statemachine.model.IStateModel;
 import org.osflash.statemachine.uids.IUID;
 
 public class StateModelDecoder implements IStateModelDecoder {
-
-    private static const STATE_DECODER_MUST_NOT_BE_NULL:String = "IStateDecoder has not been declared";
 
     protected var _stateDecoder:IStateDecoder;
 
@@ -17,10 +15,16 @@ public class StateModelDecoder implements IStateModelDecoder {
     }
 
     public function inject( stateModel:IStateModel ):void {
+        if ( _stateDecoder == null ) {
+            throw getError( ErrorCodes.STATE_DECODER_MUST_NOT_BE_NULL );
+        }
+        if ( stateModel == null ) {
+            throw getError( ErrorCodes.STATE_MODEL_MUST_NOT_BE_NULL );
+        }
+        decodeStatesAndAddToIStateModel( stateModel );
+    }
 
-        if ( _stateDecoder == null )
-            throw new StateDecodingError( STATE_DECODER_MUST_NOT_BE_NULL );
-
+    private function decodeStatesAndAddToIStateModel( stateModel:IStateModel ):void {
         const states:Vector.<IState> = _stateDecoder.getStates();
         for each ( var state:IState in states ) {
             stateModel.registerState( state, isInitial( state.uid ) );

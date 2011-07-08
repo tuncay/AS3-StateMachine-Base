@@ -158,9 +158,7 @@ public class TransitionModelPropertiesTest {
                           .withThis( "state", _properties.currentState.uid )
                           .finallyWith( "transition", _properties.referringTransition );
 
-        const throwFunction:Function = function ():void {
-            _properties.cancellationReason = reason;
-        };
+        const throwFunction:Function = function ():void { _properties.cancellationReason = reason; };
         assertThat( throwFunction, throws( allOf( instanceOf( StateTransitionCancellationError ), hasPropertyWithValue( "message", expectedMessage ) ) ) );
     }
 
@@ -171,9 +169,7 @@ public class TransitionModelPropertiesTest {
                           .withThis( "state", _properties.currentState.uid )
                           .finallyWith( "transition", transition.toString() );
 
-        const throwFunction:Function = function ():void {
-            _properties.currentTransitionBinding = new TransitionBinding( transition, "payload_two" );
-        };
+        const throwFunction:Function = function ():void { _properties.currentTransitionBinding = new TransitionBinding( transition, "payload_two" ); };
         assertThat( throwFunction, throws( allOf( instanceOf( StateTransitionError ), hasPropertyWithValue( "message", expectedMessage ) ) ) );
     }
 }

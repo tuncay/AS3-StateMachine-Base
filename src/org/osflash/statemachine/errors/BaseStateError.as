@@ -15,7 +15,6 @@ public class BaseStateError extends Error {
         } else {
             injectMessageWithToken( keyword, value );
         }
-
         return this;
     }
 

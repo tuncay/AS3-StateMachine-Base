@@ -15,6 +15,5 @@ public interface IStateModel {
 
     function getTargetState( transitionUID:IUID, state:IState ):IState ;
 
-    function dispose():void;
 }
 }

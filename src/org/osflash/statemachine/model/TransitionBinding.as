@@ -2,15 +2,14 @@ package org.osflash.statemachine.model {
 
 import org.osflash.statemachine.core.IPayload;
 import org.osflash.statemachine.transitioning.Payload;
-import org.osflash.statemachine.uids.IUID;
 
 public class TransitionBinding {
 
-    private var _transition:IUID;
+    private var _transition:String;
     private var _payload:IPayload;
 
 
-    public function TransitionBinding( transition:IUID, body:Object ) {
+    public function TransitionBinding( transition:String, body:Object ) {
         _transition = transition;
         setBody( body );
     }
@@ -23,7 +22,7 @@ public class TransitionBinding {
         }
     }
 
-    public function get transition():IUID {
+    public function get transition():String {
         return _transition;
     }
 
@@ -31,8 +30,8 @@ public class TransitionBinding {
         return _payload;
     }
 
-    public function toString():String{
-        return transition.toString() + ":" + _payload.body.toString();
+    public function toString():String {
+        return transition + ":" + _payload.body.toString();
     }
 }
 

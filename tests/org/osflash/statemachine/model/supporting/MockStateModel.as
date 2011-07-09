@@ -4,7 +4,6 @@ import org.osflash.statemachine.core.IState;
 import org.osflash.statemachine.model.IStateModel;
 import org.osflash.statemachine.model.TransitionBinding;
 import org.osflash.statemachine.supporting.IResultsRegistry;
-import org.osflash.statemachine.uids.IUID;
 
 public class MockStateModel implements IStateModel {
 
@@ -12,7 +11,7 @@ public class MockStateModel implements IStateModel {
     private var _targetState:IState;
     private var _registry:IResultsRegistry;
 
-    public function MockStateModel( initialState:IState, targetState:IState = null,  registry:IResultsRegistry = null) {
+    public function MockStateModel( initialState:IState, targetState:IState = null, registry:IResultsRegistry = null ) {
         _initialState = initialState;
         _targetState = targetState;
         _registry = registry;
@@ -26,16 +25,16 @@ public class MockStateModel implements IStateModel {
         return false;
     }
 
-    public function removeState( stateUID:IUID ):Boolean {
+    public function removeState( stateUID:String ):Boolean {
         return false;
     }
 
-    public function hasState( stateUID:IUID ):Boolean {
+    public function hasState( stateUID:String ):Boolean {
         return false;
     }
 
-    public function getTargetState( transitionUID:IUID, state:IState ):IState {
-         _registry.pushResult( new TransitionBinding(transitionUID, state) );
+    public function getTargetState( transitionName:String, state:IState ):IState {
+        _registry.pushResult( new TransitionBinding( transitionName, state ) );
         return _targetState;
     }
 

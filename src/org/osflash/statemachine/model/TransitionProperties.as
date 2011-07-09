@@ -7,13 +7,12 @@ import org.osflash.statemachine.errors.getError;
 import org.osflash.statemachine.transitioning.Payload;
 import org.osflash.statemachine.uids.IUID;
 import org.osflash.statemachine.uids.TransitionPhaseUID;
-import org.osflash.statemachine.uids.getNullUID;
 
 internal class TransitionProperties implements ITransitionProperties {
 
     private var _currentState:IState;
     private var _currentBinding:TransitionBinding;
-    private var _cancellationReason:IUID;
+    private var _cancellationReason:String;
     private var _currentTransitionPhase:IUID;
 
     public function TransitionProperties() {
@@ -37,27 +36,23 @@ internal class TransitionProperties implements ITransitionProperties {
     }
 
     public function get hasTransitionBeenCancelled():Boolean {
-        return ( !_cancellationReason.isNull );
+        return ( _cancellationReason != null );
     }
 
     public function get currentPayload():IPayload {
         return ( _currentBinding == null ) ? new Payload( null ) : _currentBinding.payload;
     }
 
-    public function get referringTransition():IUID {
-        return (_currentBinding == null ) ? getNullUID() : _currentBinding.transition;
+    public function get referringTransition():String {
+        return ( _currentBinding == null ) ? null : _currentBinding.transition;
     }
 
-    public function get cancellationReason():IUID {
-        return (_cancellationReason == null ) ? getNullUID() : _cancellationReason;
+    public function get cancellationReason():String {
+        return _cancellationReason;
     }
 
-    public function set cancellationReason( reason:IUID ):void {
-        if ( reason != null && !reason.isNull ) {
-            _cancellationReason = reason;
-        } else {
-            throw getError( ErrorCodes.NULL_CANCELLATION_REASON ).injectMsgWith( currentState.uid ).injectMsgWith( referringTransition );
-        }
+    public function set cancellationReason( reason:String ):void {
+        _cancellationReason = reason;
     }
 
     public function set currentTransitionBinding( binding:TransitionBinding ):void {
@@ -65,13 +60,13 @@ internal class TransitionProperties implements ITransitionProperties {
         if ( result ) {
             _currentBinding = binding;
         } else {
-            throw getError(ErrorCodes.TRANSITION_UNDEFINED_IN_CURRENT_STATE).injectMsgWith( currentState.uid ).injectMsgWith( binding.transition );
+            throw getError( ErrorCodes.TRANSITION_UNDEFINED_IN_CURRENT_STATE ).injectMsgWith( currentState.name, "state" ).injectMsgWith( binding.transition, "transition" );
         }
     }
 
     public function reset():void {
         currentTransitionPhase = TransitionPhaseUID.NONE;
-        _cancellationReason = getNullUID();
+        _cancellationReason = null;
     }
 }
 }

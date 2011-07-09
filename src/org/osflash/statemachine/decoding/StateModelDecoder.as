@@ -4,7 +4,6 @@ import org.osflash.statemachine.core.IState;
 import org.osflash.statemachine.errors.ErrorCodes;
 import org.osflash.statemachine.errors.getError;
 import org.osflash.statemachine.model.IStateModel;
-import org.osflash.statemachine.uids.IUID;
 
 public class StateModelDecoder implements IStateModelDecoder {
 
@@ -27,11 +26,11 @@ public class StateModelDecoder implements IStateModelDecoder {
     private function decodeStatesAndAddToIStateModel( stateModel:IStateModel ):void {
         const states:Vector.<IState> = _stateDecoder.getStates();
         for each ( var state:IState in states ) {
-            stateModel.registerState( state, isInitial( state.uid ) );
+            stateModel.registerState( state, isInitial( state.name ) );
         }
     }
 
-    protected function isInitial( stateName:IUID ):Boolean {
+    protected function isInitial( stateName:String ):Boolean {
         return _stateDecoder.isInitial( stateName );
     }
 }

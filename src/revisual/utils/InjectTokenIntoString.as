@@ -1,4 +1,4 @@
-package org.osflash.statemachine.supporting {
+package revisual.utils {
 
 public class InjectTokenIntoString implements ITokenInjector {
 
@@ -13,7 +13,7 @@ public class InjectTokenIntoString implements ITokenInjector {
         return this;
     }
 
-    public function finallyWith( keyword:String, replace:* ):String {
+    public function finalyWith( keyword:String, replace:* ):String {
         inject( keyword, replace );
         return _value;
     }

@@ -4,36 +4,31 @@ import org.hamcrest.assertThat;
 import org.hamcrest.object.strictlyEqualTo;
 import org.osflash.statemachine.core.IPayload;
 import org.osflash.statemachine.transitioning.*;
-import org.osflash.statemachine.uids.IUID;
-import org.osflash.statemachine.uids.StateTransitionUID;
-import org.osflash.statemachine.uids.flushUIDs;
-import org.osflash.statemachine.uids.getNullUID;
 
 public class StateTransitionBindingTest {
 
     private var _transitionBinding:TransitionBinding;
 
-    private var _transition:IUID;
+    private var _transition:String;
     private var _payload:Object;
 
-                          [Before]
-    public function before(  ):void {
+    [Before]
+    public function before():void {
         initProps();
     }
 
-    private function initTestSubject( transition:IUID, body:Object ):void {
+    private function initTestSubject( transition:String, body:Object ):void {
         _transitionBinding = new TransitionBinding( transition, body );
     }
 
     private function initProps():void {
-        _transition = new StateTransitionUID( "one" );
+        _transition = "transition/one";
         _payload = "payload_one";
     }
 
     [After]
     public function tearDown():void {
         disposeProps();
-        flushUIDs();
     }
 
     private function disposeProps():void {

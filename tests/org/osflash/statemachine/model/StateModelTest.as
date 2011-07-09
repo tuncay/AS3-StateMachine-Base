@@ -1,15 +1,12 @@
 package org.osflash.statemachine.model {
 
 import org.hamcrest.assertThat;
-import org.hamcrest.collection.array;
 import org.hamcrest.core.allOf;
-import org.hamcrest.core.not;
 import org.hamcrest.core.throws;
 import org.hamcrest.object.equalTo;
 import org.hamcrest.object.hasPropertyWithValue;
 import org.hamcrest.object.instanceOf;
 import org.hamcrest.object.isFalse;
-import org.hamcrest.object.isTrue;
 import org.hamcrest.object.strictlyEqualTo;
 import org.osflash.statemachine.base.BaseState;
 import org.osflash.statemachine.core.IState;
@@ -17,10 +14,6 @@ import org.osflash.statemachine.errors.ErrorCodes;
 import org.osflash.statemachine.errors.StateModelError;
 import org.osflash.statemachine.errors.getErrorMessage;
 import org.osflash.statemachine.supporting.injectThis;
-import org.osflash.statemachine.uids.IUID;
-import org.osflash.statemachine.uids.StateTransitionUID;
-import org.osflash.statemachine.uids.StateUID;
-import org.osflash.statemachine.uids.flushUIDs;
 
 public class StateModelTest {
 
@@ -29,17 +22,15 @@ public class StateModelTest {
     private var loading:IState;
     private var saving:IState;
 
-    private var startingUID:IUID;
-    private var loadingUID:IUID;
-    private var savingUID:IUID;
 
-    private var startUID:IUID;
-    private var loadUID:IUID;
-    private var saveUID:IUID;
+    private var startTransition:String;
+    private var loadTranstion:String;
+    private var saveTransition:String;
+
 
     [Before]
     public function before():void {
-        initUIDs();
+        initProps();
         initTestSubject();
         initStates();
     }
@@ -47,13 +38,13 @@ public class StateModelTest {
     [After]
     public function after():void {
         disposeProps();
-        flushUIDs();
+
     }
 
 
     [Test]
     public function when_no_states_have_been_registered__hasState_returns_false():void {
-        assertThat( stateModel.hasState( loadingUID ), isFalse() );
+        assertThat( stateModel.hasState( loading.name ), isFalse() );
     }
 
     [Test]
@@ -65,18 +56,18 @@ public class StateModelTest {
 
     [Test]
     public function when_no_states_have_been_registered__removeState_returns_false():void {
-        assertThat( stateModel.removeState( loadingUID ), isFalse() );
+        assertThat( stateModel.removeState( loading.name ), isFalse() );
     }
 
     [Test ]
     public function when_no_states_have_been_registered__getTargetState_throws_StateModelError():void {
         var expectedMessage:String = getErrorMessage( ErrorCodes.TARGET_DECLARATION_MISMATCH );
         expectedMessage = injectThis( expectedMessage )
-                          .withThis( "state", saving.uid )
-                          .withThis( "transition", startUID )
+                          .withThis( "state", saving.name )
+                          .withThis( "transition", startTransition )
                           .finallyWith( "target", starting );
 
-        const throwFunction:Function = function ():void { stateModel.getTargetState( startUID, saving ); };
+        const throwFunction:Function = function ():void { stateModel.getTargetState( startTransition, saving ); };
         assertThat( throwFunction, throws( allOf( instanceOf( StateModelError ), hasPropertyWithValue( "message", expectedMessage ) ) ) );
     }
 
@@ -84,10 +75,10 @@ public class StateModelTest {
     public function if_transition_is_not_defined_in_source_state__getTargetState_throws_StateModelError():void {
         var expectedMessage:String = getErrorMessage( ErrorCodes.TRANSITION_NOT_DECLARED_IN_STATE );
         expectedMessage = injectThis( expectedMessage )
-                          .withThis( "state", saving.uid )
-                          .finallyWith( "transition", saveUID );
+                          .withThis( "state", saving.name )
+                          .finallyWith( "transition", saveTransition );
 
-        const throwFunction:Function = function ():void { stateModel.getTargetState( saveUID, saving ); };
+        const throwFunction:Function = function ():void { stateModel.getTargetState( saveTransition, saving ); };
         assertThat( throwFunction, throws( allOf( instanceOf( StateModelError ), hasPropertyWithValue( "message", expectedMessage ) ) ) );
     }
 
@@ -95,9 +86,9 @@ public class StateModelTest {
     public function when_no_states_have_been_registered__getState_throws_StateModelError():void {
         var expectedMessage:String = getErrorMessage( ErrorCodes.STATE_REQUESTED_IS_NOT_REGISTERED );
         expectedMessage = injectThis( expectedMessage )
-                          .finallyWith( "state", saving.uid );
+                          .finallyWith( "state", saving.name );
 
-        const throwFunction:Function = function ():void { stateModel.getState( saving.uid ); };
+        const throwFunction:Function = function ():void { stateModel.getState( saving.name ); };
         assertThat( throwFunction, throws( allOf( instanceOf( StateModelError ), hasPropertyWithValue( "message", expectedMessage ) ) ) );
     }
 
@@ -156,14 +147,11 @@ public class StateModelTest {
     }
 
 
-    private function initUIDs():void {
-        startingUID = new StateUID( "starting" );
-        loadingUID = new StateUID( "loading" );
-        savingUID = new StateUID( "saving" );
+    private function initProps():void {
 
-        startUID = new StateTransitionUID( "start" );
-        loadUID = new StateTransitionUID( "load" );
-        saveUID = new StateTransitionUID( "save" );
+        startTransition = "transition/start";
+        loadTranstion = "transition/load";
+        saveTransition = "transition/save";
     }
 
     private function initTestSubject():void {
@@ -171,16 +159,16 @@ public class StateModelTest {
     }
 
     private function initStates():void {
-        starting = new BaseState( startingUID );
-        starting.defineTransition( loadUID, loadingUID );
-        starting.defineTransition( saveUID, savingUID );
+        starting = new BaseState( "state/starting", 1 );
+        starting.defineTransition( loadTranstion, "state/loading" );
+        starting.defineTransition( saveTransition, "state/saving" );
 
-        loading = new BaseState( loadingUID );
-        loading.defineTransition( saveUID, savingUID );
+        loading = new BaseState( "state/loading", 2 );
+        loading.defineTransition( saveTransition, "state/saving" );
 
-        saving = new BaseState( savingUID );
-        saving.defineTransition( startUID, startingUID );
-        saving.defineTransition( loadUID, loadingUID );
+        saving = new BaseState( "state/saving", 4 );
+        saving.defineTransition( startTransition, "state/starting" );
+        saving.defineTransition( loadTranstion, "state/loading" );
     }
 
     private function registerAllStates():void {
@@ -190,42 +178,42 @@ public class StateModelTest {
     }
 
     private function removeAllStates():void {
-        stateModel.removeState( startingUID );
-        stateModel.removeState( loadingUID );
-        stateModel.removeState( savingUID );
+        stateModel.removeState( starting.name );
+        stateModel.removeState( loading.name );
+        stateModel.removeState( saving.name );
     }
 
     private function callHasStateForAllRegisteredStates():String {
         var got:Array = [];
-        got.push( stateModel.hasState( startingUID ) );
-        got.push( stateModel.hasState( loadingUID ) );
-        got.push( stateModel.hasState( savingUID ) );
+        got.push( stateModel.hasState( starting.name ) );
+        got.push( stateModel.hasState( loading.name ) );
+        got.push( stateModel.hasState( saving.name ) );
         return got.join( "," );
     }
 
     private function callGetStateOnAllRegisteredStates():String {
         var got:Array = [];
-        got.push( stateModel.getState( startingUID ) );
-        got.push( stateModel.getState( loadingUID ) );
-        got.push( stateModel.getState( savingUID ) );
+        got.push( stateModel.getState( starting.name ) );
+        got.push( stateModel.getState( loading.name ) );
+        got.push( stateModel.getState( saving.name ) );
         return got.join( "," );
     }
 
     private function callGetTargetStateOnAllTransitions():String {
         var got:Array = [];
-        got.push( stateModel.getTargetState( loadUID, starting ) );
-        got.push( stateModel.getTargetState( saveUID, starting ) );
-        got.push( stateModel.getTargetState( saveUID, loading ) );
-        got.push( stateModel.getTargetState( startUID, saving ) );
-        got.push( stateModel.getTargetState( loadUID, saving ) );
+        got.push( stateModel.getTargetState( loadTranstion, starting ) );
+        got.push( stateModel.getTargetState( saveTransition, starting ) );
+        got.push( stateModel.getTargetState( saveTransition, loading ) );
+        got.push( stateModel.getTargetState( startTransition, saving ) );
+        got.push( stateModel.getTargetState( loadTranstion, saving ) );
         return got.join( "," );
     }
 
     private function callingRemoveStateOnAllRegisteredStates():String {
         const got:Array = [ ];
-        got.push( stateModel.removeState( loadingUID ) );
-        got.push( stateModel.removeState( savingUID ) );
-        got.push( stateModel.removeState( startingUID ) );
+        got.push( stateModel.removeState( loading.name ) );
+        got.push( stateModel.removeState( saving.name ) );
+        got.push( stateModel.removeState( starting.name ) );
         return got.join( "," );
     }
 
@@ -235,13 +223,13 @@ public class StateModelTest {
         loading = null;
         saving = null;
 
-        startingUID = null;
-        loadingUID = null;
-        savingUID = null;
+        starting = null;
+        loading = null;
+        saving = null;
 
-        startUID = null;
-        loadUID = null;
-        saveUID = null;
+        startTransition = null;
+        loadTranstion = null;
+        saveTransition = null;
     }
 
 

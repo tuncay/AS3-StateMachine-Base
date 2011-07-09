@@ -3,13 +3,12 @@ package org.osflash.statemachine.decoding.supporting {
 import org.osflash.statemachine.core.IState;
 import org.osflash.statemachine.model.IStateModel;
 import org.osflash.statemachine.supporting.IResultsRegistry;
-import org.osflash.statemachine.uids.IUID;
 
-public class MockIStateModel implements IStateModel{
+public class MockIStateModel implements IStateModel {
 
     private var _registry:IResultsRegistry;
 
-    public function MockIStateModel( registry:IResultsRegistry) {
+    public function MockIStateModel( registry:IResultsRegistry ) {
         _registry = registry;
     }
 
@@ -22,15 +21,15 @@ public class MockIStateModel implements IStateModel{
         return false;
     }
 
-    public function removeState( stateUID:IUID ):Boolean {
+    public function removeState( stateName:String ):Boolean {
         return false;
     }
 
-    public function hasState( stateUID:IUID ):Boolean {
+    public function hasState( stateName:String ):Boolean {
         return false;
     }
 
-    public function getTargetState( transitionUID:IUID, state:IState ):IState {
+    public function getTargetState( transitionName:String, state:IState ):IState {
         return null;
     }
 

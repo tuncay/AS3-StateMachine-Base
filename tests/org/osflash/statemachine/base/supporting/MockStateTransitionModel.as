@@ -5,8 +5,8 @@ import org.osflash.statemachine.uids.IUID;
 
 public class MockStateTransitionModel implements IFSMProperties {
 
-    private var _currentState:IUID;
-    private var _transition:IUID;
+    private var _currentState:String;
+    private var _transition:String;
     private var _phase:IUID;
 
 
@@ -18,19 +18,19 @@ public class MockStateTransitionModel implements IFSMProperties {
         return _phase;
     }
 
-    public function get currentStateUID():IUID {
+    public function get currentStateName():String {
         return _currentState;
     }
 
-    public function set currentStateUID( value:IUID ):void {
+    public function set currentStateUID( value:String ):void {
         _currentState = value;
     }
 
-    public function get referringTransition():IUID {
+    public function get referringTransition():String {
         return _transition;
     }
 
-    public function set referringTransition( value:IUID ):void {
+    public function set referringTransition( value:String ):void {
         _transition = value;
     }
 }

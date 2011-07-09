@@ -1,52 +1,59 @@
 package org.osflash.statemachine.model {
 
 import org.hamcrest.assertThat;
-import org.hamcrest.core.allOf;
 import org.hamcrest.object.equalTo;
-import org.hamcrest.object.hasPropertyChain;
 import org.hamcrest.object.isFalse;
 import org.hamcrest.object.isTrue;
 import org.hamcrest.object.nullValue;
-import org.hamcrest.object.strictlyEqualTo;
-import org.osflash.statemachine.uids.StateTransitionUID;
-import org.osflash.statemachine.uids.flushUIDs;
 
 public class TransitionQueueTest {
 
-    private var transitionQueue:TransitionQueue;
+    private var _transitionQueue:TransitionQueue;
+    private var _transitionOne:String;
+    private var _transitionTwo:String;
+    private var _transitionThree:String;
+    private var _payloadOne:String;
+    private var _payloadTwo:String;
+    private var _payloadThree:String;
+
 
     [Before]
     public function before():void {
-        transitionQueue = new TransitionQueue();
+        _transitionOne = "transition/one";
+        _transitionTwo = "transition/two";
+        _transitionThree = "transition/three";
+        _payloadOne = "payload/one";
+        _payloadTwo = "payload/two";
+        _payloadThree = "payload/three";
+        _transitionQueue = new TransitionQueue();
     }
 
     [After]
     public function after():void {
-        transitionQueue = null;
-        flushUIDs();
+        _transitionQueue = null;
     }
 
 
     [Test]
     public function calling_hasNext_when_empty_returns_false():void {
-        assertThat( transitionQueue.hasNext, isFalse() );
+        assertThat( _transitionQueue.hasNext, isFalse() );
     }
 
     [Test]
     public function calling_hasNext_when_enqueued_returns_true():void {
         enqueueSingleItem();
-        assertThat( transitionQueue.hasNext, isTrue() );
+        assertThat( _transitionQueue.hasNext, isTrue() );
     }
 
     [Test]
     public function dequeueTransition_when_empty_returns_null():void {
-        assertThat( transitionQueue.dequeueTransition(), nullValue() );
+        assertThat( _transitionQueue.dequeueTransition(), nullValue() );
     }
 
     [Test]
     public function dequeuing_returns_TransitionBinding_with_enqueued_transitionUID_and_IPayload():void {
         enqueueSingleItem();
-        const expected:String = "transition/testing_one:body_one";
+        const expected:String = "transition/one:payload/one";
         const got:String = dequeueAndToString();
         assertThat( got, equalTo( expected ) );
     }
@@ -55,28 +62,28 @@ public class TransitionQueueTest {
     public function queue_is_last_on_last_off():void {
         enqueueThreeItems();
         dequeueTwice();
-        const expected:String = "transition/testing_three:body_three";
+        const expected:String = "transition/three:payload/three";
         const got:String = dequeueAndToString();
         assertThat( got, equalTo( expected ) );
     }
 
     private function dequeueAndToString():String {
-        return transitionQueue.dequeueTransition().toString();
+        return _transitionQueue.dequeueTransition().toString();
     }
 
     private function enqueueSingleItem():void {
-        transitionQueue.enqueueTransition( new StateTransitionUID( "testing_one" ), "body_one" );
+        _transitionQueue.enqueueTransition( _transitionOne, _payloadOne );
     }
 
     private function enqueueThreeItems():void {
-        transitionQueue.enqueueTransition( new StateTransitionUID( "testing_one" ), "body_one" );
-        transitionQueue.enqueueTransition( new StateTransitionUID( "testing_two" ), "body_two" );
-        transitionQueue.enqueueTransition( new StateTransitionUID( "testing_three" ), "body_three" );
+        _transitionQueue.enqueueTransition( _transitionOne, _payloadOne );
+        _transitionQueue.enqueueTransition( _transitionTwo, _payloadTwo );
+        _transitionQueue.enqueueTransition( _transitionThree, _payloadThree );
     }
 
     private function dequeueTwice():void {
-        transitionQueue.dequeueTransition();
-        transitionQueue.dequeueTransition();
+        _transitionQueue.dequeueTransition();
+        _transitionQueue.dequeueTransition();
     }
 
 

@@ -1,52 +1,53 @@
 package org.osflash.statemachine.base {
 
 import org.osflash.statemachine.core.IState;
-import org.osflash.statemachine.uids.IUID;
-import org.osflash.statemachine.uids.getNullUID;
 
 public class BaseState implements IState {
 
     protected var _transitions:Object = new Object();
 
-    private var _uid:IUID;
+    private var _name:String;
+    private var _index:uint;
 
-    public function BaseState( id:IUID ):void {
-        _uid = id;
+    public function BaseState( id:String, index:uint ):void {
+        _name = id;
+        _index = index;
     }
 
-    public function get uid():IUID {
-        return _uid;
+    public function get name():String {
+        return _name;
     }
 
-    public function defineTransition( transitionUID:IUID, target:IUID ):Boolean {
-        if ( hasTrans( transitionUID ) ) return false;
-        _transitions[ transitionUID.identifier ] = target;
+    public function get index():uint {
+        return _index;
+    }
+
+    public function defineTransition( transitionName:String, target:String ):Boolean {
+        if ( hasTrans( transitionName ) ) return false;
+        _transitions[ transitionName ] = target;
         return true;
     }
 
-    public function hasTrans( transitionUID:IUID ):Boolean {
+    public function hasTrans( transitionName:String ):Boolean {
         if ( _transitions == null ) return false;
-        return ( _transitions[ transitionUID.identifier ] != null );
+        return ( _transitions[ transitionName ] != null );
     }
 
-    public function removeTrans( transitionUID:IUID ):Boolean {
-        const targetUID:IUID = getTarget( transitionUID );
-        if ( targetUID.equals( getNullUID() ) ) return false;
-        delete _transitions[ transitionUID.identifier ];
+    public function removeTrans( transitionName:String ):Boolean {
+        const targetName:String = getTarget( transitionName );
+        if ( targetName == null ) return false;
+        delete _transitions[ transitionName ];
         return true;
     }
 
-    public function getTarget( transitionUID:IUID ):IUID {
-        const returnUID:IUID = _transitions[ transitionUID.identifier ];
-        return (returnUID == null ) ? getNullUID() : returnUID;
+    public function getTarget( transitionName:String ):String {
+        return _transitions[ transitionName ];
     }
 
-    public function toString():String{
-        return uid.identifier;
+    public function toString():String {
+        return name;
     }
 
-    public function dispose():void {
-        _transitions = null;
-    }
+
 }
 }

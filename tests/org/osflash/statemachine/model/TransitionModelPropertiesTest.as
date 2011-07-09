@@ -13,26 +13,32 @@ import org.hamcrest.object.strictlyEqualTo;
 import org.osflash.statemachine.base.BaseState;
 import org.osflash.statemachine.core.IState;
 import org.osflash.statemachine.errors.ErrorCodes;
-import org.osflash.statemachine.errors.StateTransitionCancellationError;
 import org.osflash.statemachine.errors.StateTransitionError;
 import org.osflash.statemachine.errors.getErrorMessage;
 import org.osflash.statemachine.supporting.injectThis;
-import org.osflash.statemachine.uids.CancellationReasonUID;
 import org.osflash.statemachine.uids.IUID;
 import org.osflash.statemachine.uids.TransitionPhaseUID;
-import org.osflash.statemachine.uids.StateTransitionUID;
-import org.osflash.statemachine.uids.StateUID;
-import org.osflash.statemachine.uids.flushUIDs;
-import org.osflash.statemachine.uids.getNullUID;
-import org.osflash.statemachine.uids.getUIDFromIdentifier;
 
 public class TransitionModelPropertiesTest {
 
     private var _properties:ITransitionProperties;
     private var _state:IState;
+    private var _transition:String;
+    private var _transitionTwo:String;
+    private var _phase:IUID;
+    private var _reason:String;
+    private var _payload:String;
+    private var _payloadTwo:String;
 
     [Before]
     public function before():void {
+        _transition = "transition/one";
+        _transitionTwo = "transition/two";
+        _phase = new TransitionPhaseUID( "one" );
+        _reason = "reason/one";
+        _payload = "payload/one";
+        _payloadTwo = "payload/two";
+
         _properties = new TransitionProperties();
     }
 
@@ -40,7 +46,13 @@ public class TransitionModelPropertiesTest {
     public function after():void {
         _properties = null;
         _state = null;
-        flushUIDs();
+
+        _transition = null;
+        _transitionTwo = null;
+        _phase = null;
+        _reason = null;
+        _payload = null;
+        _payloadTwo = null;
     }
 
     [Test]
@@ -60,8 +72,8 @@ public class TransitionModelPropertiesTest {
     }
 
     [Test]
-    public function default_referringTransition_is_NULL():void {
-        assertThat( _properties.referringTransition, strictlyEqualTo( getNullUID() ) );
+    public function default_referringTransition_is_null():void {
+        assertThat( _properties.referringTransition, nullValue() );
     }
 
     [Test]
@@ -75,14 +87,14 @@ public class TransitionModelPropertiesTest {
     }
 
     [Test]
-    public function default_cancellationReason_is_NULL():void {
-        assertThat( _properties.cancellationReason, strictlyEqualTo( getNullUID() ) );
+    public function default_cancellationReason_is_null():void {
+        assertThat( _properties.cancellationReason, nullValue() );
     }
 
     [Test]
     public function cancellationReason_getter_setter_works_correctly():void {
         setUpTransitionModelProperties();
-        assertThat( _properties.cancellationReason, strictlyEqualTo( getUIDFromIdentifier( "reason/one" ) ) );
+        assertThat( _properties.cancellationReason, strictlyEqualTo( _reason ) );
     }
 
     [Test]
@@ -92,22 +104,10 @@ public class TransitionModelPropertiesTest {
     }
 
     [Test]
-    public function cancellationReason_throws_StateTransitionCancellationError_if_NULL_passed():void {
-        setUpTransitionModelProperties();
-        assertThatCancellationReasonThrowsStateTransitionCancellationError( getNullUID() );
-    }
-
-    [Test]
-    public function cancellationReason_throws_StateTransitionCancellationError_if_null_passed():void {
-        setUpTransitionModelProperties();
-        assertThatCancellationReasonThrowsStateTransitionCancellationError( null );
-    }
-
-    [Test]
-    public function reset_sets_cancellationReason_to_NULL():void {
+    public function reset_sets_cancellationReason_to_null():void {
         setUpTransitionModelProperties();
         _properties.reset();
-        assertThat( _properties.cancellationReason, strictlyEqualTo( getNullUID() ) );
+        assertThat( _properties.cancellationReason, nullValue() );
     }
 
     [Test]
@@ -127,13 +127,13 @@ public class TransitionModelPropertiesTest {
     [Test]
     public function setTransition_sets_referringTransition_property():void {
         setUpTransitionModelProperties();
-        assertThat( _properties.referringTransition, strictlyEqualTo( getUIDFromIdentifier( "transition/one" ) ) );
+        assertThat( _properties.referringTransition, strictlyEqualTo( _transition ) );
     }
 
     [Test]
     public function setTransition_sets_currentPayload_property():void {
         setUpTransitionModelProperties();
-        assertThat( _properties.currentPayload.body, equalTo( "payload_one" ) );
+        assertThat( _properties.currentPayload.body, equalTo( _payload ) );
     }
 
     [Test]
@@ -143,34 +143,24 @@ public class TransitionModelPropertiesTest {
     }
 
     private function setUpTransitionModelProperties():void {
-        _state = new BaseState( new StateUID( "one" ) );
-        const transition:IUID = new StateTransitionUID( "one" );
-        _state.defineTransition( transition, _state.uid );
+        _state = new BaseState( "state/one", 1 );
+        _state.defineTransition( _transition, _state.name );
         _properties.currentState = _state;
-        _properties.currentTransitionPhase = new TransitionPhaseUID( "one" );
-        _properties.cancellationReason = new CancellationReasonUID( "one" );
-        _properties.currentTransitionBinding = new TransitionBinding( transition, "payload_one" );
-    }
-
-    private function assertThatCancellationReasonThrowsStateTransitionCancellationError( reason:IUID ):void {
-        var expectedMessage:String = getErrorMessage( ErrorCodes.NULL_CANCELLATION_REASON );
-        expectedMessage = injectThis( expectedMessage )
-                          .withThis( "state", _properties.currentState.uid )
-                          .finallyWith( "transition", _properties.referringTransition );
-
-        const throwFunction:Function = function ():void { _properties.cancellationReason = reason; };
-        assertThat( throwFunction, throws( allOf( instanceOf( StateTransitionCancellationError ), hasPropertyWithValue( "message", expectedMessage ) ) ) );
+        _properties.currentTransitionPhase = _phase;
+        _properties.cancellationReason = _reason;
+        _properties.currentTransitionBinding = new TransitionBinding( _transition, _payload );
     }
 
     private function assertThatUndefinedTransitionInCurrentStateThrowsStateTransitionError():void {
-        const transition:IUID = new StateTransitionUID( "two" );
         var expectedMessage:String = getErrorMessage( ErrorCodes.TRANSITION_UNDEFINED_IN_CURRENT_STATE );
         expectedMessage = injectThis( expectedMessage )
-                          .withThis( "state", _properties.currentState.uid )
-                          .finallyWith( "transition", transition.toString() );
+                          .withThis( "state", _properties.currentState.name )
+                          .finallyWith( "transition", _transitionTwo );
+        assertThat( setUndefinedTransitionOnTestSubject, throws( allOf( instanceOf( StateTransitionError ), hasPropertyWithValue( "message", expectedMessage ) ) ) );
+    }
 
-        const throwFunction:Function = function ():void { _properties.currentTransitionBinding = new TransitionBinding( transition, "payload_two" ); };
-        assertThat( throwFunction, throws( allOf( instanceOf( StateTransitionError ), hasPropertyWithValue( "message", expectedMessage ) ) ) );
+    private function setUndefinedTransitionOnTestSubject():void {
+        _properties.currentTransitionBinding = new TransitionBinding( _transitionTwo, _payloadTwo );
     }
 }
 }

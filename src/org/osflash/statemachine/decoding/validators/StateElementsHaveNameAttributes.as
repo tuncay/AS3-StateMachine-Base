@@ -4,7 +4,7 @@ import org.osflash.statemachine.decoding.IDataValidator;
 import org.osflash.statemachine.errors.ErrorCodes;
 import org.osflash.statemachine.errors.getError;
 
-public class StateElementsHaveNameAttributes implements IDataValidator{
+public class StateElementsHaveNameAttributes implements IDataValidator {
 
     private var _data:XML;
 
@@ -15,7 +15,7 @@ public class StateElementsHaveNameAttributes implements IDataValidator{
     }
 
     public function set data( value:Object ):void {
-        _data = XML(value);
+        _data = XML( value );
     }
 }
 }

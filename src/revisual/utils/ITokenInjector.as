@@ -1,10 +1,11 @@
-package org.osflash.statemachine.supporting {
+package revisual.utils {
 
 public interface ITokenInjector {
     function withThis( keyword:String, replace:* ):ITokenInjector
 
-    function finallyWith( keyword:String, replace:* ):String
+    function finalyWith( keyword:String, replace:* ):String
 
     function toString():String;
 }
+
 }

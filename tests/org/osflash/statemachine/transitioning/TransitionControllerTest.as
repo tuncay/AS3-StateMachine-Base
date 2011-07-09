@@ -6,18 +6,14 @@ import org.osflash.statemachine.model.ITransitionModel;
 import org.osflash.statemachine.supporting.IResultsRegistry;
 import org.osflash.statemachine.transitioning.supporting.MockPhaseDispatcher;
 import org.osflash.statemachine.transitioning.supporting.MockStateTransitionModel;
-import org.osflash.statemachine.uids.CancellationReasonUID;
-import org.osflash.statemachine.uids.IUID;
-import org.osflash.statemachine.uids.StateTransitionUID;
-import org.osflash.statemachine.uids.flushUIDs;
 
 public class TransitionControllerTest implements IResultsRegistry {
 
     private var _stateTransitionController:TransitionController;
 
     private var _results:Array;
-    private var _reason:IUID;
-    private var _transition:IUID;
+    private var _reason:String;
+    private var _transition:String;
     private var _payload:Object;
 
     [Before]
@@ -28,7 +24,6 @@ public class TransitionControllerTest implements IResultsRegistry {
     [After]
     public function tearDown():void {
         disposeProps();
-        flushUIDs();
     }
 
     [Test]
@@ -67,8 +62,8 @@ public class TransitionControllerTest implements IResultsRegistry {
     }
 
     private function initProps():void {
-        _reason = new CancellationReasonUID( "one" );
-        _transition = new StateTransitionUID( "one" );
+        _reason = "reason/one";
+        _transition = "transition/one";
         _payload = "payload/one";
     }
 
@@ -81,8 +76,8 @@ public class TransitionControllerTest implements IResultsRegistry {
 
     public function setUpPrequeuedTransitions():void {
         const prequeuedTransitions:Array = [
-            {transition:new StateTransitionUID( "two" ), payload:"payload/two"},
-            {transition:new StateTransitionUID( "three" ), payload:"payload/three"}
+            {transition:"transition/two", payload:"payload/two"},
+            {transition:"transition/three", payload:"payload/three"}
         ];
         initTestSubject( prequeuedTransitions );
     }

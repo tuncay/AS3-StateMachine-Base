@@ -5,6 +5,8 @@
  */
 package org.osflash.statemachine.logging {
 
-public function logPhase():void {
+import org.osflash.statemachine.uids.IUID;
+
+public function logPhase( logCode:int, state:IUID, phase:IUID ):void {
 }
 }

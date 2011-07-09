@@ -21,7 +21,7 @@ public class TransitionNamesInEachStateAreUnique implements IDataValidator {
         for each ( var name:XML in transitions ) {
             const duplicateList:int = retrieveNumberOfStateElementsWithName( name, state );
             if ( duplicateList != 1 )
-                throw getError( ErrorCodes.DUPLICATE_TRANSITION_DECLARED ).injectMsgWith( state.@name , "state" );
+                throw getError( ErrorCodes.DUPLICATE_TRANSITION_DECLARED ).injectMsgWith( state.@name, "state" );
         }
     }
 

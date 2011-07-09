@@ -15,8 +15,6 @@ import org.osflash.statemachine.errors.StateDecodingError;
 import org.osflash.statemachine.errors.getErrorMessage;
 import org.osflash.statemachine.model.IStateModel;
 import org.osflash.statemachine.supporting.IResultsRegistry;
-import org.osflash.statemachine.uids.StateUID;
-import org.osflash.statemachine.uids.flushUIDs;
 
 public class IStateModelDecoderTest implements IResultsRegistry {
 
@@ -34,7 +32,6 @@ public class IStateModelDecoderTest implements IResultsRegistry {
     [After]
     public function after():void {
         disposeProps();
-        flushUIDs();
     }
 
     [Test]
@@ -72,9 +69,9 @@ public class IStateModelDecoderTest implements IResultsRegistry {
     private function initProps():void {
         _results = [];
         _states = new <IState> [
-            new BaseState( new StateUID( "one" ) ),
-            new BaseState( new StateUID( "two" ) ),
-            new BaseState( new StateUID( "three" ) )
+            new BaseState( "state/one", 1 ),
+            new BaseState( "state/two", 2 ),
+            new BaseState( "state/three", 4 )
         ];
         _stateDecoder = new MockIStateDecoder( _states, this );
         _stateModel = new MockIStateModel( this );

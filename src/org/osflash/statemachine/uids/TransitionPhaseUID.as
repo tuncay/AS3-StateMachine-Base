@@ -19,7 +19,7 @@ public final class TransitionPhaseUID extends BaseUID {
 
         if ( value is int ) {
             return ( value == index );
-        }  else {
+        } else {
             return super.equals( value );
         }
     }

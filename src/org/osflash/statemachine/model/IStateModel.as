@@ -1,7 +1,6 @@
 package org.osflash.statemachine.model {
 
-import org.osflash.statemachine.core.*;
-import org.osflash.statemachine.uids.IUID;
+import org.osflash.statemachine.core.IState;
 
 public interface IStateModel {
 
@@ -9,11 +8,11 @@ public interface IStateModel {
 
     function registerState( state:IState, initial:Boolean = false ):Boolean;
 
-    function removeState( stateUID:IUID ):Boolean;
+    function removeState( stateName:String ):Boolean;
 
-    function hasState( stateUID:IUID ):Boolean;
+    function hasState( stateName:String ):Boolean;
 
-    function getTargetState( transitionUID:IUID, state:IState ):IState ;
+    function getTargetState( transitionName:String, state:IState ):IState ;
 
 }
 }

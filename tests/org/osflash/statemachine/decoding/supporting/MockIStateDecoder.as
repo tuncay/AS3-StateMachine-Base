@@ -4,7 +4,6 @@ import org.osflash.statemachine.core.IState;
 import org.osflash.statemachine.decoding.IDataValidator;
 import org.osflash.statemachine.decoding.IStateDecoder;
 import org.osflash.statemachine.supporting.IResultsRegistry;
-import org.osflash.statemachine.uids.IUID;
 
 public class MockIStateDecoder implements IStateDecoder {
 
@@ -19,11 +18,11 @@ public class MockIStateDecoder implements IStateDecoder {
     public function setData( value:IDataValidator ):void {
     }
 
-    public function decodeState( stateDef:Object ):IState {
+    public function decodeState( stateDef:Object, index:uint ):IState {
         return null;
     }
 
-    public function isInitial( stateName:IUID ):Boolean {
+    public function isInitial( stateName:String ):Boolean {
         _registry.pushResult( "MISD.iI:" + stateName.toString() );
         return false;
     }

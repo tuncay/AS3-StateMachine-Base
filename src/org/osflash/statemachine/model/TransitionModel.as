@@ -14,11 +14,11 @@ public class TransitionModel implements ITransitionModel {
         _queue = new TransitionQueue();
     }
 
-    public function get currentStateUID():IUID {
-        return _properties.currentState.uid;
+    public function get currentStateName():String {
+        return _properties.currentState.name;
     }
 
-    public function get referringTransition():IUID {
+    public function get referringTransition():String {
         return _properties.referringTransition;
     }
 
@@ -34,11 +34,11 @@ public class TransitionModel implements ITransitionModel {
         _properties.currentState = _stateModel.initialState;
     }
 
-    public function addTransition( transition:IUID, payload:Object = null ):void {
+    public function addTransition( transition:String, payload:Object = null ):void {
         _queue.enqueueTransition( transition, payload );
     }
 
-    public function set cancellationReason( reason:IUID ):void {
+    public function set cancellationReason( reason:String ):void {
         _properties.cancellationReason = reason;
     }
 

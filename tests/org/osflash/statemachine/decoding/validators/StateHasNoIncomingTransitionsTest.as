@@ -55,11 +55,11 @@ public class StateHasNoIncomingTransitionsTest {
     }
 
     [Test]
-     public function if_data_is_badly_formed__throws_StateDecodingError():void {
-     var expectedMessage:String = getErrorMessage( ErrorCodes.STATE_HAS_NO_INCOMING_TRANSITION );
-     expectedMessage = injectThis( expectedMessage ).finallyWith( "state", "state/middling" );
-     assertThat( setBadDataAndCallValidateOnTestSubject, throws( allOf( instanceOf( StateDecodingError ), hasPropertyWithValue( "message", expectedMessage ) ) ) );
-     }
+    public function if_data_is_badly_formed__throws_StateDecodingError():void {
+        var expectedMessage:String = getErrorMessage( ErrorCodes.STATE_HAS_NO_INCOMING_TRANSITION );
+        expectedMessage = injectThis( expectedMessage ).finallyWith( "state", "state/middling" );
+        assertThat( setBadDataAndCallValidateOnTestSubject, throws( allOf( instanceOf( StateDecodingError ), hasPropertyWithValue( "message", expectedMessage ) ) ) );
+    }
 
     [Test]
     public function if_data_is_well_formed__validate_returns_data():void {

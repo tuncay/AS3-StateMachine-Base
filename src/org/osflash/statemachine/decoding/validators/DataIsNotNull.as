@@ -6,7 +6,7 @@ import org.osflash.statemachine.errors.getError;
 
 public class DataIsNotNull implements IDataValidator {
 
-     private var _data:Object;
+    private var _data:Object;
 
     public function validate():Object {
         if ( _data != null )return _data;
@@ -14,7 +14,7 @@ public class DataIsNotNull implements IDataValidator {
     }
 
     public function set data( value:Object ):void {
-         _data = value;
+        _data = value;
     }
 }
 }

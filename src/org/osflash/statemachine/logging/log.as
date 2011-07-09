@@ -1,10 +1,5 @@
-/**
- * User: revisual.co.uk
- * Date: 01/07/11
- * Time: 12:25
- */
 package org.osflash.statemachine.logging {
 
-public function log( msg:String ):void {
+public function log( msg:String, logCode:int = -1 ):void {
 }
 }

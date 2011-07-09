@@ -1,20 +1,14 @@
 package org.osflash.statemachine.model {
 
 import org.hamcrest.assertThat;
-import org.hamcrest.object.equalTo;
 import org.hamcrest.object.isFalse;
 import org.hamcrest.object.isTrue;
+import org.hamcrest.object.nullValue;
 import org.hamcrest.object.strictlyEqualTo;
 import org.osflash.statemachine.base.BaseState;
 import org.osflash.statemachine.core.IState;
 import org.osflash.statemachine.model.supporting.MockStateModel;
 import org.osflash.statemachine.model.supporting.MockTransitionProperties;
-import org.osflash.statemachine.uids.CancellationReasonUID;
-import org.osflash.statemachine.uids.IUID;
-import org.osflash.statemachine.uids.StateTransitionUID;
-import org.osflash.statemachine.uids.StateUID;
-import org.osflash.statemachine.uids.flushUIDs;
-import org.osflash.statemachine.uids.getNullUID;
 
 public class ITransitionModelTest {
 
@@ -22,21 +16,21 @@ public class ITransitionModelTest {
     private var _properties:ITransitionProperties;
     private var _stateModel:IStateModel;
     private var _initialState:IState;
-    private var _transition:IUID;
-    private var _reason:IUID
+    private var _transition:String;
+    private var _reason:String
     private var _payload:Object;
 
     [Before]
     public function before():void {
-        _transition = new StateTransitionUID( "one" );
-        _reason = new CancellationReasonUID( "one" );
+        _transition = "trasnition/one";
+        _reason = "reason/one";
         _payload = "payload/one";
         initTestSubject();
     }
 
     private function initTestSubject():void {
-        _initialState = new BaseState( new StateUID( "initial" ) );
-        _stateModel = new MockStateModel( _initialState  );
+        _initialState = new BaseState( "initial", 1 );
+        _stateModel = new MockStateModel( _initialState );
         _properties = new MockTransitionProperties();
         _transitionModel = new TransitionModel( _stateModel, _properties );
     }
@@ -44,7 +38,6 @@ public class ITransitionModelTest {
     [After]
     public function after():void {
         disposeProps();
-        flushUIDs();
     }
 
     [Test]
@@ -95,7 +88,7 @@ public class ITransitionModelTest {
     public function reset_calls_reset_method_on_properties():void {
         addCancellationReason();
         reset();
-        assertThat( _properties.cancellationReason, strictlyEqualTo( getNullUID() ) );
+        assertThat( _properties.cancellationReason, nullValue() );
     }
 
     private function addTransition():void {
@@ -107,7 +100,7 @@ public class ITransitionModelTest {
     }
 
     private function addCancellationReason():void {
-        _transitionModel.cancellationReason = _reason ;
+        _transitionModel.cancellationReason = _reason;
     }
 
     private function reset():void {

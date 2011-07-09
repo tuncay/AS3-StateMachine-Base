@@ -5,13 +5,12 @@ import org.osflash.statemachine.core.IState;
 import org.osflash.statemachine.model.ITransitionProperties;
 import org.osflash.statemachine.model.TransitionBinding;
 import org.osflash.statemachine.uids.IUID;
-import org.osflash.statemachine.uids.getNullUID;
 
 public class MockTransitionProperties implements ITransitionProperties {
 
     private var _binding:TransitionBinding;
     private var _currentState:IState;
-    private var _cancellationReason:IUID;
+    private var _cancellationReason:String;
     private var _currentTransitionPhase:IUID;
 
     public function MockTransitionProperties() {
@@ -41,15 +40,15 @@ public class MockTransitionProperties implements ITransitionProperties {
         return _binding.payload;
     }
 
-    public function get referringTransition():IUID {
+    public function get referringTransition():String {
         return _binding.transition;
     }
 
-    public function get cancellationReason():IUID {
+    public function get cancellationReason():String {
         return _cancellationReason;
     }
 
-    public function set cancellationReason( reason:IUID ):void {
+    public function set cancellationReason( reason:String ):void {
         _cancellationReason = reason;
     }
 
@@ -58,7 +57,7 @@ public class MockTransitionProperties implements ITransitionProperties {
     }
 
     public function reset():void {
-        _cancellationReason = getNullUID();
+        _cancellationReason = null;
     }
 }
 }

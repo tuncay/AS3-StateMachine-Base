@@ -1,15 +1,11 @@
 package org.osflash.statemachine.decoding.validators {
 
-import flashx.textLayout.debug.assert;
-
 import org.hamcrest.assertThat;
 import org.hamcrest.core.allOf;
 import org.hamcrest.core.throws;
-import org.hamcrest.object.equalTo;
 import org.hamcrest.object.hasPropertyWithValue;
 import org.hamcrest.object.instanceOf;
 import org.hamcrest.object.strictlyEqualTo;
-
 import org.osflash.statemachine.decoding.IDataValidator;
 import org.osflash.statemachine.errors.ErrorCodes;
 import org.osflash.statemachine.errors.StateDecodingError;
@@ -41,7 +37,7 @@ public class DataIsNotNullTest {
     [Test]
     public function if_data_is_not_null__validate_returns_data():void {
 
-        assertThat( setDataAndCallValidateOnTestSubject(), strictlyEqualTo( _data ));
+        assertThat( setDataAndCallValidateOnTestSubject(), strictlyEqualTo( _data ) );
     }
 
     private function setDataAndCallValidateOnTestSubject():Object {
@@ -49,7 +45,7 @@ public class DataIsNotNullTest {
         return _dataValidator.validate();
     }
 
-     private function setNullDataAndCallValidateOnTestSubject():void {
+    private function setNullDataAndCallValidateOnTestSubject():void {
         _dataValidator.data = null;
         _dataValidator.validate();
     }

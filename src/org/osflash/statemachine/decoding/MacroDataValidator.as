@@ -15,7 +15,7 @@ public class MacroDataValidator implements IDataValidator {
 
     public function addValidator( validator:IDataValidator ):void {
         validator.data = _data;
-        validators.push(  validator );
+        validators.push( validator );
     }
 
     public function validate():Object {

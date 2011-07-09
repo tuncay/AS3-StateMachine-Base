@@ -2,8 +2,6 @@ package org.osflash.statemachine.decoding {
 
 import org.osflash.statemachine.base.BaseState;
 import org.osflash.statemachine.core.IState;
-import org.osflash.statemachine.uids.IUID;
-import org.osflash.statemachine.uids.getUIDFromIdentifier;
 
 public class BaseXMLStateDecoder implements IStateDecoder {
 
@@ -22,23 +20,23 @@ public class BaseXMLStateDecoder implements IStateDecoder {
 
         const states:Vector.<IState> = new Vector.<IState>;
         const stateDefs:XMLList = data..state;
-
+        var index:uint = 1;
         for ( var i:int; i < stateDefs.length(); i++ ) {
             const stateDef:XML = stateDefs[i];
-            const state:IState = decodeState( stateDef );
+            const state:IState = decodeState( stateDef, index );
             decodeTransitionForState( state, stateDef );
             states.push( state );
+            index = index << 1;
         }
         return states;
     }
 
-    public function decodeState( stateDef:Object ):IState {
-        const stateUID:IUID = getUIDFromIdentifier( stateDef.@name );
-        return new BaseState( stateUID );
+    public function decodeState( stateDef:Object, index:uint ):IState {
+        return new BaseState( stateDef.@name, index );
     }
 
-    public function isInitial( stateUID:IUID ):Boolean {
-        return ( stateUID.equals( data.@initial.toString() ) );
+    public function isInitial( stateName:String ):Boolean {
+        return ( stateName == data.@initial.toString() );
     }
 
     public function decodeTransitionForState( state:IState, stateDef:Object ):IState {
@@ -51,9 +49,7 @@ public class BaseXMLStateDecoder implements IStateDecoder {
     }
 
     private function defineTransition( state:IState, transDef:XML ):void {
-        const transitionUID:IUID = getUIDFromIdentifier( transDef.@name );
-        const targetUID:IUID = getUIDFromIdentifier( transDef.@target );
-        state.defineTransition( transitionUID, targetUID );
+        state.defineTransition( transDef.@name, transDef.@target );
     }
 }
 }

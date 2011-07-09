@@ -9,7 +9,7 @@ public class DataHasInitialStateAttribute implements IDataValidator {
     private var _data:XML;
 
     public function set data( value:Object ):void {
-        _data = XML(value);
+        _data = XML( value );
     }
 
     public function validate():Object {

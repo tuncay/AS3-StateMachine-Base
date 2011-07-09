@@ -1,15 +1,7 @@
 package org.osflash.statemachine.uids {
 
 import org.hamcrest.assertThat;
-import org.hamcrest.core.allOf;
-import org.hamcrest.core.throws;
 import org.hamcrest.object.equalTo;
-import org.hamcrest.object.hasPropertyWithValue;
-import org.hamcrest.object.instanceOf;
-import org.osflash.statemachine.errors.ErrorCodes;
-import org.osflash.statemachine.errors.UIDError;
-import org.osflash.statemachine.errors.getErrorMessage;
-import org.osflash.statemachine.supporting.injectThis;
 
 public class IUIDBaseTests {
 
@@ -20,21 +12,15 @@ public class IUIDBaseTests {
     protected var subject:IUID;
 
     public function setUp( id:String, type:String = null, index:int = -2 ):void {
-
         if ( index == -2 ) {
             subject = new BaseUID( id, type );
-        }
-        else {
+        } else {
             subject = new BaseUID( id, type, index );
         }
-
     }
 
     [After]
     public function after():void {
-
-        flushUIDs();
-
     }
 
     [Test]
@@ -101,18 +87,6 @@ public class IUIDBaseTests {
         setUp( id, type, index );
 
         assertThat( subject.toString(), equalTo( subject.identifier ) );
-    }
-
-    [Test]
-    public function creating_none_unique_IUID_throws_error():void {
-        setUp( id, type, index );
-        var expectedMessage:String = getErrorMessage(ErrorCodes.NON_UNIQUE_IDENTIFIER);
-        expectedMessage = injectThis( expectedMessage).finallyWith( "identifier", subject.identifier);
-        const f:Function = function ():void {
-            new BaseUID( id, subject.type );
-        };
-
-        assertThat( f, throws( allOf( instanceOf( UIDError ), hasPropertyWithValue( "message", expectedMessage ) ) ) );
     }
 
     [Test]

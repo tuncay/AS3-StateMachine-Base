@@ -9,7 +9,7 @@ public class HappyPhase implements ITransitionPhase {
     private var _registry:IResultsRegistry;
     private var _model:IPhaseModel;
     private var _logCode:int;
-     private var _count:int;
+    private var _count:int;
 
     public function HappyPhase( registry:IResultsRegistry, count:int ) {
         _registry = registry;

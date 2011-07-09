@@ -1,20 +1,19 @@
 package org.osflash.statemachine.core {
 
-import org.osflash.statemachine.uids.IUID;
 
 public interface IState {
 
-    function get uid():IUID;
+    function get name():String;
 
-    function defineTransition( transitionID:IUID, target:IUID ):Boolean;
+    function get index():uint
 
-    function removeTrans( transitionName:IUID ):Boolean;
+    function defineTransition( transitionName:String, target:String ):Boolean;
 
-    function hasTrans( transitionName:IUID ):Boolean;
+    function removeTrans( transitionName:String ):Boolean;
 
-    function getTarget( transitionName:IUID ):IUID;
+    function hasTrans( transitionName:String ):Boolean;
 
-    function dispose():void;
+    function getTarget( transitionName:String ):String;
 
 }
 }

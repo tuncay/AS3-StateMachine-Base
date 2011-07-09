@@ -33,12 +33,12 @@ public class MockStateTransitionModel implements ITransitionModel {
         _registry.pushResult( "ISTM.sISAC" );
     }
 
-    public function addTransition( transition:IUID, payload:Object = null ):void {
+    public function addTransition( transition:String, payload:Object = null ):void {
         _transitions.push( {transition:transition, payload:payload} );
         _registry.pushResult( "ISTM.eT:" + transition.toString() + ":" + payload.toString() );
     }
 
-    public function set cancellationReason( reason:IUID ):void {
+    public function set cancellationReason( reason:String ):void {
         _registry.pushResult( "ISTM.aRFC:" + reason.toString() );
     }
 
@@ -52,11 +52,11 @@ public class MockStateTransitionModel implements ITransitionModel {
         _registry.pushResult( "ISTM.r" );
     }
 
-    public function get currentStateUID():IUID {
+    public function get currentStateName():String {
         return null;
     }
 
-    public function get referringTransition():IUID {
+    public function get referringTransition():String {
         return null;
     }
 

@@ -10,8 +10,9 @@ import org.osflash.statemachine.decoding.IDataValidator;
 import org.osflash.statemachine.errors.ErrorCodes;
 import org.osflash.statemachine.errors.StateDecodingError;
 import org.osflash.statemachine.errors.getErrorMessage;
+import org.osflash.statemachine.supporting.injectThis;
 
-public class DataHasInitialStateAttributeTest {
+public class TransitionTargetStatesAreDeclaredTest {
 
     private var _dataValidator:IDataValidator;
     private var _wellFormedData:XML;
@@ -19,9 +20,30 @@ public class DataHasInitialStateAttributeTest {
 
     [Before]
     public function before():void {
-        _wellFormedData = <fsm initial="state/initial"/>;
-        _badlyFormedData = <fsm />;
-        _dataValidator = new DataHasInitialStateAttribute();
+        _wellFormedData =
+        <fsm initial="state/initial">
+            <state name="state/starting" >
+                <transition name="transition/end" target="state/ending"/>
+            </state>
+            <state name="state/ending" >
+                <transition name="transition/start" target="state/starting"/>
+            </state>
+        </fsm>;
+
+        _badlyFormedData =
+        <fsm initial="state/initial">
+            <state name="state/starting" >
+                <transition name="transition/end" target="state/ending"/>
+                <transition name="transition/start" target="state/starting"/>
+            </state>
+            <state name="state/ending" >
+                <transition name="transition/start" target="state/starting"/>
+                <transition name="transition/middle" target="state/middling"/>
+            </state>
+        </fsm>;
+
+
+        _dataValidator = new TransitionTargetStatesAreDeclared();
     }
 
     [After]
@@ -32,7 +54,8 @@ public class DataHasInitialStateAttributeTest {
 
     [Test]
     public function if_data_is_badly_formed__throws_StateDecodingError():void {
-        const expectedMessage:String = getErrorMessage( ErrorCodes.INITIAL_STATE_ATTRIBUTE_NOT_DECLARED );
+        var expectedMessage:String = getErrorMessage( ErrorCodes.TRANSITION_TARGET_NOT_DECLARED );
+        expectedMessage = injectThis( expectedMessage ).withThis( "transition", "transition/middle" ).finallyWith( "state", "state/ending" );
         assertThat( setBadDataAndCallValidateOnTestSubject, throws( allOf( instanceOf( StateDecodingError ), hasPropertyWithValue( "message", expectedMessage ) ) ) );
     }
 
@@ -50,5 +73,6 @@ public class DataHasInitialStateAttributeTest {
         _dataValidator.data = _badlyFormedData;
         _dataValidator.validate();
     }
+
 }
 }

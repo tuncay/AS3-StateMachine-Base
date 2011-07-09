@@ -28,37 +28,37 @@ public class TransitionElementsHaveRequiredAttributesTest {
                 <transition name="transition/end" target="state/endinging"/>
             </state>
 
-         <state name="state/ending" >
+            <state name="state/ending" >
                 <transition name="transition/start" target="state/starting"/>
                 <transition name="transition/end" target="state/endinging"/>
             </state>
-        </fsm> ;
+        </fsm>;
 
         _badlyFormedDataOne =
-         <fsm initial="state/initial">
+        <fsm initial="state/initial">
             <state name="state/starting" >
                 <transition target="state/starting"/>
                 <transition name="transition/end" target="state/endinging"/>
             </state>
 
-         <state name="state/ending" >
+            <state name="state/ending" >
                 <transition name="transition/start" target="state/starting"/>
                 <transition  target="state/endinging"/>
             </state>
-        </fsm> ;
+        </fsm>;
 
-         _badlyFormedDataTwo =
+        _badlyFormedDataTwo =
         <fsm initial="state/initial">
             <state name="state/starting" >
                 <transition name="transition/start" target="state/starting"/>
                 <transition name="transition/end"/>
             </state>
 
-         <state name="state/ending" >
+            <state name="state/ending" >
                 <transition name="transition/start" target="state/starting"/>
                 <transition name="transition/end"/>
             </state>
-        </fsm> ;
+        </fsm>;
         _dataValidator = new TransitionElementsHaveRequiredAttributes();
     }
 
@@ -75,7 +75,7 @@ public class TransitionElementsHaveRequiredAttributesTest {
         assertThat( setBadDataAndCallValidateOnTestSubject, throws( allOf( instanceOf( StateDecodingError ), hasPropertyWithValue( "message", expectedMessage ) ) ) );
     }
 
-     [Test]
+    [Test]
     public function if_data_is_badly_formed2__throws_StateDecodingError():void {
         var expectedMessage:String = getErrorMessage( ErrorCodes.TRANSITION_TARGET_ATTRIBUTE_NOT_DECLARED );
         expectedMessage = injectThis( expectedMessage ).finallyWith( "quantity", "2" );
@@ -83,10 +83,9 @@ public class TransitionElementsHaveRequiredAttributesTest {
     }
 
 
-
     [Test]
     public function if_data_is_well_formed__validate_returns_data():void {
-       assertThat( setWellDataAndCallValidateOnTestSubject(), strictlyEqualTo( _wellFormedData ) );
+        assertThat( setWellDataAndCallValidateOnTestSubject(), strictlyEqualTo( _wellFormedData ) );
     }
 
     private function setWellDataAndCallValidateOnTestSubject():Object {
@@ -99,7 +98,7 @@ public class TransitionElementsHaveRequiredAttributesTest {
         _dataValidator.validate();
     }
 
-     private function setBadData2AndCallValidateOnTestSubject():void {
+    private function setBadData2AndCallValidateOnTestSubject():void {
         _dataValidator.data = _badlyFormedDataTwo;
         _dataValidator.validate();
     }

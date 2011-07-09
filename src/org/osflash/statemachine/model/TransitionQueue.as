@@ -1,6 +1,5 @@
 package org.osflash.statemachine.model {
 
-import org.osflash.statemachine.uids.IUID;
 
 public class TransitionQueue {
 
@@ -14,8 +13,8 @@ public class TransitionQueue {
         return ( _queue.length != 0 );
     }
 
-    public function enqueueTransition( transition:IUID, payload:Object ):void {
-        _queue.push( new TransitionBinding( transition, payload ) );
+    public function enqueueTransition( transitionName:String, payload:Object ):void {
+        _queue.push( new TransitionBinding( transitionName, payload ) );
     }
 
     public function dequeueTransition():TransitionBinding {

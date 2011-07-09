@@ -20,11 +20,11 @@ public class StateMachine implements IFSMController, IFSMProperties {
         _transitionController = controller;
     }
 
-    public function get currentStateUID():IUID {
-        return _transitionModel.currentStateUID;
+    public function get currentStateName():String {
+        return _transitionModel.currentStateName;
     }
 
-    public function get referringTransition():IUID {
+    public function get referringTransition():String {
         return _transitionModel.referringTransition;
     }
 
@@ -41,7 +41,7 @@ public class StateMachine implements IFSMController, IFSMProperties {
         _cancellationValidator = cancellation;
     }
 
-    public final function transition( transition:IUID, payload:Object = null ):void {
+    public final function transition( transition:String, payload:Object = null ):void {
         if ( isTransitionFromValidPhase ) {
             _transitionController.transition( transition, payload );
         } else {
@@ -49,7 +49,7 @@ public class StateMachine implements IFSMController, IFSMProperties {
         }
     }
 
-    public final function cancelStateTransition( reason:IUID ):void {
+    public final function cancelStateTransition( reason:String ):void {
         if ( isCancellationFromValidPhase ) {
             _transitionController.cancelStateTransition( reason );
         } else {

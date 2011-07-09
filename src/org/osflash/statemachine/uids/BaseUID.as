@@ -13,15 +13,11 @@ internal class BaseUID implements IUID {
         _id = id;
         _type = type;
         _index = index;
-        registerIUID( this );
     }
 
-    private function registerIUID( iuid:IUID ):void {
-        UIDRegistry.registerIUID( iuid );
-    }
 
     public function get identifier():String {
-        return _identifier || ( _identifier =_type + delimiter + _id );
+        return _identifier || ( _identifier = _type + delimiter + _id );
     }
 
     public function get type():String {

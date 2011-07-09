@@ -4,9 +4,9 @@ import org.osflash.statemachine.uids.IUID;
 
 public interface IFSMProperties {
 
-    function get currentStateUID():IUID;
+    function get currentStateName():String;
 
-    function get referringTransition():IUID;
+    function get referringTransition():String;
 
     function get transitionPhase():IUID
 

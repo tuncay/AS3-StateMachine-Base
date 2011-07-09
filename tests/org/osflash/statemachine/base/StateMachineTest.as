@@ -17,21 +17,17 @@ import org.osflash.statemachine.errors.getErrorMessage;
 import org.osflash.statemachine.supporting.IResultsRegistry;
 import org.osflash.statemachine.supporting.injectThis;
 import org.osflash.statemachine.transitioning.ITransitionController;
-import org.osflash.statemachine.uids.CancellationReasonUID;
 import org.osflash.statemachine.uids.IUID;
-import org.osflash.statemachine.uids.StateTransitionUID;
-import org.osflash.statemachine.uids.StateUID;
 import org.osflash.statemachine.uids.TransitionPhaseUID;
-import org.osflash.statemachine.uids.flushUIDs;
 
 public class StateMachineTest implements IResultsRegistry {
 
     private var _stateMachine:StateMachine;
     private var _results:Array;
-    private var _transitionUID:IUID;
-    private var _reasonUID:IUID;
+    private var _transitionName:String;
+    private var _reason:String;
     private var _payload:Object;
-    private var _currentStateUID:IUID;
+    private var _currentStateName:String;
     private var _phaseUID:IUID;
 
 
@@ -44,13 +40,12 @@ public class StateMachineTest implements IResultsRegistry {
     [After]
     public function after():void {
         disposeProps();
-        flushUIDs();
     }
 
 
     [Test]
     public function valid_transition_passes_transitionUID_and_payload_to_transitionController():void {
-        var expectedResults:String = injectThis( "TC:T(${transition}):PL(${payload})" ).withThis( "transition", _transitionUID ).finallyWith( "payload", _payload );
+        var expectedResults:String = injectThis( "TC:T(${transition}):PL(${payload})" ).withThis( "transition", _transitionName ).finallyWith( "payload", _payload );
         setHappyValidators();
         executeTransition();
         assertThat( got, equalTo( expectedResults ) );
@@ -58,7 +53,7 @@ public class StateMachineTest implements IResultsRegistry {
 
     [Test]
     public function valid_cancellation_passes_reasonUID_to_transitionController():void {
-        var expectedResults:String = injectThis( "TC:R(${reason})" ).finallyWith( "reason", _reasonUID );
+        var expectedResults:String = injectThis( "TC:R(${reason})" ).finallyWith( "reason", _reason );
         setHappyValidators();
         cancelTransition();
         assertThat( got, equalTo( expectedResults ) );
@@ -85,12 +80,12 @@ public class StateMachineTest implements IResultsRegistry {
 
     [Test]
     public function currentStateUID_wraps_currentStateUID_getter_on_model():void {
-        assertThat( _stateMachine.currentStateUID, equalTo( _currentStateUID ) );
+        assertThat( _stateMachine.currentStateName, equalTo( _currentStateName ) );
     }
 
     [Test]
     public function referringTransition_wraps_referringTransition_getter_on_model():void {
-        assertThat( _stateMachine.referringTransition, strictlyEqualTo( _transitionUID ) );
+        assertThat( _stateMachine.referringTransition, strictlyEqualTo( _transitionName ) );
     }
 
     [Test]
@@ -99,9 +94,9 @@ public class StateMachineTest implements IResultsRegistry {
     }
 
     private function initProps():void {
-        _transitionUID = new StateTransitionUID( "one" );
-        _reasonUID = new CancellationReasonUID( "one" );
-        _currentStateUID = new StateUID( "current" );
+        _transitionName = "transition/one";
+        _reason = "reason/one";
+        _currentStateName = "state/current";
         _phaseUID = new TransitionPhaseUID( "one" );
         _payload = "payload_one";
 
@@ -112,8 +107,8 @@ public class StateMachineTest implements IResultsRegistry {
         const controller:ITransitionController = new MockStateTransitionController( this );
         const model:MockStateTransitionModel = new MockStateTransitionModel();
         model.transitionPhase = _phaseUID;
-        model.currentStateUID = _currentStateUID;
-        model.referringTransition = _transitionUID;
+        model.currentStateUID = _currentStateName;
+        model.referringTransition = _transitionName;
 
         _stateMachine = new StateMachine( model, controller );
     }
@@ -121,9 +116,9 @@ public class StateMachineTest implements IResultsRegistry {
     private function disposeProps():void {
         _stateMachine = null;
         _results = null;
-        _transitionUID = null;
+        _transitionName = null;
         _payload = null;
-        _reasonUID = null;
+        _reason = null;
     }
 
     private function setHappyValidators():void {
@@ -135,24 +130,24 @@ public class StateMachineTest implements IResultsRegistry {
     }
 
     private function executeTransition():void {
-        _stateMachine.transition( _transitionUID, _payload );
+        _stateMachine.transition( _transitionName, _payload );
     }
 
     private function cancelTransition():void {
-        _stateMachine.cancelStateTransition( _reasonUID );
+        _stateMachine.cancelStateTransition( _reason );
     }
 
     private function assertThatInvalidTransitionThrowsStateTransitionError():void {
         var expectedMessage:String = getErrorMessage( ErrorCodes.INVALID_TRANSITION );
         expectedMessage = injectThis( expectedMessage ).finallyWith( "phase", _phaseUID );
-        const throwFunction:Function = function ():void { _stateMachine.transition( _transitionUID, _payload ); };
+        const throwFunction:Function = function ():void { _stateMachine.transition( _transitionName, _payload ); };
         assertThat( throwFunction, throws( allOf( instanceOf( StateTransitionError ), hasPropertyWithValue( "message", expectedMessage ) ) ) );
     }
 
     private function assertThatInvalidCancellationThrowsStateTransitionError():void {
         var expectedMessage:String = getErrorMessage( ErrorCodes.INVALID_CANCEL );
         expectedMessage = injectThis( expectedMessage ).finallyWith( "phase", _phaseUID );
-        const throwFunction:Function = function ():void { _stateMachine.cancelStateTransition( _transitionUID ); };
+        const throwFunction:Function = function ():void { _stateMachine.cancelStateTransition( _transitionName ); };
         assertThat( throwFunction, throws( allOf( instanceOf( StateTransitionError ), hasPropertyWithValue( "message", expectedMessage ) ) ) );
     }
 

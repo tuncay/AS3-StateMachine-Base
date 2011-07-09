@@ -11,7 +11,7 @@ public class MockPhaseDispatcher implements IPhaseDispatcher {
         _registry = registry
     }
 
-    public function dispatchPhases(  ):void {
+    public function dispatchPhases():void {
 
         _registry.pushResult( "IPD.dP" );
 

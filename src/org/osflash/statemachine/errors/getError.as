@@ -1,4 +1,3 @@
-
 package org.osflash.statemachine.errors {
 
 public function getError( code:int ):BaseStateError {

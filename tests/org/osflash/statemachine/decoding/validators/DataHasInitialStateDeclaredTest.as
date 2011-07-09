@@ -47,7 +47,7 @@ public class DataHasInitialStateDeclaredTest {
     public function if_data_is_badly_formed__throws_StateDecodingError():void {
         const expectedMessage:String = getErrorMessage( ErrorCodes.INITIAL_STATE_NOT_DECLARED );
         assertThat( setBadDataAndCallValidateOnTestSubject, throws( allOf( instanceOf( StateDecodingError ), hasPropertyWithValue( "message", expectedMessage ) ) ) );
-   }
+    }
 
     [Test]
     public function if_data_is_well_formed__validate_returns_data():void {

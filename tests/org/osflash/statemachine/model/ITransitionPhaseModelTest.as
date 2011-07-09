@@ -8,12 +8,8 @@ import org.osflash.statemachine.core.IState;
 import org.osflash.statemachine.model.supporting.MockStateModel;
 import org.osflash.statemachine.model.supporting.MockTransitionProperties;
 import org.osflash.statemachine.supporting.IResultsRegistry;
-import org.osflash.statemachine.uids.CancellationReasonUID;
 import org.osflash.statemachine.uids.IUID;
-import org.osflash.statemachine.uids.StateTransitionUID;
-import org.osflash.statemachine.uids.StateUID;
 import org.osflash.statemachine.uids.TransitionPhaseUID;
-import org.osflash.statemachine.uids.flushUIDs;
 
 public class ITransitionPhaseModelTest implements IResultsRegistry {
 
@@ -24,7 +20,7 @@ public class ITransitionPhaseModelTest implements IResultsRegistry {
     private var _currentState:IState;
     private var _targetState:IState;
     private var _results:Array;
-    private var _transition:IUID;
+    private var _transition:String;
     private var _payload:String;
     private var _phase:IUID;
 
@@ -37,7 +33,6 @@ public class ITransitionPhaseModelTest implements IResultsRegistry {
     [After]
     public function after():void {
         disposeProps();
-        flushUIDs();
     }
 
     [Test]
@@ -67,7 +62,7 @@ public class ITransitionPhaseModelTest implements IResultsRegistry {
         assertThat( _properties.currentTransitionPhase, equalTo( _phase ) );
     }
 
-   [Test]
+    [Test]
     public function payload_returns_value_from_properties():void {
         setTransitionOnProperties();
         assertThat( _transitionPhaseModel.payload.body, equalTo( _payload ) );
@@ -93,27 +88,27 @@ public class ITransitionPhaseModelTest implements IResultsRegistry {
     }
 
     private function setTransitionOnProperties():void {
-        _properties.currentTransitionBinding = new TransitionBinding( _transition , _payload );
+        _properties.currentTransitionBinding = new TransitionBinding( _transition, _payload );
     }
 
 
     private function callTargetStateGetterOnTestSubject():void {
-        pushResult( _transitionPhaseModel.targetState ) ;
+        pushResult( _transitionPhaseModel.targetState );
     }
 
     private function setCancellationReasonOnProperties():void {
-        _properties.cancellationReason = new CancellationReasonUID( "one" );
+        _properties.cancellationReason = "reason/one";
     }
 
     private function initProps():void {
         _results = [];
-        _initialState = new BaseState( new StateUID( "initial" ) );
-        _currentState = new BaseState( new StateUID( "current" ) );
-        _targetState = new BaseState( new StateUID( "target" ) );
+        _initialState = new BaseState( "state/initial", 1 );
+        _currentState = new BaseState( "state/current", 2 );
+        _targetState = new BaseState( "state/target", 4 );
         _stateModel = new MockStateModel( _initialState, _targetState, this );
         _properties = new MockTransitionProperties();
-        _transition = new StateTransitionUID("one");
-        _phase = new TransitionPhaseUID("one");
+        _transition = "transition/one";
+        _phase = new TransitionPhaseUID( "one" );
         _payload = "payload/one";
     }
 

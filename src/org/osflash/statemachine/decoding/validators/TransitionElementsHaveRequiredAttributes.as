@@ -8,10 +8,6 @@ public class TransitionElementsHaveRequiredAttributes implements IDataValidator 
 
     private var _data:XML;
 
-    public function TransitionElementsHaveRequiredAttributes( data:XML ) {
-        _data = data;
-    }
-
     public function validate():Object {
         validateTransitionAttributes( "@name", ErrorCodes.TRANSITION_NAME_ATTRIBUTE_NOT_DECLARED );
         validateTransitionAttributes( "@target", ErrorCodes.TRANSITION_TARGET_ATTRIBUTE_NOT_DECLARED );
@@ -21,7 +17,11 @@ public class TransitionElementsHaveRequiredAttributes implements IDataValidator 
     private function validateTransitionAttributes( property:String, errorCode:int ):void {
         const transitions:XMLList = _data..transition.(!hasOwnProperty( property ) );
         if ( transitions.length() == 0 )  return;
-        throw getError( errorCode ).injectMsgWith( transitions.length.toString(), "quantity" );
+        throw getError( errorCode ).injectMsgWith( transitions.length().toString(), "quantity" );
+    }
+
+    public function set data( value:Object ):void {
+        _data = XML(value);
     }
 }
 }

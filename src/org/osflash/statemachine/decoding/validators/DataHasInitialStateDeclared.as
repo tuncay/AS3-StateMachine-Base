@@ -8,14 +8,14 @@ public class DataHasInitialStateDeclared implements IDataValidator{
 
     private var _data:XML;
 
-    public function DataHasInitialStateDeclared( data:XML) {
-        _data = data;
-    }
-
     public function validate():Object {
-        const statenames:XMLList = _data..state.(hasOwnProperty( "@name" ) && @name == _fsm.@initial );
+        const statenames:XMLList = _data..state.(hasOwnProperty( "@name" ) && @name == _data.@initial );
         if ( statenames.length() == 1 ) return _data;
         throw getError( ErrorCodes.INITIAL_STATE_NOT_DECLARED );
+    }
+
+    public function set data( value:Object ):void {
+        _data = XML(value);
     }
 }
 }

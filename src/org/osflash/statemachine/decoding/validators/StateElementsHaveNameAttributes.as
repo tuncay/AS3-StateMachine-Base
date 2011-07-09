@@ -9,7 +9,7 @@ public class StateElementsHaveNameAttributes implements IDataValidator{
     private var _data:XML;
 
     public function validate():Object {
-        const states:XMLList = _data..state.(!hasOwnProperty( "@name" ) );
+        const states:XMLList = _data.state.(!hasOwnProperty( "@name" ) );
         if ( states.length() == 0 )  return _data;
         throw getError( ErrorCodes.STATE_NAME_ATTRIBUTE_NOT_DECLARED ).injectMsgWith( states.length().toString(), "quantity" );
     }

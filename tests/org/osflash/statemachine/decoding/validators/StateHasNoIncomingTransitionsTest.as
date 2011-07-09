@@ -12,7 +12,7 @@ import org.osflash.statemachine.errors.StateDecodingError;
 import org.osflash.statemachine.errors.getErrorMessage;
 import org.osflash.statemachine.supporting.injectThis;
 
-public class StateNamesAreUniqueTest {
+public class StateHasNoIncomingTransitionsTest {
 
     private var _dataValidator:IDataValidator;
     private var _wellFormedData:XML;
@@ -22,20 +22,30 @@ public class StateNamesAreUniqueTest {
     public function before():void {
         _wellFormedData =
         <fsm initial="state/initial">
-            <state name="state/starting"/>
-            <state name="state/initial"/>
-            <state name="state/ending"/>
+            <state name="state/starting" >
+                <transition name="transition/end" target="state/ending"/>
+            </state>
+            <state name="state/ending" >
+                <transition name="transition/start" target="state/starting"/>
+            </state>
         </fsm>;
 
         _badlyFormedData =
         <fsm initial="state/initial">
-            <state name="state/starting"/>
-            <state name="state/initial"/>
-            <state name="state/middling"/>
-            <state name="state/initial"/>
+            <state name="state/starting" >
+                <transition name="transition/end" target="state/ending"/>
+                <transition name="transition/start" target="state/starting"/>
+            </state>
+            <state name="state/ending" >
+                <transition name="transition/start" target="state/starting"/>
+            </state>
+            <state name="state/middling" >
+                <transition name="transition/start" target="state/starting"/>
+            </state>
         </fsm>;
 
-        _dataValidator = new StateNamesAreUnique();
+
+        _dataValidator = new StateHasNoIncomingTransitions();
     }
 
     [After]
@@ -45,11 +55,11 @@ public class StateNamesAreUniqueTest {
     }
 
     [Test]
-    public function if_data_is_badly_formed__throws_StateDecodingError():void {
-        var expectedMessage:String = getErrorMessage( ErrorCodes.DUPLICATE_STATES_DECLARED );
-        expectedMessage = injectThis( expectedMessage ).finallyWith( "state", "state/initial,state/initial" );
-        assertThat( setBadDataAndCallValidateOnTestSubject, throws( allOf( instanceOf( StateDecodingError ), hasPropertyWithValue( "message", expectedMessage ) ) ) );
-    }
+     public function if_data_is_badly_formed__throws_StateDecodingError():void {
+     var expectedMessage:String = getErrorMessage( ErrorCodes.STATE_HAS_NO_INCOMING_TRANSITION );
+     expectedMessage = injectThis( expectedMessage ).finallyWith( "state", "state/middling" );
+     assertThat( setBadDataAndCallValidateOnTestSubject, throws( allOf( instanceOf( StateDecodingError ), hasPropertyWithValue( "message", expectedMessage ) ) ) );
+     }
 
     [Test]
     public function if_data_is_well_formed__validate_returns_data():void {
@@ -65,5 +75,6 @@ public class StateNamesAreUniqueTest {
         _dataValidator.data = _badlyFormedData;
         _dataValidator.validate();
     }
+
 }
 }

@@ -8,12 +8,8 @@ public class TransitionNamesInEachStateAreUnique implements IDataValidator {
 
     private var _data:XML;
 
-    public function TransitionNamesInEachStateAreUnique( data:XML ) {
-        _data = data;
-    }
-
     public function validate():Object {
-        const states:XMLList = _data..state;
+        const states:XMLList = _data.state;
         for each ( var state:XML in states ) {
             validateState( state );
         }
@@ -22,23 +18,24 @@ public class TransitionNamesInEachStateAreUnique implements IDataValidator {
 
     private function validateState( state:XML ):void {
         const transitions:XMLList = retrieveAllTransitionNameAttributes( state );
-        var errors:Vector.<String> = new <String>[];
         for each ( var name:XML in transitions ) {
             const duplicateList:int = retrieveNumberOfStateElementsWithName( name, state );
-            if ( duplicateList != 1 ) errors.push( name.toString() );
+            if ( duplicateList != 1 )
+                throw getError( ErrorCodes.DUPLICATE_TRANSITION_DECLARED ).injectMsgWith( state.@name , "state" );
         }
-        if ( errors.length == 0 ) return;
-        throw getError( ErrorCodes.DUPLICATE_STATES_DECLARED ).injectMsgWith( errors.join( "," ), "state" );
     }
 
     private function retrieveAllTransitionNameAttributes( state:XML ):XMLList {
-        return state..transition.(hasOwnProperty( "@name" ) ).@name;
+        return state.transition.(hasOwnProperty( "@name" ) ).@name;
     }
 
-    private function retrieveNumberOfStateElementsWithName( name:String, state:XML ):int {
-        return state..transition.( hasOwnProperty( "@name" ) && @name == name).length();
+    private function retrieveNumberOfStateElementsWithName( id:String, state:XML ):int {
+        return state.transition.( hasOwnProperty( "@name" ) && @name == id ).length();
     }
 
 
+    public function set data( value:Object ):void {
+        _data = XML( value );
+    }
 }
 }

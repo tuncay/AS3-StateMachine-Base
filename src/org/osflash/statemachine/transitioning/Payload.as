@@ -22,7 +22,6 @@ public class Payload implements IPayload {
         setBodyFromObject( body );
     }
 
-
     public function equals( value:Object ):Boolean {
         if ( value is IPayload )
             return ( value === this ) ? true : (IPayload( value ).body === _body);

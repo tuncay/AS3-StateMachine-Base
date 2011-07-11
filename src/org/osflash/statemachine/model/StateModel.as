@@ -36,7 +36,6 @@ public class StateModel implements IStateProvider, IStateModel {
         return  IState( _states[ stateName ] );
     }
 
-
     public function removeState( stateName:String ):Boolean {
         if ( !hasState( stateName ) ) return false;
         delete _states[ stateName ];
@@ -58,6 +57,5 @@ public class StateModel implements IStateProvider, IStateModel {
         }
         return targetState;
     }
-
 }
 }

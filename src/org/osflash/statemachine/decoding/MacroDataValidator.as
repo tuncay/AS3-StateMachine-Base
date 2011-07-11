@@ -28,7 +28,5 @@ public class MacroDataValidator implements IDataValidator {
     private function get validators():Vector.<IDataValidator> {
         return _validators || ( _validators = new <IDataValidator>[] );
     }
-
-
 }
 }

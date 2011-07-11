@@ -8,7 +8,6 @@ public class BaseStateError extends Error {
         super( msg );
     }
 
-
     public function injectMsgWith( value:*, keyword:String = null ):BaseStateError {
         if ( value is IUID ) {
             injectMsgWithIUID( IUID( value ), keyword );

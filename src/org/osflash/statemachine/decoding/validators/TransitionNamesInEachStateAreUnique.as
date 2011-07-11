@@ -33,7 +33,6 @@ public class TransitionNamesInEachStateAreUnique implements IDataValidator {
         return state.transition.( hasOwnProperty( "@name" ) && @name == id ).length();
     }
 
-
     public function set data( value:Object ):void {
         _data = XML( value );
     }

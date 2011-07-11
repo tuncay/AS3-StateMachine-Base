@@ -15,7 +15,6 @@ internal class BaseUID implements IUID {
         _index = index;
     }
 
-
     public function get identifier():String {
         return _identifier || ( _identifier = _type + delimiter + _id );
     }

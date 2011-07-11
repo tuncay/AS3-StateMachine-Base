@@ -23,11 +23,9 @@ public class StateNamesAreUnique implements IDataValidator {
         return _data.state.(hasOwnProperty( "@name" ) ).@name;
     }
 
-
     private function retrieveNumberOfStateElementsWithName( id:String ):int {
         return _data.state.( hasOwnProperty( "@name" ) && @name == id).length();
     }
-
 
     public function set data( value:Object ):void {
         _data = XML( value );

@@ -8,7 +8,6 @@ public class TransitionBinding {
     private var _transition:String;
     private var _payload:IPayload;
 
-
     public function TransitionBinding( transition:String, body:Object ) {
         _transition = transition;
         setBody( body );
@@ -34,6 +33,4 @@ public class TransitionBinding {
         return transition + ":" + _payload.body.toString();
     }
 }
-
-
 }

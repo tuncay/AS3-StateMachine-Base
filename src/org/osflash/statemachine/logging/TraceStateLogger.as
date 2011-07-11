@@ -14,7 +14,6 @@ public class TraceStateLogger implements IStateLogger {
 
     public var phaseflags:int;
 
-
     public function TraceStateLogger( prefix:String = "", active:Boolean = true ) {
         this.prefix = prefix;
         this.active = active;

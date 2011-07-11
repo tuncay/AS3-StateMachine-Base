@@ -12,7 +12,6 @@ public final class TransitionPhaseUID extends BaseUID {
 
     public function TransitionPhaseUID( name:String, index:int = -1 ) {
         super( name, TYPE, index );
-
     }
 
     public override function equals( value:Object ):Boolean {

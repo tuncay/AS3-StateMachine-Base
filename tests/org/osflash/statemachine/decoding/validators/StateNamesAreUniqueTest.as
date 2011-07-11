@@ -8,8 +8,8 @@ import org.hamcrest.object.instanceOf;
 import org.hamcrest.object.strictlyEqualTo;
 import org.osflash.statemachine.decoding.IDataValidator;
 import org.osflash.statemachine.errors.ErrorCodes;
+import org.osflash.statemachine.errors.ErrorMap;
 import org.osflash.statemachine.errors.StateDecodingError;
-import org.osflash.statemachine.errors.getErrorMessage;
 import org.osflash.statemachine.supporting.injectThis;
 
 public class StateNamesAreUniqueTest {
@@ -20,7 +20,7 @@ public class StateNamesAreUniqueTest {
 
     [Before]
     public function before():void {
-        _wellFormedData =
+      _wellFormedData =
         <fsm initial="state/initial">
             <state name="state/starting"/>
             <state name="state/initial"/>
@@ -46,7 +46,7 @@ public class StateNamesAreUniqueTest {
 
     [Test]
     public function if_data_is_badly_formed__throws_StateDecodingError():void {
-        var expectedMessage:String = getErrorMessage( ErrorCodes.DUPLICATE_STATES_DECLARED );
+        var expectedMessage:String = new ErrorMap().getErrorMessage( ErrorCodes.DUPLICATE_STATES_DECLARED );
         expectedMessage = injectThis( expectedMessage ).finallyWith( "state", "state/initial,state/initial" );
         assertThat( setBadDataAndCallValidateOnTestSubject, throws( allOf( instanceOf( StateDecodingError ), hasPropertyWithValue( "message", expectedMessage ) ) ) );
     }

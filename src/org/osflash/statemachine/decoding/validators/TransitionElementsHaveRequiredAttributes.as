@@ -2,7 +2,7 @@ package org.osflash.statemachine.decoding.validators {
 
 import org.osflash.statemachine.decoding.IDataValidator;
 import org.osflash.statemachine.errors.ErrorCodes;
-import org.osflash.statemachine.errors.getError;
+import org.osflash.statemachine.errors.ErrorMap;
 
 public class TransitionElementsHaveRequiredAttributes implements IDataValidator {
 
@@ -17,7 +17,7 @@ public class TransitionElementsHaveRequiredAttributes implements IDataValidator 
     private function validateTransitionAttributes( property:String, errorCode:int ):void {
         const transitions:XMLList = _data..transition.(!hasOwnProperty( property ) );
         if ( transitions.length() == 0 )  return;
-        throw getError( errorCode ).injectMsgWith( transitions.length().toString(), "quantity" );
+        throw new ErrorMap().getError( errorCode ).injectMsgWith( transitions.length().toString(), "quantity" );
     }
 
     public function set data( value:Object ):void {

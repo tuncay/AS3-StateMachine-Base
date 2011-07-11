@@ -3,7 +3,7 @@ package org.osflash.statemachine.base {
 import org.osflash.statemachine.core.IFSMController;
 import org.osflash.statemachine.core.IFSMProperties;
 import org.osflash.statemachine.errors.ErrorCodes;
-import org.osflash.statemachine.errors.getError;
+import org.osflash.statemachine.errors.ErrorMap;
 import org.osflash.statemachine.transitioning.ITransitionController;
 import org.osflash.statemachine.transitioning.ITransitionValidator;
 import org.osflash.statemachine.uids.IUID;
@@ -45,7 +45,7 @@ public class StateMachine implements IFSMController, IFSMProperties {
         if ( isTransitionFromValidPhase ) {
             _transitionController.transition( transition, payload );
         } else {
-            throw getError( ErrorCodes.INVALID_TRANSITION ).injectMsgWith( _transitionModel.transitionPhase );
+            throw new ErrorMap().getError( ErrorCodes.INVALID_TRANSITION ).injectMsgWith( _transitionModel.transitionPhase );
         }
     }
 
@@ -53,7 +53,7 @@ public class StateMachine implements IFSMController, IFSMProperties {
         if ( isCancellationFromValidPhase ) {
             _transitionController.cancelStateTransition( reason );
         } else {
-            throw getError( ErrorCodes.INVALID_CANCEL ).injectMsgWith( _transitionModel.transitionPhase );
+            throw new ErrorMap().getError( ErrorCodes.INVALID_CANCEL ).injectMsgWith( _transitionModel.transitionPhase );
         }
     }
 

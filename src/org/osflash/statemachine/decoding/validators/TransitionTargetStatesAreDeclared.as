@@ -2,7 +2,7 @@ package org.osflash.statemachine.decoding.validators {
 
 import org.osflash.statemachine.decoding.IDataValidator;
 import org.osflash.statemachine.errors.ErrorCodes;
-import org.osflash.statemachine.errors.getError;
+import org.osflash.statemachine.errors.ErrorMap;
 
 public class TransitionTargetStatesAreDeclared implements IDataValidator {
 
@@ -13,7 +13,7 @@ public class TransitionTargetStatesAreDeclared implements IDataValidator {
         for each ( var transition:XML in transitions ) {
             const duplicateList:int = retrieveNumberOfStateElementsWithName( transition.@target );
             if ( duplicateList == 0 )
-                throw getError( ErrorCodes.TRANSITION_TARGET_NOT_DECLARED ).injectMsgWith( transition.parent().@name, "state" ).injectMsgWith( transition.@name, "transition" );
+                throw new ErrorMap().getError( ErrorCodes.TRANSITION_TARGET_NOT_DECLARED ).injectMsgWith( transition.parent().@name, "state" ).injectMsgWith( transition.@name, "transition" );
         }
         return _data;
     }

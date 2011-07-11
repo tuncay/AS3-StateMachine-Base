@@ -13,8 +13,8 @@ import org.hamcrest.object.strictlyEqualTo;
 import org.osflash.statemachine.base.BaseState;
 import org.osflash.statemachine.core.IState;
 import org.osflash.statemachine.errors.ErrorCodes;
+import org.osflash.statemachine.errors.ErrorMap;
 import org.osflash.statemachine.errors.StateTransitionError;
-import org.osflash.statemachine.errors.getErrorMessage;
 import org.osflash.statemachine.supporting.injectThis;
 import org.osflash.statemachine.uids.IUID;
 import org.osflash.statemachine.uids.TransitionPhaseUID;
@@ -152,7 +152,7 @@ public class TransitionModelPropertiesTest {
     }
 
     private function assertThatUndefinedTransitionInCurrentStateThrowsStateTransitionError():void {
-        var expectedMessage:String = getErrorMessage( ErrorCodes.TRANSITION_UNDEFINED_IN_CURRENT_STATE );
+        var expectedMessage:String = new ErrorMap().getErrorMessage( ErrorCodes.TRANSITION_UNDEFINED_IN_CURRENT_STATE );
         expectedMessage = injectThis( expectedMessage )
                           .withThis( "state", _properties.currentState.name )
                           .finallyWith( "transition", _transitionTwo );

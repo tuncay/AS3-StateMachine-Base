@@ -2,8 +2,9 @@ package org.osflash.statemachine.transitioning {
 
 import org.osflash.statemachine.core.IStateLogger;
 import org.osflash.statemachine.errors.ErrorCodes;
-import org.osflash.statemachine.errors.getError;
+import org.osflash.statemachine.errors.ErrorMap;
 import org.osflash.statemachine.model.IPhaseModel;
+import org.osflash.statemachine.transitioning.phases.ITransitionPhase;
 
 public class TransitionPhaseDispatcher implements IPhaseDispatcher {
 
@@ -32,7 +33,7 @@ public class TransitionPhaseDispatcher implements IPhaseDispatcher {
 
     public function dispatchPhases():void {
         if ( _phases == null || _phases.length == 0 ) {
-            throw getError( ErrorCodes.NO_PHASES_HAVE_BEEN_PUSHED_TO_STATE_TRANSITION );
+            throw new ErrorMap().getError( ErrorCodes.NO_PHASES_HAVE_BEEN_PUSHED_TO_STATE_TRANSITION );
         }
         var n:int = 0;
         while ( n < phases.length ) {

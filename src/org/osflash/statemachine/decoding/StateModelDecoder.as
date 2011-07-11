@@ -2,7 +2,7 @@ package org.osflash.statemachine.decoding {
 
 import org.osflash.statemachine.core.IState;
 import org.osflash.statemachine.errors.ErrorCodes;
-import org.osflash.statemachine.errors.getError;
+import org.osflash.statemachine.errors.ErrorMap;
 import org.osflash.statemachine.model.IStateModel;
 
 public class StateModelDecoder implements IStateModelDecoder {
@@ -15,10 +15,10 @@ public class StateModelDecoder implements IStateModelDecoder {
 
     public function inject( stateModel:IStateModel ):void {
         if ( _stateDecoder == null ) {
-            throw getError( ErrorCodes.STATE_DECODER_MUST_NOT_BE_NULL );
+            throw new ErrorMap().getError( ErrorCodes.STATE_DECODER_MUST_NOT_BE_NULL );
         }
         if ( stateModel == null ) {
-            throw getError( ErrorCodes.STATE_MODEL_MUST_NOT_BE_NULL );
+            throw new ErrorMap().getError( ErrorCodes.STATE_MODEL_MUST_NOT_BE_NULL );
         }
         decodeStatesAndAddToIStateModel( stateModel );
     }

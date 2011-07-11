@@ -15,12 +15,12 @@ public class BaseXMLStateDecoderTest implements IResultsRegistry {
     private const FSM:XML =
                   <fsm initial="state/initial">
                       <state name="state/starting" >
-                          <transition name="transition/end" target="state/endinging"/>
+                          <transition name="transition/end" target="state/ending"/>
                       </state>
 
                       <state name="state/middling" >
                           <transition name="transition/start" target="state/starting"/>
-                          <transition name="transition/end" target="state/endinging"/>
+                          <transition name="transition/end" target="state/ending"/>
                       </state>
 
                       <state name="state/ending" >
@@ -51,7 +51,16 @@ public class BaseXMLStateDecoderTest implements IResultsRegistry {
     [Test]
     public function getStates_should_decode_all_the_states_transitions_correctly():void {
         const results:Vector.<IState> = _xmlStateDecoder.getStates();
-        //assertThatStatesHaveExpectedTransitions(results);
+        assertThatStatesHaveExpectedTransitions( results );
+    }
+
+    private function assertThatStatesHaveExpectedTransitions( results:Vector.<IState> ):void {
+        assertThat( results[0].getTarget( "transition/end" ), equalTo( "state/ending" ) );
+
+        assertThat( results[1].getTarget( "transition/start" ), equalTo( "state/starting" ) );
+        assertThat( results[1].getTarget( "transition/end" ), equalTo( "state/ending" ) );
+
+        assertThat( results[2].getTarget( "transition/middle" ), equalTo( "state/middling" ) );
     }
 
 

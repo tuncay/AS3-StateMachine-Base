@@ -8,8 +8,8 @@ import org.hamcrest.object.instanceOf;
 import org.hamcrest.object.strictlyEqualTo;
 import org.osflash.statemachine.decoding.IDataValidator;
 import org.osflash.statemachine.errors.ErrorCodes;
+import org.osflash.statemachine.errors.ErrorMap;
 import org.osflash.statemachine.errors.StateDecodingError;
-import org.osflash.statemachine.errors.getErrorMessage;
 import org.osflash.statemachine.supporting.injectThis;
 
 public class TransitionNamesInEachStateAreUniqueTest {
@@ -54,7 +54,7 @@ public class TransitionNamesInEachStateAreUniqueTest {
 
     [Test]
     public function if_data_is_badly_formed__throws_StateDecodingError():void {
-        var expectedMessage:String = getErrorMessage( ErrorCodes.DUPLICATE_TRANSITION_DECLARED );
+        var expectedMessage:String = new ErrorMap().getErrorMessage( ErrorCodes.DUPLICATE_TRANSITION_DECLARED );
         expectedMessage = injectThis( expectedMessage ).finallyWith( "state", "state/starting" );
         assertThat( setBadDataAndCallValidateOnTestSubject, throws( allOf( instanceOf( StateDecodingError ), hasPropertyWithValue( "message", expectedMessage ) ) ) );
     }

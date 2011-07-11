@@ -3,7 +3,7 @@ package org.osflash.statemachine.transitioning.supporting {
 import org.osflash.statemachine.core.IStateLogger;
 import org.osflash.statemachine.model.IPhaseModel;
 import org.osflash.statemachine.supporting.IResultsRegistry;
-import org.osflash.statemachine.transitioning.ITransitionPhase;
+import org.osflash.statemachine.transitioning.phases.ITransitionPhase;
 
 public class HappyPhase implements ITransitionPhase {
 

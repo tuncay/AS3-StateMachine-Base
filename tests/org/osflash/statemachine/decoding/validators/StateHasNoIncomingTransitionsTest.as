@@ -8,8 +8,8 @@ import org.hamcrest.object.instanceOf;
 import org.hamcrest.object.strictlyEqualTo;
 import org.osflash.statemachine.decoding.IDataValidator;
 import org.osflash.statemachine.errors.ErrorCodes;
+import org.osflash.statemachine.errors.ErrorMap;
 import org.osflash.statemachine.errors.StateDecodingError;
-import org.osflash.statemachine.errors.getErrorMessage;
 import org.osflash.statemachine.supporting.injectThis;
 
 public class StateHasNoIncomingTransitionsTest {
@@ -56,7 +56,7 @@ public class StateHasNoIncomingTransitionsTest {
 
     [Test]
     public function if_data_is_badly_formed__throws_StateDecodingError():void {
-        var expectedMessage:String = getErrorMessage( ErrorCodes.STATE_HAS_NO_INCOMING_TRANSITION );
+        var expectedMessage:String = new ErrorMap().getErrorMessage( ErrorCodes.STATE_HAS_NO_INCOMING_TRANSITION );
         expectedMessage = injectThis( expectedMessage ).finallyWith( "state", "state/middling" );
         assertThat( setBadDataAndCallValidateOnTestSubject, throws( allOf( instanceOf( StateDecodingError ), hasPropertyWithValue( "message", expectedMessage ) ) ) );
     }

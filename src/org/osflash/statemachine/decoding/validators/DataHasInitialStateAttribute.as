@@ -2,11 +2,12 @@ package org.osflash.statemachine.decoding.validators {
 
 import org.osflash.statemachine.decoding.IDataValidator;
 import org.osflash.statemachine.errors.ErrorCodes;
-import org.osflash.statemachine.errors.getError;
+import org.osflash.statemachine.errors.ErrorMap;
 
 public class DataHasInitialStateAttribute implements IDataValidator {
 
     private var _data:XML;
+    private var _errorMap:ErrorMap;
 
     public function set data( value:Object ):void {
         _data = XML( value );
@@ -14,7 +15,7 @@ public class DataHasInitialStateAttribute implements IDataValidator {
 
     public function validate():Object {
         if ( _data.@initial != undefined ) return _data;
-        throw getError( ErrorCodes.INITIAL_STATE_ATTRIBUTE_NOT_DECLARED );
+        throw new ErrorMap().getError( ErrorCodes.INITIAL_STATE_ATTRIBUTE_NOT_DECLARED );
     }
 }
 }

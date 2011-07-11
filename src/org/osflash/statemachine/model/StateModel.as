@@ -3,16 +3,17 @@ package org.osflash.statemachine.model {
 import org.osflash.statemachine.core.IState;
 import org.osflash.statemachine.core.IStateProvider;
 import org.osflash.statemachine.errors.ErrorCodes;
-import org.osflash.statemachine.errors.getError;
+import org.osflash.statemachine.errors.ErrorMap;
 
 public class StateModel implements IStateProvider, IStateModel {
 
     protected var _states:Object = new Object();
     protected var _initial:IState;
+    private var _errorMap:ErrorMap;
 
     public function get initialState():IState {
         if ( _initial == null ) {
-            throw getError( ErrorCodes.NO_INITIAL_STATE_DECLARED );
+            throw errorMap.getError( ErrorCodes.NO_INITIAL_STATE_DECLARED );
         }
         return _initial;
     }
@@ -30,8 +31,7 @@ public class StateModel implements IStateProvider, IStateModel {
 
     public function getState( stateName:String ):IState {
         if ( !hasState( stateName ) ) {
-
-            throw getError( ErrorCodes.STATE_REQUESTED_IS_NOT_REGISTERED ).injectMsgWith( stateName, "state" );
+            throw errorMap.getError( ErrorCodes.STATE_REQUESTED_IS_NOT_REGISTERED ).injectMsgWith( stateName, "state" );
         }
         return  IState( _states[ stateName ] );
     }
@@ -44,18 +44,22 @@ public class StateModel implements IStateProvider, IStateModel {
 
     public function getTargetState( transitionName:String, state:IState ):IState {
         if ( !state.hasTrans( transitionName ) ) {
-            throw getError( ErrorCodes.TRANSITION_NOT_DECLARED_IN_STATE )
+            throw errorMap.getError( ErrorCodes.TRANSITION_NOT_DECLARED_IN_STATE )
                   .injectMsgWith( state.name, "state" )
                   .injectMsgWith( transitionName, "transition" );
         }
         const targetStateName:String = state.getTarget( transitionName );
         const targetState:IState = IState( _states[ targetStateName ] );
         if ( targetState == null && targetStateName != null ) {
-            throw getError( ErrorCodes.TARGET_DECLARATION_MISMATCH ).injectMsgWith( state.name, "state" )
+            throw errorMap.getError( ErrorCodes.TARGET_DECLARATION_MISMATCH ).injectMsgWith( state.name, "state" )
                   .injectMsgWith( targetStateName, "target" )
                   .injectMsgWith( transitionName, "transition" );
         }
         return targetState;
+    }
+
+    private function get errorMap():ErrorMap {
+        return _errorMap || (_errorMap = new ErrorMap());
     }
 }
 }

@@ -25,14 +25,6 @@ public class ErrorCodes {
     public static const NO_PHASES_HAVE_BEEN_PUSHED_TO_STATE_TRANSITION:int = 18;
     public static const TRANSITION_UNDEFINED_IN_CURRENT_STATE:int = 19;
 
-    internal static const _errorBindings:ErrorBindingsList = new ErrorBindingsList();
 
-    internal static function getError( code:int ):BaseStateError {
-        return _errorBindings.getErrorBinding( code ).getError();
-    }
-
-    internal static function getErrorMessage( code:int ):String {
-        return _errorBindings.getErrorBinding( code ).getMessage();
-    }
 }
 }

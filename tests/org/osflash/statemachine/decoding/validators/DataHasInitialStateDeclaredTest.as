@@ -8,8 +8,8 @@ import org.hamcrest.object.instanceOf;
 import org.hamcrest.object.strictlyEqualTo;
 import org.osflash.statemachine.decoding.IDataValidator;
 import org.osflash.statemachine.errors.ErrorCodes;
+import org.osflash.statemachine.errors.ErrorMap;
 import org.osflash.statemachine.errors.StateDecodingError;
-import org.osflash.statemachine.errors.getErrorMessage;
 
 public class DataHasInitialStateDeclaredTest {
 
@@ -17,8 +17,11 @@ public class DataHasInitialStateDeclaredTest {
     private var _wellFormedData:XML;
     private var _badlyFormedData:XML;
 
+
     [Before]
     public function before():void {
+
+
 
         _wellFormedData =
         <fsm initial="state/initial">
@@ -41,11 +44,12 @@ public class DataHasInitialStateDeclaredTest {
     public function after():void {
         _wellFormedData = null;
         _dataValidator = null;
+
     }
 
     [Test]
     public function if_data_is_badly_formed__throws_StateDecodingError():void {
-        const expectedMessage:String = getErrorMessage( ErrorCodes.INITIAL_STATE_NOT_DECLARED );
+        const expectedMessage:String = new ErrorMap().getErrorMessage( ErrorCodes.INITIAL_STATE_NOT_DECLARED );
         assertThat( setBadDataAndCallValidateOnTestSubject, throws( allOf( instanceOf( StateDecodingError ), hasPropertyWithValue( "message", expectedMessage ) ) ) );
     }
 

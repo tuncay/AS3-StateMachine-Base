@@ -2,11 +2,12 @@ package org.osflash.statemachine.decoding.validators {
 
 import org.osflash.statemachine.decoding.IDataValidator;
 import org.osflash.statemachine.errors.ErrorCodes;
-import org.osflash.statemachine.errors.getError;
+import org.osflash.statemachine.errors.ErrorMap;
 
 public class StateNamesAreUnique implements IDataValidator {
 
     private var _data:XML;
+    private var _errorMap:ErrorMap;
 
     public function validate():Object {
         const states:XMLList = retrieveAllStateNameAttributes();
@@ -16,7 +17,7 @@ public class StateNamesAreUnique implements IDataValidator {
             if ( duplicateList != 1 ) errors.push( name.toString() );
         }
         if ( errors.length == 0 )return _data;
-        throw getError( ErrorCodes.DUPLICATE_STATES_DECLARED ).injectMsgWith( errors.join( "," ), "state" );
+        throw new ErrorMap().getError( ErrorCodes.DUPLICATE_STATES_DECLARED ).injectMsgWith( errors.join( "," ), "state" );
     }
 
     private function retrieveAllStateNameAttributes():XMLList {
@@ -30,5 +31,6 @@ public class StateNamesAreUnique implements IDataValidator {
     public function set data( value:Object ):void {
         _data = XML( value );
     }
+
 }
 }

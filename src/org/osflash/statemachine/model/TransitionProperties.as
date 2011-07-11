@@ -3,7 +3,7 @@ package org.osflash.statemachine.model {
 import org.osflash.statemachine.core.IPayload;
 import org.osflash.statemachine.core.IState;
 import org.osflash.statemachine.errors.ErrorCodes;
-import org.osflash.statemachine.errors.getError;
+import org.osflash.statemachine.errors.ErrorMap;
 import org.osflash.statemachine.transitioning.Payload;
 import org.osflash.statemachine.uids.IUID;
 import org.osflash.statemachine.uids.TransitionPhaseUID;
@@ -60,7 +60,9 @@ internal class TransitionProperties implements ITransitionProperties {
         if ( result ) {
             _currentBinding = binding;
         } else {
-            throw getError( ErrorCodes.TRANSITION_UNDEFINED_IN_CURRENT_STATE ).injectMsgWith( currentState.name, "state" ).injectMsgWith( binding.transition, "transition" );
+            throw new ErrorMap().getError( ErrorCodes.TRANSITION_UNDEFINED_IN_CURRENT_STATE )
+                  .injectMsgWith( currentState.name, "state" )
+                  .injectMsgWith( binding.transition, "transition" );
         }
     }
 

@@ -11,8 +11,8 @@ import org.osflash.statemachine.core.IState;
 import org.osflash.statemachine.decoding.supporting.MockIStateDecoder;
 import org.osflash.statemachine.decoding.supporting.MockIStateModel;
 import org.osflash.statemachine.errors.ErrorCodes;
+import org.osflash.statemachine.errors.ErrorMap;
 import org.osflash.statemachine.errors.StateDecodingError;
-import org.osflash.statemachine.errors.getErrorMessage;
 import org.osflash.statemachine.model.IStateModel;
 import org.osflash.statemachine.supporting.IResultsRegistry;
 
@@ -23,6 +23,7 @@ public class IStateModelDecoderTest implements IResultsRegistry {
     private var _stateModelDecoder:IStateModelDecoder;
     private var _results:Array;
     private var _states:Vector.<IState>;
+
 
     [Before]
     public function before():void {
@@ -36,14 +37,14 @@ public class IStateModelDecoderTest implements IResultsRegistry {
 
     [Test]
     public function calling_inject_with_null_IStateDecoder_throws_StateDecodingError():void {
-        const expectedMessage:String = getErrorMessage( ErrorCodes.STATE_DECODER_MUST_NOT_BE_NULL );
+        const expectedMessage:String = new ErrorMap().getErrorMessage( ErrorCodes.STATE_DECODER_MUST_NOT_BE_NULL );
         initTestSubject( null );
         assertThat( injectIStateModel, throws( allOf( instanceOf( StateDecodingError ), hasPropertyWithValue( "message", expectedMessage ) ) ) );
     }
 
     [Test]
     public function calling_inject_with_null_IStateModel_throws_StateDecodingError():void {
-        const expectedMessage:String = getErrorMessage( ErrorCodes.STATE_MODEL_MUST_NOT_BE_NULL );
+        const expectedMessage:String = new ErrorMap().getErrorMessage( ErrorCodes.STATE_MODEL_MUST_NOT_BE_NULL );
         initTestSubject( _stateDecoder );
         assertThat( injectNullIStateModel, throws( allOf( instanceOf( StateDecodingError ), hasPropertyWithValue( "message", expectedMessage ) ) ) );
     }
@@ -75,6 +76,7 @@ public class IStateModelDecoderTest implements IResultsRegistry {
         ];
         _stateDecoder = new MockIStateDecoder( _states, this );
         _stateModel = new MockIStateModel( this );
+
     }
 
     private function initTestSubject( decoder:IStateDecoder ):void {
@@ -86,6 +88,7 @@ public class IStateModelDecoderTest implements IResultsRegistry {
         _states = null;
         _stateDecoder = null;
         _stateModelDecoder = null;
+
     }
 
     public function get got():String {

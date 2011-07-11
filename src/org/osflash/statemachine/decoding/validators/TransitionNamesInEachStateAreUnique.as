@@ -2,7 +2,7 @@ package org.osflash.statemachine.decoding.validators {
 
 import org.osflash.statemachine.decoding.IDataValidator;
 import org.osflash.statemachine.errors.ErrorCodes;
-import org.osflash.statemachine.errors.getError;
+import org.osflash.statemachine.errors.ErrorMap;
 
 public class TransitionNamesInEachStateAreUnique implements IDataValidator {
 
@@ -21,7 +21,7 @@ public class TransitionNamesInEachStateAreUnique implements IDataValidator {
         for each ( var name:XML in transitions ) {
             const duplicateList:int = retrieveNumberOfStateElementsWithName( name, state );
             if ( duplicateList != 1 )
-                throw getError( ErrorCodes.DUPLICATE_TRANSITION_DECLARED ).injectMsgWith( state.@name, "state" );
+                throw new ErrorMap().getError( ErrorCodes.DUPLICATE_TRANSITION_DECLARED ).injectMsgWith( state.@name, "state" );
         }
     }
 
@@ -36,5 +36,6 @@ public class TransitionNamesInEachStateAreUnique implements IDataValidator {
     public function set data( value:Object ):void {
         _data = XML( value );
     }
+
 }
 }

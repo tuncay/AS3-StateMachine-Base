@@ -2,7 +2,7 @@ package org.osflash.statemachine.decoding.validators {
 
 import org.osflash.statemachine.decoding.IDataValidator;
 import org.osflash.statemachine.errors.ErrorCodes;
-import org.osflash.statemachine.errors.getError;
+import org.osflash.statemachine.errors.ErrorMap;
 
 public class StateHasNoIncomingTransitions implements IDataValidator {
 
@@ -13,7 +13,7 @@ public class StateHasNoIncomingTransitions implements IDataValidator {
         for each ( var state:XML in states ) {
             const duplicateList:int = retrieveNumberOfTransitionElementsWithTarget( state );
             if ( duplicateList == 0 )
-                throw getError( ErrorCodes.STATE_HAS_NO_INCOMING_TRANSITION ).injectMsgWith( state, "state" );
+                throw new ErrorMap().getError( ErrorCodes.STATE_HAS_NO_INCOMING_TRANSITION ).injectMsgWith( state, "state" );
         }
         return _data;
     }

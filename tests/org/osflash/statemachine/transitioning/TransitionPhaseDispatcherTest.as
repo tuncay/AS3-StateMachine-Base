@@ -7,8 +7,8 @@ import org.hamcrest.object.equalTo;
 import org.hamcrest.object.hasPropertyWithValue;
 import org.hamcrest.object.instanceOf;
 import org.osflash.statemachine.errors.ErrorCodes;
+import org.osflash.statemachine.errors.ErrorMap;
 import org.osflash.statemachine.errors.StateTransitionError;
-import org.osflash.statemachine.errors.getErrorMessage;
 import org.osflash.statemachine.logging.TraceStateLogger;
 import org.osflash.statemachine.supporting.IResultsRegistry;
 import org.osflash.statemachine.transitioning.supporting.GrumpyPhase;
@@ -49,7 +49,7 @@ public class TransitionPhaseDispatcherTest implements IResultsRegistry {
 
     [Test]
     public function when_no_phases_pushed_throws_StateTransitionError():void {
-        var expectedMessage:String = getErrorMessage( ErrorCodes.NO_PHASES_HAVE_BEEN_PUSHED_TO_STATE_TRANSITION );
+        var expectedMessage:String = new ErrorMap().getErrorMessage( ErrorCodes.NO_PHASES_HAVE_BEEN_PUSHED_TO_STATE_TRANSITION );
         const throwFunction:Function = function ():void { _stateTransition.dispatchPhases(); };
         assertThat( throwFunction, throws( allOf( instanceOf( StateTransitionError ), hasPropertyWithValue( "message", expectedMessage ) ) ) );
 

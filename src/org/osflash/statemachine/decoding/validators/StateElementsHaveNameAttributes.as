@@ -2,7 +2,7 @@ package org.osflash.statemachine.decoding.validators {
 
 import org.osflash.statemachine.decoding.IDataValidator;
 import org.osflash.statemachine.errors.ErrorCodes;
-import org.osflash.statemachine.errors.getError;
+import org.osflash.statemachine.errors.ErrorMap;
 
 public class StateElementsHaveNameAttributes implements IDataValidator {
 
@@ -11,7 +11,7 @@ public class StateElementsHaveNameAttributes implements IDataValidator {
     public function validate():Object {
         const states:XMLList = _data.state.(!hasOwnProperty( "@name" ) );
         if ( states.length() == 0 )  return _data;
-        throw getError( ErrorCodes.STATE_NAME_ATTRIBUTE_NOT_DECLARED ).injectMsgWith( states.length().toString(), "quantity" );
+        throw new ErrorMap().getError( ErrorCodes.STATE_NAME_ATTRIBUTE_NOT_DECLARED ).injectMsgWith( states.length().toString(), "quantity" );
     }
 
     public function set data( value:Object ):void {

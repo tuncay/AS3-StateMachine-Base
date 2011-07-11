@@ -11,8 +11,8 @@ import org.hamcrest.object.strictlyEqualTo;
 import org.osflash.statemachine.base.BaseState;
 import org.osflash.statemachine.core.IState;
 import org.osflash.statemachine.errors.ErrorCodes;
+import org.osflash.statemachine.errors.ErrorMap;
 import org.osflash.statemachine.errors.StateModelError;
-import org.osflash.statemachine.errors.getErrorMessage;
 import org.osflash.statemachine.supporting.injectThis;
 
 public class StateModelTest {
@@ -26,7 +26,6 @@ public class StateModelTest {
     private var startTransition:String;
     private var loadTranstion:String;
     private var saveTransition:String;
-
 
     [Before]
     public function before():void {
@@ -49,7 +48,7 @@ public class StateModelTest {
 
     [Test]
     public function when_no_states_have_been_registered__retrieving_initialState_throws_StateModelError():void {
-        const expectedMessage:String = getErrorMessage( ErrorCodes.NO_INITIAL_STATE_DECLARED );
+        const expectedMessage:String = new ErrorMap().getErrorMessage( ErrorCodes.NO_INITIAL_STATE_DECLARED );
         const throwFunction:Function = function ():void { stateModel.initialState; };
         assertThat( throwFunction, throws( allOf( instanceOf( StateModelError ), hasPropertyWithValue( "message", expectedMessage ) ) ) );
     }
@@ -61,7 +60,7 @@ public class StateModelTest {
 
     [Test ]
     public function when_no_states_have_been_registered__getTargetState_throws_StateModelError():void {
-        var expectedMessage:String = getErrorMessage( ErrorCodes.TARGET_DECLARATION_MISMATCH );
+        var expectedMessage:String = new ErrorMap().getErrorMessage( ErrorCodes.TARGET_DECLARATION_MISMATCH );
         expectedMessage = injectThis( expectedMessage )
                           .withThis( "state", saving.name )
                           .withThis( "transition", startTransition )
@@ -73,7 +72,7 @@ public class StateModelTest {
 
     [Test]
     public function if_transition_is_not_defined_in_source_state__getTargetState_throws_StateModelError():void {
-        var expectedMessage:String = getErrorMessage( ErrorCodes.TRANSITION_NOT_DECLARED_IN_STATE );
+        var expectedMessage:String = new ErrorMap().getErrorMessage( ErrorCodes.TRANSITION_NOT_DECLARED_IN_STATE );
         expectedMessage = injectThis( expectedMessage )
                           .withThis( "state", saving.name )
                           .finallyWith( "transition", saveTransition );
@@ -84,7 +83,7 @@ public class StateModelTest {
 
     [Test]
     public function when_no_states_have_been_registered__getState_throws_StateModelError():void {
-        var expectedMessage:String = getErrorMessage( ErrorCodes.STATE_REQUESTED_IS_NOT_REGISTERED );
+        var expectedMessage:String = new ErrorMap().getErrorMessage( ErrorCodes.STATE_REQUESTED_IS_NOT_REGISTERED );
         expectedMessage = injectThis( expectedMessage )
                           .finallyWith( "state", saving.name );
 

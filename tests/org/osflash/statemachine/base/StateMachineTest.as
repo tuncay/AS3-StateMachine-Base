@@ -12,8 +12,8 @@ import org.osflash.statemachine.base.supporting.HappyValidator;
 import org.osflash.statemachine.base.supporting.MockStateTransitionController;
 import org.osflash.statemachine.base.supporting.MockStateTransitionModel;
 import org.osflash.statemachine.errors.ErrorCodes;
+import org.osflash.statemachine.errors.ErrorMap;
 import org.osflash.statemachine.errors.StateTransitionError;
-import org.osflash.statemachine.errors.getErrorMessage;
 import org.osflash.statemachine.supporting.IResultsRegistry;
 import org.osflash.statemachine.supporting.injectThis;
 import org.osflash.statemachine.transitioning.ITransitionController;
@@ -138,14 +138,14 @@ public class StateMachineTest implements IResultsRegistry {
     }
 
     private function assertThatInvalidTransitionThrowsStateTransitionError():void {
-        var expectedMessage:String = getErrorMessage( ErrorCodes.INVALID_TRANSITION );
+        var expectedMessage:String = new ErrorMap().getErrorMessage( ErrorCodes.INVALID_TRANSITION );
         expectedMessage = injectThis( expectedMessage ).finallyWith( "phase", _phaseUID );
         const throwFunction:Function = function ():void { _stateMachine.transition( _transitionName, _payload ); };
         assertThat( throwFunction, throws( allOf( instanceOf( StateTransitionError ), hasPropertyWithValue( "message", expectedMessage ) ) ) );
     }
 
     private function assertThatInvalidCancellationThrowsStateTransitionError():void {
-        var expectedMessage:String = getErrorMessage( ErrorCodes.INVALID_CANCEL );
+        var expectedMessage:String = new ErrorMap().getErrorMessage( ErrorCodes.INVALID_CANCEL );
         expectedMessage = injectThis( expectedMessage ).finallyWith( "phase", _phaseUID );
         const throwFunction:Function = function ():void { _stateMachine.cancelStateTransition( _transitionName ); };
         assertThat( throwFunction, throws( allOf( instanceOf( StateTransitionError ), hasPropertyWithValue( "message", expectedMessage ) ) ) );

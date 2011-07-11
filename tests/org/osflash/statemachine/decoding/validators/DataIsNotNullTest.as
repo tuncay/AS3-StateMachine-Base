@@ -8,8 +8,8 @@ import org.hamcrest.object.instanceOf;
 import org.hamcrest.object.strictlyEqualTo;
 import org.osflash.statemachine.decoding.IDataValidator;
 import org.osflash.statemachine.errors.ErrorCodes;
+import org.osflash.statemachine.errors.ErrorMap;
 import org.osflash.statemachine.errors.StateDecodingError;
-import org.osflash.statemachine.errors.getErrorMessage;
 
 public class DataIsNotNullTest {
 
@@ -18,19 +18,21 @@ public class DataIsNotNullTest {
 
     [Before]
     public function before():void {
+
         _data = "testing";
         _dataValidator = new DataIsNotNull();
     }
 
     [After]
     public function after():void {
+
         _data = null;
         _dataValidator = null;
     }
 
     [Test]
     public function if_data_is_null__throws_StateDecodingError():void {
-        const expectedMessage:String = getErrorMessage( ErrorCodes.NULL_FSM_DATA_ERROR );
+        const expectedMessage:String = new ErrorMap().getErrorMessage( ErrorCodes.NULL_FSM_DATA_ERROR );
         assertThat( setNullDataAndCallValidateOnTestSubject, throws( allOf( instanceOf( StateDecodingError ), hasPropertyWithValue( "message", expectedMessage ) ) ) );
     }
 

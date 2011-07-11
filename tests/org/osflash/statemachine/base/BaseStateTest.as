@@ -84,7 +84,8 @@ public class BaseStateTest {
     public function transitionsToString_returns_expected_encoded_value():void {
         const expected:String = _transitionNameTwo + ":" + _targetStateNameTwo + "," + _transitionName + ":" + _targetStateName;
         addTwoTransitionsToTestSubject();
-        assertThat( _state.transitionsToString(), equalTo( expected ) );
+        assertThat( _state.getTarget( _transitionName ), equalTo( _targetStateName ) );
+        assertThat( _state.getTarget( _transitionNameTwo ), equalTo( _targetStateNameTwo ) );
     }
 
     private function addTwoTransitionsToTestSubject():void {

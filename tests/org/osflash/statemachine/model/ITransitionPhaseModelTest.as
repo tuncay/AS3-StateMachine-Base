@@ -43,7 +43,7 @@ public class ITransitionPhaseModelTest implements IResultsRegistry {
 
     [Test]
     public function targetState_retrieves_referringTransition_and_currentState_from_properties__then_calls_getTargetState_on_model():void {
-        const expected:String = "transition/one:state/current,state/target";
+        const expected:String = "transition/one:state/current:2,state/target:4";
         setCurrentStateOnProperties();
         setTransitionOnProperties();
         callTargetStateGetterOnTestSubject();

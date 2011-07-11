@@ -11,14 +11,18 @@ public class BaseStateTest {
     private var _stateName:String;
     private var _targetStateName:String;
     private var _transitionName:String;
+    private var _transitionNameTwo:String;
     private var _index:uint;
+    private var _targetStateNameTwo:String;
 
     [Before]
     public function before():void {
         _index = 16;
-        _stateName = "testStateUID";
-        _targetStateName = "testTargetUID";
-        _transitionName = "testTranstionUID";
+        _stateName = "testState";
+        _targetStateName = "testTarget";
+        _targetStateNameTwo = "testTargetTwo";
+        _transitionName = "testTranstionOne";
+        _transitionNameTwo = "testTranstionTwo";
         _state = new BaseState( _stateName, _index );
     }
 
@@ -84,6 +88,18 @@ public class BaseStateTest {
     [Test]
     public function removing_undefined_transition_returns_false():void {
         assertThat( _state.removeTrans( _transitionName ), equalTo( false ) );
+    }
+
+    [Test]
+    public function transitionsToString_returns_expected_encoded_value():void {
+        const expected:String = _transitionName + ":"  +_targetStateName + "," +  _transitionNameTwo + ":" + _targetStateNameTwo;
+        addTwoTransitionsToTestSubject();
+        assertThat(_state.transitionsToString(), equalTo( expected ) );
+    }
+
+    private function addTwoTransitionsToTestSubject():void {
+        _state.defineTransition( _transitionName, _targetStateName );
+         _state.defineTransition( _transitionNameTwo, _targetStateNameTwo );
     }
 
 

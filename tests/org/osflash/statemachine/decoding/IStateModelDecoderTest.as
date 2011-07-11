@@ -50,9 +50,9 @@ public class IStateModelDecoderTest implements IResultsRegistry {
 
     [Test]
     public function injecting_calls_isInitial_on_IStateDecoder_then_registerState_onIStateModel():void {
-        const expected:String = "MISD.iI:state/one,MISM.rS:state/one:false," +
-                                "MISD.iI:state/two,MISM.rS:state/two:false," +
-                                "MISD.iI:state/three,MISM.rS:state/three:false";
+        const expected:String = "MISD.iI:state/one,MISM.rS:state/one:1:false," +
+                                "MISD.iI:state/two,MISM.rS:state/two:2:false," +
+                                "MISD.iI:state/three,MISM.rS:state/three:4:false";
         initTestSubject( _stateDecoder );
         injectIStateModel();
         assertThat( got, equalTo( expected ) );

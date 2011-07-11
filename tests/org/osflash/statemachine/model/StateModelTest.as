@@ -65,7 +65,7 @@ public class StateModelTest {
         expectedMessage = injectThis( expectedMessage )
                           .withThis( "state", saving.name )
                           .withThis( "transition", startTransition )
-                          .finallyWith( "target", starting );
+                          .finallyWith( "target", starting.name );
 
         const throwFunction:Function = function ():void { stateModel.getTargetState( startTransition, saving ); };
         assertThat( throwFunction, throws( allOf( instanceOf( StateModelError ), hasPropertyWithValue( "message", expectedMessage ) ) ) );

@@ -45,7 +45,15 @@ public class BaseState implements IState {
     }
 
     public function toString():String {
-        return name;
+        return name + ":" + index;
+    }
+
+    public function transitionsToString():String {
+        var a:Array = [];
+        for  ( var transitionName:String in _transitions ) {
+            a.push( transitionName + ":" + _transitions[transitionName])
+        }
+        return a.join(",");
     }
 
 

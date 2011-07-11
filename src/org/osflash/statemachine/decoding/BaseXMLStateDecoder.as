@@ -31,15 +31,15 @@ public class BaseXMLStateDecoder implements IStateDecoder {
         return states;
     }
 
-    public function decodeState( stateDef:Object, index:uint ):IState {
-        return new BaseState( stateDef.@name, index );
-    }
-
     public function isInitial( stateName:String ):Boolean {
         return ( stateName == data.@initial.toString() );
     }
 
-    public function decodeTransitionForState( state:IState, stateDef:Object ):IState {
+    protected function decodeState( stateDef:Object, index:uint ):IState {
+        return new BaseState( stateDef.@name, index );
+    }
+
+    protected function decodeTransitionForState( state:IState, stateDef:Object ):IState {
         var transitions:XMLList = stateDef..transition as XMLList;
         for ( var i:int; i < transitions.length(); i++ ) {
             var transDef:XML = transitions[i];

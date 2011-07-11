@@ -84,6 +84,13 @@ public class ITransitionModelTest {
         assertThat( _properties.cancellationReason, strictlyEqualTo( _reason ) );
     }
 
+     [Test]
+    public function cancellationReason_flushes_queue_so_hasTransition_is_false():void {
+        addTransition();
+        addCancellationReason();
+        assertThat( _transitionModel.hasTransition, isFalse() );
+    }
+
     [Test]
     public function reset_calls_reset_method_on_properties():void {
         addCancellationReason();

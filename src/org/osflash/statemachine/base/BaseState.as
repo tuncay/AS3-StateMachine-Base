@@ -5,7 +5,6 @@ import org.osflash.statemachine.core.IState;
 public class BaseState implements IState {
 
     protected var _transitions:Object = new Object();
-
     private var _name:String;
     private var _index:uint;
 
@@ -55,7 +54,5 @@ public class BaseState implements IState {
         }
         return a.join(",");
     }
-
-
 }
 }

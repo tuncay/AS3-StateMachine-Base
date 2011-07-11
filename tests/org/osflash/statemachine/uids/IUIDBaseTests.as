@@ -27,7 +27,6 @@ public class IUIDBaseTests {
     public function identifier_getter_returns__type_plus_delimiter_plus_id():void {
         setUp( id, type, index );
         const expectedIdentifier:String = subject.type + BaseUID.delimiter + id;
-
         assertThat( subject.identifier, equalTo( expectedIdentifier ) );
     }
 

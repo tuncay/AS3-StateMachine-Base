@@ -9,6 +9,7 @@ import org.hamcrest.object.instanceOf;
 import org.osflash.statemachine.errors.ErrorCodes;
 import org.osflash.statemachine.errors.StateTransitionError;
 import org.osflash.statemachine.errors.getErrorMessage;
+import org.osflash.statemachine.logging.TraceStateLogger;
 import org.osflash.statemachine.supporting.IResultsRegistry;
 import org.osflash.statemachine.supporting.injectThis;
 import org.osflash.statemachine.transitioning.supporting.GrumpyPhase;
@@ -19,12 +20,10 @@ public class TransitionPhaseDispatcherTest implements IResultsRegistry {
 
     private var _stateTransition:TransitionPhaseDispatcher;
     private var _results:Array;
-    private var _logCode:int;
 
     [Before]
     public function before():void {
-        _logCode = 0;
-        _stateTransition = new TransitionPhaseDispatcher( new MockPhaseModel(), _logCode );
+        _stateTransition = new TransitionPhaseDispatcher( new MockPhaseModel(), new TraceStateLogger() );
         _results = [];
     }
 
@@ -36,17 +35,15 @@ public class TransitionPhaseDispatcherTest implements IResultsRegistry {
 
     [Test]
     public function successful_transition_processes_all_phases_in_correct_order():void {
-        var expectedResults:String = "[1]HP:M:LC(${logCode}),[2]HP:M:LC(${logCode}),[3]HP:M:LC(${logCode})," +
-                                     "[4]HP:M:LC(${logCode}),[5]HP:M:LC(${logCode})";
-        expectedResults = injectThis( expectedResults ).finallyWith( "logCode", _logCode );
+        var expectedResults:String = "[1]HP:M:L,[2]HP:M:L,[3]HP:M:L," +
+                                     "[4]HP:M:L,[5]HP:M:L";
         setFiveHappyPhasesAndDispatch();
         assertThat( got, equalTo( expectedResults ) );
     }
 
     [Test]
     public function cancelled_transition_aborts_all_phases_after_cancellation():void {
-        var expectedResults:String = "[1]HP:M:LC(${logCode}),[2]HP:M:LC(${logCode}),[3]GP:M:LC(${logCode})";
-        expectedResults = injectThis( expectedResults ).finallyWith( "logCode", _logCode );
+        var expectedResults:String = "[1]HP:M:L,[2]HP:M:L,[3]GP:M:L";
         setFiveHappyPhasesPlusOneGrumpyPhaseAndDispatch();
         assertThat( got, equalTo( expectedResults ) );
     }

@@ -1,15 +1,9 @@
-/**
- * Created by IntelliJ IDEA.
- * User: revisual.co.uk
- * Date: 31/01/11
- * Time: 16:06
- * To change this template use File | Settings | File Templates.
- */
 package org.osflash.statemachine.logging {
 
 import org.osflash.statemachine.core.IState;
 import org.osflash.statemachine.core.IStateLogger;
-import org.osflash.statemachine.transitioning.ITransitionPhase;
+import org.osflash.statemachine.uids.IUID;
+
 
 public class TraceStateLogger implements IStateLogger {
 
@@ -17,41 +11,44 @@ public class TraceStateLogger implements IStateLogger {
 
     public var active:Boolean;
 
-    public var flags:int;
+    public var stateflags:int;
 
-    private var _lastMessage:String;
+    public var phaseflags:int;
 
-    public function TraceStateLogger( prefix:String = "", active:Boolean = true, flags:int = 511 ) {
+
+    public function TraceStateLogger( prefix:String = "", active:Boolean = true ) {
         this.prefix = prefix;
         this.active = active;
-        this.flags = flags;
+        this.stateflags = 0;
+        this.phaseflags = 0;
     }
 
-    public function get lastMessage():String {
-        return _lastMessage;
+    public function logPhase( phase:IUID, transition:String, state:IState ):void {
+        if ( active &&
+             phaseflags == 0 || ( phaseflags & phase.index ) &&
+                                stateflags == 0 || ( stateflags & state.index) ) {
+            log( ( prefix || "" ) + "executed phase[" + phase.identifier + "] durring transition [" + transition + "] from state[" + state.name + "]" );
+        }
     }
-
 
     public function log( msg:String ):void {
-        if ( active )
-            writeLog( (prefix || "" ) + msg );
-        else
-            writeLog( null );
-    }
-
-    public function logPhase( phase:ITransitionPhase, state:IState ):void {
-        if ( active && ( flags & phase.index ) )
-            writeLog( (prefix || "" ) + " phase[" + phase.name + "] from state[" + state.id + "] executed." );
-        else
-            writeLog( null );
-    }
-
-    private function writeLog( msg:String ):void {
-        _lastMessage = msg;
         if ( msg != null )
             trace( msg );
     }
 
+    public function logStateChange( currentState:IState, targetState:IState ):void {
 
+        if ( active &&
+             stateflags == 0 || ( stateflags & currentState.index) ) {
+            log( ( prefix || "" ) + "state has changed from [" + currentState.name + "] to [" + targetState.name + "]" );
+        }
+    }
+
+    public function logCancellation( reason:IUID, transition:String, state:IState ):void {
+        if ( active &&
+             stateflags == 0 || ( stateflags & state.index) ) {
+            log( ( prefix || "" ) + "transition[" + transition + "] from state [" + state.name + "] has been cancelled because {" + reason + "]" );
+        }
+    }
 }
 }

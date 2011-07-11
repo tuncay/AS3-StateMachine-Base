@@ -1,6 +1,5 @@
 package org.osflash.statemachine.transitioning {
 
-import org.osflash.statemachine.logging.log;
 import org.osflash.statemachine.model.ITransitionModel;
 
 public class TransitionController implements ITransitionController {
@@ -21,10 +20,7 @@ public class TransitionController implements ITransitionController {
 
     public final function transition( transition:String, payload:Object = null ):void {
         _model.addTransition( transition, payload );
-        if ( _isCurrentlyTransitioning ) {
-            log( "fsm is currently transitioning, the request to transition has been queued" );
-        }
-        else {
+        if ( !_isCurrentlyTransitioning ) {
             prepareAndExecuteNextTransition();
         }
     }

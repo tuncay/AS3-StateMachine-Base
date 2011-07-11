@@ -6,7 +6,7 @@ public class TransitionQueue {
     private var _queue:Vector.<TransitionBinding>;
 
     public function TransitionQueue() {
-        _queue = new Vector.<TransitionBinding>;
+      flush();
     }
 
     public function get hasNext():Boolean {
@@ -19,6 +19,10 @@ public class TransitionQueue {
 
     public function dequeueTransition():TransitionBinding {
         return  _queue.shift();
+    }
+
+    public function flush():void {
+          _queue = new Vector.<TransitionBinding>;
     }
 }
 }

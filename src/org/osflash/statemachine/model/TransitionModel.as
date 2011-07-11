@@ -39,6 +39,7 @@ public class TransitionModel implements ITransitionModel {
     }
 
     public function set cancellationReason( reason:String ):void {
+        _queue.flush();
         _properties.cancellationReason = reason;
     }
 

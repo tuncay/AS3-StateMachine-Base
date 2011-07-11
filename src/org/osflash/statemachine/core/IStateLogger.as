@@ -3,19 +3,14 @@ package org.osflash.statemachine.core {
 import org.osflash.statemachine.uids.IUID;
 
 public interface IStateLogger {
-    /**
-     * Allows wrapping of logging functionality within the StateMachine framework
-     * @param msg The message to log
-     */
+
     function log( msg:String ):void;
 
+    function logPhase( phase:IUID, transition:String, state:IState ):void;
 
-    /**
-     * Allows the logging of each phase as triggered in the BaseStateMachine's onTransition method
-     * @param phase
-     * @param state
-     */
-    function logPhase( phase:IUID, state:IState ):void;
+    function logStateChange( currentState:IState, targetState:IState ):void;
+
+    function logCancellation( reason:IUID, transition:String, state:IState ):void;
 
 }
 }

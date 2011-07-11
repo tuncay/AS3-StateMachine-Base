@@ -18,7 +18,7 @@ public class BaseTransitionPhase implements ITransitionPhase {
         _model = value;
     }
 
-    public function set logCode( value:int ):void {
+    public function set logger( value:int ):void {
         _logCode = value;
     }
 

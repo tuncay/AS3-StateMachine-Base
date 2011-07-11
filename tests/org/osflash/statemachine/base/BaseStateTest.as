@@ -17,23 +17,13 @@ public class BaseStateTest {
 
     [Before]
     public function before():void {
-        _index = 16;
-        _stateName = "testState";
-        _targetStateName = "testTarget";
-        _targetStateNameTwo = "testTargetTwo";
-        _transitionName = "testTranstionOne";
-        _transitionNameTwo = "testTranstionTwo";
-        _state = new BaseState( _stateName, _index );
+        initProps();
+        initTestSubject();
     }
 
     [After]
     public function after():void {
-        _index = 0;
-        _state = null;
-        _stateName = null;
-        _targetStateName = null;
-        _transitionName = null;
-
+        disposeProps();
     }
 
     [Test]
@@ -92,14 +82,35 @@ public class BaseStateTest {
 
     [Test]
     public function transitionsToString_returns_expected_encoded_value():void {
-        const expected:String = _transitionName + ":"  +_targetStateName + "," +  _transitionNameTwo + ":" + _targetStateNameTwo;
+        const expected:String = _transitionNameTwo + ":" + _targetStateNameTwo + "," + _transitionName + ":" + _targetStateName;
         addTwoTransitionsToTestSubject();
-        assertThat(_state.transitionsToString(), equalTo( expected ) );
+        assertThat( _state.transitionsToString(), equalTo( expected ) );
     }
 
     private function addTwoTransitionsToTestSubject():void {
         _state.defineTransition( _transitionName, _targetStateName );
-         _state.defineTransition( _transitionNameTwo, _targetStateNameTwo );
+        _state.defineTransition( _transitionNameTwo, _targetStateNameTwo );
+    }
+
+    private function initTestSubject():void {
+        _state = new BaseState( _stateName, _index );
+    }
+
+    private function initProps():void {
+        _index = 16;
+        _stateName = "testState";
+        _targetStateName = "testTarget";
+        _targetStateNameTwo = "testTargetTwo";
+        _transitionName = "testTranstionOne";
+        _transitionNameTwo = "testTranstionTwo";
+    }
+
+    private function disposeProps():void {
+        _index = 0;
+        _state = null;
+        _stateName = null;
+        _targetStateName = null;
+        _transitionName = null;
     }
 
 

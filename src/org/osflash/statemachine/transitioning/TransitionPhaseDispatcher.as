@@ -1,5 +1,6 @@
 package org.osflash.statemachine.transitioning {
 
+import org.osflash.statemachine.core.IStateLogger;
 import org.osflash.statemachine.errors.ErrorCodes;
 import org.osflash.statemachine.errors.getError;
 import org.osflash.statemachine.model.IPhaseModel;
@@ -8,11 +9,11 @@ public class TransitionPhaseDispatcher implements IPhaseDispatcher {
 
     private var _phases:Vector.<ITransitionPhase>;
     private var _model:IPhaseModel;
-    private var _logCode:int;
+    private var _logger:IStateLogger;
 
-    public function TransitionPhaseDispatcher( model:IPhaseModel, logCode:int = -1 ) {
+    public function TransitionPhaseDispatcher( model:IPhaseModel, logger:IStateLogger = null ) {
         _model = model;
-        _logCode = logCode;
+        _logger = logger;
         initialiseStateTransition();
     }
 
@@ -21,7 +22,7 @@ public class TransitionPhaseDispatcher implements IPhaseDispatcher {
 
     public function pushTransitionPhase( value:ITransitionPhase ):void {
         value.model = _model;
-        value.logCode = _logCode;
+        value.logger = _logger;
         phases.push( value );
     }
 

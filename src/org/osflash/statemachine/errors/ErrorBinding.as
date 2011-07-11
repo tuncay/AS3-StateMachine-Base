@@ -1,4 +1,4 @@
-package org.osflash.statemachine.errors{
+package org.osflash.statemachine.errors {
 
 internal class ErrorBinding {
 

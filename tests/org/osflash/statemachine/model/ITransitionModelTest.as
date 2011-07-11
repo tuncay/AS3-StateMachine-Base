@@ -84,7 +84,7 @@ public class ITransitionModelTest {
         assertThat( _properties.cancellationReason, strictlyEqualTo( _reason ) );
     }
 
-     [Test]
+    [Test]
     public function cancellationReason_flushes_queue_so_hasTransition_is_false():void {
         addTransition();
         addCancellationReason();

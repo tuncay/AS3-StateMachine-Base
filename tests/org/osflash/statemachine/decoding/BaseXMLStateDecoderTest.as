@@ -55,7 +55,6 @@ public class BaseXMLStateDecoderTest implements IResultsRegistry {
     }
 
 
-
     private function initProps():void {
         _registry = [];
         _validator = new MockIDataValidator( this, 1 );

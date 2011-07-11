@@ -1,6 +1,5 @@
 package org.osflash.statemachine.transitioning {
 
-import org.osflash.statemachine.logging.logPhase;
 import org.osflash.statemachine.model.IPhaseModel;
 import org.osflash.statemachine.uids.IUID;
 

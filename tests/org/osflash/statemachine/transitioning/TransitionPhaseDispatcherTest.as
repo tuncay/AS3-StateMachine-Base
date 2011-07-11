@@ -11,7 +11,6 @@ import org.osflash.statemachine.errors.StateTransitionError;
 import org.osflash.statemachine.errors.getErrorMessage;
 import org.osflash.statemachine.logging.TraceStateLogger;
 import org.osflash.statemachine.supporting.IResultsRegistry;
-import org.osflash.statemachine.supporting.injectThis;
 import org.osflash.statemachine.transitioning.supporting.GrumpyPhase;
 import org.osflash.statemachine.transitioning.supporting.HappyPhase;
 import org.osflash.statemachine.transitioning.supporting.MockPhaseModel;

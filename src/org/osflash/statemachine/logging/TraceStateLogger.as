@@ -4,7 +4,6 @@ import org.osflash.statemachine.core.IState;
 import org.osflash.statemachine.core.IStateLogger;
 import org.osflash.statemachine.uids.IUID;
 
-
 public class TraceStateLogger implements IStateLogger {
 
     public var prefix:String;

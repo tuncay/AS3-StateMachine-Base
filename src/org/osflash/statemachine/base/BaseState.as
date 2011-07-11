@@ -49,10 +49,10 @@ public class BaseState implements IState {
 
     public function transitionsToString():String {
         var a:Array = [];
-        for  ( var transitionName:String in _transitions ) {
-            a.push( transitionName + ":" + _transitions[transitionName])
+        for ( var transitionName:String in _transitions ) {
+            a.push( transitionName + ":" + _transitions[transitionName] )
         }
-        return a.join(",");
+        return a.join( "," );
     }
 }
 }

@@ -32,16 +32,16 @@ public class StateMachine implements IFSMController, IFSMProperties {
         return _transitionModel.transitionPhase;
     }
 
-    public final function transitionToInitialState():void {
+    public function transitionToInitialState():void {
         _transitionController.transitionToInitialState();
     }
 
-    public final function setValidators( transition:ITransitionValidator, cancellation:ITransitionValidator ):void {
+    public function setValidators( transition:ITransitionValidator, cancellation:ITransitionValidator ):void {
         _transitionValidator = transition;
         _cancellationValidator = cancellation;
     }
 
-    public final function transition( transition:String, payload:Object = null ):void {
+    public function transition( transition:String, payload:Object = null ):void {
         if ( isTransitionFromValidPhase ) {
             _transitionController.transition( transition, payload );
         } else {
@@ -49,7 +49,7 @@ public class StateMachine implements IFSMController, IFSMProperties {
         }
     }
 
-    public final function cancelStateTransition( reason:String ):void {
+    public function cancelStateTransition( reason:String ):void {
         if ( isCancellationFromValidPhase ) {
             _transitionController.cancelStateTransition( reason );
         } else {
@@ -57,11 +57,11 @@ public class StateMachine implements IFSMController, IFSMProperties {
         }
     }
 
-    private final function get isTransitionFromValidPhase():Boolean {
+    private function get isTransitionFromValidPhase():Boolean {
         return (_transitionValidator == null) ? false : _transitionValidator.validate( _transitionModel );
     }
 
-    private final function get isCancellationFromValidPhase():Boolean {
+    private function get isCancellationFromValidPhase():Boolean {
         return (_cancellationValidator == null) ? false : _cancellationValidator.validate( _transitionModel );
     }
 }

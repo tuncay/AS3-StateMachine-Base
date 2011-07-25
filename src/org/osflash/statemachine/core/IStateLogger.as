@@ -10,7 +10,7 @@ public interface IStateLogger {
 
     function logStateChange( currentState:IState, targetState:IState ):void;
 
-    function logCancellation( reason:IUID, transition:String, state:IState ):void;
+    function logCancellation( reason:String, transition:String, state:IState ):void;
 
 }
 }

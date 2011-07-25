@@ -25,7 +25,7 @@ public class TraceStateLogger implements IStateLogger {
         if ( active &&
              phaseflags == 0 || ( phaseflags & phase.index ) &&
                                 stateflags == 0 || ( stateflags & state.index) ) {
-            log( ( prefix || "" ) + "executed phase[" + phase.identifier + "] durring transition [" + transition + "] from state[" + state.name + "]" );
+            log( ( prefix || "" ) + "executed phase[" + phase.identifier + "] during transition [" + transition + "] from state[" + state.name + "]" );
         }
     }
 
@@ -42,7 +42,7 @@ public class TraceStateLogger implements IStateLogger {
         }
     }
 
-    public function logCancellation( reason:IUID, transition:String, state:IState ):void {
+    public function logCancellation( reason:String, transition:String, state:IState ):void {
         if ( active &&
              stateflags == 0 || ( stateflags & state.index) ) {
             log( ( prefix || "" ) + "transition[" + transition + "] from state [" + state.name + "] has been cancelled because {" + reason + "]" );

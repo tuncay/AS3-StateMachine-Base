@@ -30,10 +30,6 @@ public class TransitionModel implements ITransitionModel {
         return _queue.hasNext;
     }
 
-    public function setInitialStateAsCurrent():void {
-        _properties.currentState = _stateModel.initialState;
-    }
-
     public function addTransition( transition:String, payload:Object = null ):void {
         _queue.enqueueTransition( transition, payload );
     }

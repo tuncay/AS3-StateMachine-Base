@@ -8,8 +8,6 @@ public interface ITransitionModel extends IFSMProperties {
 
     function set cancellationReason( reason:String ):void;
 
-    function setInitialStateAsCurrent():void;
-
     function addTransition( transition:String, payload:Object = null ):void;
 
     function dequeueTransition():void

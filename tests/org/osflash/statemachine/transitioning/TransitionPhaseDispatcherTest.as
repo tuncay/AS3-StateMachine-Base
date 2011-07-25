@@ -22,7 +22,7 @@ public class TransitionPhaseDispatcherTest implements IResultsRegistry {
 
     [Before]
     public function before():void {
-        _stateTransition = new TransitionPhaseDispatcher( new MockPhaseModel(), new TraceStateLogger() );
+        _stateTransition = new TransitionPhaseDispatcher( new MockPhaseModel(), 5, new TraceStateLogger() );
         _results = [];
     }
 
@@ -43,13 +43,13 @@ public class TransitionPhaseDispatcherTest implements IResultsRegistry {
     [Test]
     public function cancelled_transition_aborts_all_phases_after_cancellation():void {
         var expectedResults:String = "[1]HP:M:L,[2]HP:M:L,[3]GP:M:L";
-        setFiveHappyPhasesPlusOneGrumpyPhaseAndDispatch();
+        setFourHappyPhasesPlusOneGrumpyPhaseAndDispatch();
         assertThat( got, equalTo( expectedResults ) );
     }
 
     [Test]
     public function when_no_phases_pushed_throws_StateTransitionError():void {
-        var expectedMessage:String = new ErrorMap().getErrorMessage( ErrorCodes.NO_PHASES_HAVE_BEEN_PUSHED_TO_STATE_TRANSITION );
+        var expectedMessage:String = new ErrorMap().getErrorMessage( ErrorCodes.NUMBER_OF_PHASES_PUSHED_TO_STATE_TRANSITION );
         const throwFunction:Function = function ():void { _stateTransition.dispatchPhases(); };
         assertThat( throwFunction, throws( allOf( instanceOf( StateTransitionError ), hasPropertyWithValue( "message", expectedMessage ) ) ) );
 
@@ -64,13 +64,12 @@ public class TransitionPhaseDispatcherTest implements IResultsRegistry {
         _stateTransition.dispatchPhases();
     }
 
-    public function setFiveHappyPhasesPlusOneGrumpyPhaseAndDispatch():void {
+    public function setFourHappyPhasesPlusOneGrumpyPhaseAndDispatch():void {
         _stateTransition.pushTransitionPhase( new HappyPhase( this, 1 ) );
         _stateTransition.pushTransitionPhase( new HappyPhase( this, 2 ) );
         _stateTransition.pushTransitionPhase( new GrumpyPhase( this, 3 ) );
         _stateTransition.pushTransitionPhase( new HappyPhase( this, 4 ) );
         _stateTransition.pushTransitionPhase( new HappyPhase( this, 5 ) );
-        _stateTransition.pushTransitionPhase( new HappyPhase( this, 6 ) );
         _stateTransition.dispatchPhases();
     }
 

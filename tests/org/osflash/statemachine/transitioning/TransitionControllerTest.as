@@ -26,13 +26,13 @@ public class TransitionControllerTest implements IResultsRegistry {
         disposeProps();
     }
 
-    [Test]
+   /* [Test]
     public function transitionToInitialState_calls_expected_methods_on_members_in_correct_order():void {
         const expected:String = "ISTM.sISAC,IPD.dP,ISTM.r,ISTM.hNT";
         initTestSubject();
         _stateTransitionController.transitionToInitialState();
         assertThat( got, equalTo( expected ) );
-    }
+    }*/
 
     [Test]
     public function cancelStateTransition_calls_addReasonForCancellation_on_model_and_passes_params():void {

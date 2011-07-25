@@ -35,5 +35,13 @@ public class MockPhaseModel implements IPhaseModel {
 
     public function setTargetStateAsCurrent():void {
     }
+
+    public function get referringTransition():String {
+        return "";
+    }
+
+    public function get cancellationReason():String {
+        return "";
+    }
 }
 }

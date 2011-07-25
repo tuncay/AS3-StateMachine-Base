@@ -69,11 +69,23 @@ public class ITransitionPhaseModelTest implements IResultsRegistry {
     }
 
     [Test]
+    public function referringTransition_returns_value_from_properties():void {
+        setTransitionOnProperties();
+        assertThat( _transitionPhaseModel.referringTransition, equalTo( _properties.referringTransition ) );
+    }
+
+     [Test]
+    public function cancellationReason_returns_value_from_properties():void {
+        setCancellationReasonOnProperties();
+        assertThat( _transitionPhaseModel.cancellationReason, equalTo( _properties.cancellationReason ) );
+    }
+
+    /*[Test]
     public function setTargetStateAsCurrent_retrieves_targetState_from_model_then_sets_currentState_on_properties():void {
         setTransitionOnProperties();
         callSetTargetStateAsCurrentOnTestSubject();
         assertThat( _properties.currentState, equalTo( _targetState ) );
-    }
+    }*/
 
     private function callSetTargetStateAsCurrentOnTestSubject():void {
         _transitionPhaseModel.setTargetStateAsCurrent();

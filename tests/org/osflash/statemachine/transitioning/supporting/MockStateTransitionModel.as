@@ -29,7 +29,7 @@ public class MockStateTransitionModel implements ITransitionModel {
         return (_transitions.length != 0);
     }
 
-    public function setInitialStateAsCurrent():void {
+    public function setInitialStateAsTarget():void {
         _registry.pushResult( "ISTM.sISAC" );
     }
 

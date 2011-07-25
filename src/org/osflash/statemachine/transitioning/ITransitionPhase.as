@@ -1,4 +1,4 @@
-package org.osflash.statemachine.transitioning.phases {
+package org.osflash.statemachine.transitioning {
 
 import org.osflash.statemachine.core.IStateLogger;
 import org.osflash.statemachine.model.IPhaseModel;

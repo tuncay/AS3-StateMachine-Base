@@ -15,7 +15,7 @@ public class MockIStateDecoder implements IStateDecoder {
         _registry = regisitry;
     }
 
-    public function setData( value:IDataValidator ):void {
+    public function setData( value:Object ):void {
     }
 
     public function decodeState( stateDef:Object, index:uint ):IState {

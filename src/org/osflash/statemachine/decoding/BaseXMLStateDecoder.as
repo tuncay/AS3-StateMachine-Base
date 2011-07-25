@@ -8,8 +8,9 @@ public class BaseXMLStateDecoder implements IStateDecoder {
     private var _fsm:XML;
     private var _dataValidator:IDataValidator;
 
-    public function setData( value:IDataValidator ):void {
-        _dataValidator = value;
+    public function setData( value:Object ):void {
+        if ( value is XML ) _fsm = XML( value );
+        else _dataValidator = IDataValidator( value );
     }
 
     protected function get data():XML {
@@ -35,7 +36,7 @@ public class BaseXMLStateDecoder implements IStateDecoder {
         return ( stateName == data.@initial.toString() );
     }
 
-    protected function decodeState( stateDef:Object, index:uint ):IState {
+    public function decodeState( stateDef:Object, index:uint ):IState {
         return new BaseState( stateDef.@name, index );
     }
 

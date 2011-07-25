@@ -4,7 +4,7 @@ import org.osflash.statemachine.core.IState;
 
 public interface IStateDecoder {
 
-    function setData( value:IDataValidator ):void;
+    function setData( value:Object ):void;
 
     function isInitial( stateName:String ):Boolean;
 

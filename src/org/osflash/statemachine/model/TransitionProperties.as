@@ -1,5 +1,6 @@
 package org.osflash.statemachine.model {
 
+import org.osflash.statemachine.base.BaseState;
 import org.osflash.statemachine.core.IPayload;
 import org.osflash.statemachine.core.IState;
 import org.osflash.statemachine.errors.ErrorCodes;
@@ -8,7 +9,7 @@ import org.osflash.statemachine.transitioning.Payload;
 import org.osflash.statemachine.uids.IUID;
 import org.osflash.statemachine.uids.TransitionPhaseUID;
 
-internal class TransitionProperties implements ITransitionProperties {
+public class TransitionProperties implements ITransitionProperties {
 
     private var _currentState:IState;
     private var _currentBinding:TransitionBinding;

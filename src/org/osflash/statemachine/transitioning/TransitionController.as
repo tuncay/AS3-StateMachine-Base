@@ -14,7 +14,6 @@ public class TransitionController implements ITransitionController {
     }
 
     public function transitionToInitialState():void {
-        _model.setInitialStateAsCurrent();
         executeTransition();
     }
 

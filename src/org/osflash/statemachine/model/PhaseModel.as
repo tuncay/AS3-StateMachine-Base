@@ -27,6 +27,7 @@ public class PhaseModel implements IPhaseModel {
     }
 
     public function get targetState():IState {
+        if( currentState.isNull() ) return _stateModel.initialState;
         return _stateModel.getTargetState( _properties.referringTransition, _properties.currentState );
     }
 
@@ -36,6 +37,14 @@ public class PhaseModel implements IPhaseModel {
 
     public function setTargetStateAsCurrent():void {
         _properties.currentState = targetState;
+    }
+
+    public function get referringTransition():String {
+        return _properties.referringTransition;
+    }
+
+    public function get cancellationReason():String {
+        return _properties.cancellationReason;
     }
 }
 }

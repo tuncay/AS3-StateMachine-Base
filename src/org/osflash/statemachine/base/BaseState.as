@@ -40,12 +40,15 @@ public class BaseState implements IState {
     }
 
     public function getTarget( transitionName:String ):String {
-        return _transitions[ transitionName ];
+       return _transitions[ transitionName ];
     }
 
     public function toString():String {
         return name + ":" + index;
     }
 
+    public function isNull():Boolean {
+        return (index == 0);
+    }
 }
 }

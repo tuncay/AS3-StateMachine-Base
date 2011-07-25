@@ -15,5 +15,7 @@ public interface IState {
 
     function getTarget( transitionName:String ):String;
 
+    function isNull():Boolean
+
 }
 }

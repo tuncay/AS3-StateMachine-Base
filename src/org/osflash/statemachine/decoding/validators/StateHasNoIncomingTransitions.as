@@ -12,7 +12,7 @@ public class StateHasNoIncomingTransitions implements IDataValidator {
         const states:XMLList = _data.state.@name;
         for each ( var state:XML in states ) {
             const duplicateList:int = retrieveNumberOfTransitionElementsWithTarget( state );
-            if ( duplicateList == 0 )
+            if ( duplicateList == 0 && _data.@initial.toString() != state.toString())
                 throw new ErrorMap().getError( ErrorCodes.STATE_HAS_NO_INCOMING_TRANSITION ).injectMsgWith( state, "state" );
         }
         return _data;

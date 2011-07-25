@@ -22,7 +22,7 @@ public class ErrorCodes {
 
     public static const INVALID_TRANSITION:int = 16;
     public static const INVALID_CANCEL:int = 17;
-    public static const NO_PHASES_HAVE_BEEN_PUSHED_TO_STATE_TRANSITION:int = 18;
+    public static const NUMBER_OF_PHASES_PUSHED_TO_STATE_TRANSITION:int = 18;
     public static const TRANSITION_UNDEFINED_IN_CURRENT_STATE:int = 19;
 
 

@@ -30,7 +30,7 @@ public class ErrorBindingsList {
 
         errorBindings.push( new ErrorBinding( StateTransitionError, "A transition can not be invoked from the [${phase}] phase" ) );
         errorBindings.push( new ErrorBinding( StateTransitionError, "A transition can not be cancelled from the [${phase}] phase" ) );
-        errorBindings.push( new ErrorBinding( StateTransitionError, "No ITransitionPhase have been pushed to the TransitionPhaseDispatcher" ) );
+        errorBindings.push( new ErrorBinding( StateTransitionError, "{${got} ITransitionPhases pushed to the TransitionPhaseDispatcher, but expected ${expected}" ) );
         errorBindings.push( new ErrorBinding( StateTransitionError, "The transition[${transition}] is not defined in the current state [${state}]" ) );
     }
 

@@ -17,11 +17,12 @@ public class StateHasNoIncomingTransitionsTest {
     private var _dataValidator:IDataValidator;
     private var _wellFormedData:XML;
     private var _badlyFormedData:XML;
+    private var _wellFormedDataIncomingInitialOnly:XML;
 
     [Before]
     public function before():void {
         _wellFormedData =
-        <fsm initial="state/initial">
+        <fsm initial="state/starting">
             <state name="state/starting" >
                 <transition name="transition/end" target="state/ending"/>
             </state>
@@ -30,8 +31,16 @@ public class StateHasNoIncomingTransitionsTest {
             </state>
         </fsm>;
 
+        _wellFormedDataIncomingInitialOnly =
+        <fsm initial="state/starting">
+            <state name="state/starting" >
+                <transition name="transition/end" target="state/ending"/>
+            </state>
+            <state name="state/ending"/>
+        </fsm>;
+
         _badlyFormedData =
-        <fsm initial="state/initial">
+        <fsm initial="state/starting">
             <state name="state/starting" >
                 <transition name="transition/end" target="state/ending"/>
                 <transition name="transition/start" target="state/starting"/>
@@ -58,23 +67,27 @@ public class StateHasNoIncomingTransitionsTest {
     public function if_data_is_badly_formed__throws_StateDecodingError():void {
         var expectedMessage:String = new ErrorMap().getErrorMessage( ErrorCodes.STATE_HAS_NO_INCOMING_TRANSITION );
         expectedMessage = injectThis( expectedMessage ).finallyWith( "state", "state/middling" );
-        assertThat( setBadDataAndCallValidateOnTestSubject, throws( allOf( instanceOf( StateDecodingError ), hasPropertyWithValue( "message", expectedMessage ) ) ) );
+         _dataValidator.data = _badlyFormedData;
+        assertThat( callValidateOnTestSubject, throws( allOf( instanceOf( StateDecodingError ), hasPropertyWithValue( "message", expectedMessage ) ) ) );
     }
 
     [Test]
     public function if_data_is_well_formed__validate_returns_data():void {
-        assertThat( setWellDataAndCallValidateOnTestSubject(), strictlyEqualTo( _wellFormedData ) );
+        assertThat( setDataAndCallValidateOnTestSubject(_wellFormedData), strictlyEqualTo( _wellFormedData ) );
     }
 
-    private function setWellDataAndCallValidateOnTestSubject():Object {
-        _dataValidator.data = _wellFormedData;
+    [Test]
+    public function if_data_is_well_formed_and_incoming_is_initial_only__validate_returns_data():void {
+        assertThat( setDataAndCallValidateOnTestSubject( _wellFormedDataIncomingInitialOnly), strictlyEqualTo( _wellFormedDataIncomingInitialOnly ) );
+    }
+
+    private function setDataAndCallValidateOnTestSubject(xml:XML):Object {
+        _dataValidator.data = xml;
         return _dataValidator.validate();
     }
 
-    private function setBadDataAndCallValidateOnTestSubject():void {
-        _dataValidator.data = _badlyFormedData;
-        _dataValidator.validate();
+     private function callValidateOnTestSubject():Object {
+        return _dataValidator.validate();
     }
-
 }
 }

@@ -12,6 +12,8 @@ public interface ITransitionModel extends IFSMProperties {
 
     function dequeueTransition():void
 
+    function flushQueuedTransitions():void;
+
     function reset():void;
 }
 }

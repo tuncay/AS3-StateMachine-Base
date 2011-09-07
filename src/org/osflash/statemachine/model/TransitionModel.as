@@ -43,6 +43,10 @@ public class TransitionModel implements ITransitionModel {
         _properties.currentTransitionBinding = _queue.dequeueTransition();
     }
 
+    public  function flushQueuedTransitions():void{
+        _queue.flush();
+    }
+
     public function reset():void {
         _properties.reset();
     }

@@ -3,8 +3,9 @@ package org.osflash.statemachine.core {
 
 public interface IFSMController {
 
-    function transition( transition:String, payload:Object = null ):void;
-
+    function pushTransition( transition:String, payload:Object = null ):void;
+     function transition(  ):void;
+      function flushQueuedTransitions():void;
     function cancelStateTransition( reason:String ):void;
 
 

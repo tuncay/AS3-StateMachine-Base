@@ -17,11 +17,18 @@ public class TransitionController implements ITransitionController {
         executeTransition();
     }
 
-    public final function transition( transition:String, payload:Object = null ):void {
+    public final function pushTransition( transition:String, payload:Object = null ):void {
         _model.addTransition( transition, payload );
+    }
+
+     public final function transition( ):void {
         if ( !_isCurrentlyTransitioning ) {
             prepareAndExecuteNextTransition();
         }
+    }
+
+    public function flushQueuedTransitions(  ):void {
+       _model.flushQueuedTransitions();
     }
 
     public function cancelStateTransition( reason:String ):void {

@@ -41,12 +41,20 @@ public class StateMachine implements IFSMController, IFSMProperties {
         _cancellationValidator = cancellation;
     }
 
-    public function transition( transition:String, payload:Object = null ):void {
+    public function pushTransition( transition:String, payload:Object = null ):void {
+        _transitionController.pushTransition( transition, payload );
+    }
+
+    public function transition():void {
         if ( isTransitionFromValidPhase ) {
-            _transitionController.transition( transition, payload );
+            _transitionController.transition();
         } else {
             throw new ErrorMap().getError( ErrorCodes.INVALID_TRANSITION ).injectMsgWith( _transitionModel.transitionPhase );
         }
+    }
+
+    public function flushQueuedTransitions():void {
+        _transitionController.flushQueuedTransitions();
     }
 
     public function cancelStateTransition( reason:String ):void {

@@ -63,5 +63,8 @@ public class MockStateTransitionModel implements ITransitionModel {
     public function get transitionPhase():IUID {
         return null;
     }
+
+    public function flushQueuedTransitions():void {
+    }
 }
 }

@@ -23,5 +23,7 @@ public class MockStateTransitionController implements ITransitionController {
         _register.pushResult( "TC:R(" + reason.toString() + ")" );
     }
 
+    public function pushTransition( transition:String, payload:Object = null ):void {
+    }
 }
 }
